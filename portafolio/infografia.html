@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio - Carrusel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-image: url("../img/fondo-secciones.png");
+            background-repeat: no-repeat;
+            background-size: 100% auto;
+            background-position: center top;
+            background-attachment: scroll;
+            background-color: #000;
+            min-height: 170vh;
+            width: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ===== 3 BOTONES DE NAVEGACIÓN ===== */
+        .botones-navegacion {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 25px;
+            z-index: 10000;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 12px 30px;
+            border-radius: 60px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .boton-nav {
+            padding: 10px 24px;
+            font-size: 15px;
+            font-weight: bold;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .boton-nav:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-regreso {
+            background-color: #ff9800;
+            color: white;
+        }
+        .btn-regreso:hover { background-color: #e68900; }
+
+        .btn-inicio {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .btn-inicio:hover { background-color: #45a049; }
+
+        .btn-siguiente {
+            background-color: #2196F3;
+            color: white;
+        }
+        .btn-siguiente:hover { background-color: #0b7dda; }
+
+        /* ===== CARRUSEL PRINCIPAL ===== */
+        .carrusel-principal {
+            position: fixed;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            max-width: 85vw;
+            z-index: 9999;
+        }
+
+        .carrusel-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 25px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border: 2px solid rgba(255, 215, 0, 0.4);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .carrusel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            gap: 20px;
+        }
+
+        .carrusel-item {
+            min-width: 100%;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .carrusel-item img {
+            width: auto;
+            max-width: 90%;
+            max-height: 500px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .carrusel-item img:hover {
+            transform: scale(1.02);
+        }
+
+        /* Botones del carrusel */
+        .carrusel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: #FFD700;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 28px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carrusel-btn:hover {
+            background: rgba(255, 215, 0, 0.9);
+            color: black;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carrusel-prev { left: -20px; }
+        .carrusel-next { right: -20px; }
+
+        /* Indicadores */
+        .carrusel-indicadores {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .indicador {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .indicador.activo {
+            background: #FFD700;
+            width: 30px;
+            border-radius: 6px;
+        }
+
+        .indicador:hover {
+            background: rgba(255, 215, 0, 0.8);
+            transform: scale(1.2);
+        }
+
+        /* Título del carrusel */
+        .carrusel-titulo {
+            text-align: center;
+            color: #FFD700;
+            font-size: 24px;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .carrusel-principal { width: 90%; }
+            .carrusel-container { padding: 20px; }
+            .carrusel-btn { width: 40px; height: 40px; font-size: 22px; }
+            .carrusel-prev { left: -15px; }
+            .carrusel-next { right: -15px; }
+            .carrusel-titulo { font-size: 20px; }
+            .carrusel-item img { max-height: 400px; }
+        }
+
+        @media (max-width: 600px) {
+            .carrusel-principal { width: 95%; }
+            .carrusel-container { padding: 15px; }
+            .carrusel-btn { width: 35px; height: 35px; font-size: 18px; }
+            .carrusel-item img { max-height: 300px; }
+            .carrusel-titulo { font-size: 18px; }
+            .botones-navegacion {
+                bottom: 8px;
+                padding: 8px 16px;
+                gap: 12px;
+            }
+            .boton-nav { padding: 6px 14px; font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== 3 BOTONES DE NAVEGACIÓN ===== -->
+    <div class="botones-navegacion">
+        <button class="boton-nav btn-regreso" id="btnRegreso">◀ Regreso</button>
+        <button class="boton-nav btn-inicio" id="btnInicio">🏠 Inicio</button>
+        <button class="boton-nav btn-siguiente" id="btnSiguientePrincipal">Siguiente ▶</button>
+    </div>
+
+    <!-- ===== CARRUSEL PRINCIPAL ===== -->
+    <div class="carrusel-principal">
+        <div class="carrusel-titulo">✨ INFOGRAFÍAS ✨</div>
+        <div class="carrusel-container">
+            <button class="carrusel-btn carrusel-prev" id="btnPrev">‹</button>
+            <div class="carrusel-track" id="carruselTrack">
+                <!-- Elemento 1 -->
+                <div class="carrusel-item">
+                    <img src="../img/Infografía-formal.png" alt="Infografía Formal" onerror="this.src='https://via.placeholder.com/500x400?text=Infografia+Formal'">
+                </div>
+                <!-- Elemento 2 -->
+                <div class="carrusel-item">
+                    <img src="../img/info-infor.png" alt="Info Infor" onerror="this.src='https://via.placeholder.com/500x400?text=Info+Infor'">
+                </div>
+                <!-- Elemento 3 -->
+                <div class="carrusel-item">
+                    <img src="../img/Infografía-Evento.png" alt="Infografía Evento" onerror="this.src='https://via.placeholder.com/500x400?text=Infografia+Evento'">
+                </div>
+                <!-- Elemento 4 -->
+                <div class="carrusel-item">
+                    <img src="../img/Infografía-Triceratops.png" alt="Infografía Triceratops" onerror="this.src='https://via.placeholder.com/500x400?text=Infografia+Triceratops'">
+                </div>
+            </div>
+            <button class="carrusel-btn carrusel-next" id="btnNext">›</button>
+        </div>
+        <div class="carrusel-indicadores" id="indicadores">
+            <div class="indicador activo"></div>
+            <div class="indicador"></div>
+            <div class="indicador"></div>
+            <div class="indicador"></div>
+        </div>
+    </div>
+
+    <script>
+        // ========== CARRUSEL ==========
+        const track = document.getElementById('carruselTrack');
+        const items = document.querySelectorAll('.carrusel-item');
+        const btnPrev = document.getElementById('btnPrev');
+        const btnNext = document.getElementById('btnNext');
+        const indicadores = document.querySelectorAll('.indicador');
+        
+        let currentIndex = 0;
+        const totalItems = items.length;
+
+        function actualizarCarrusel() {
+            const desplazamiento = currentIndex * 100;
+            track.style.transform = `translateX(-${desplazamiento}%)`;
+            indicadores.forEach((ind, idx) => {
+                if (idx === currentIndex) ind.classList.add('activo');
+                else ind.classList.remove('activo');
+            });
+        }
+
+        function siguienteSlide() {
+            currentIndex = (currentIndex + 1) % totalItems;
+            actualizarCarrusel();
+        }
+
+        function anteriorSlide() {
+            currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+            actualizarCarrusel();
+        }
+
+        btnNext.addEventListener('click', siguienteSlide);
+        btnPrev.addEventListener('click', anteriorSlide);
+
+        indicadores.forEach((indicador, idx) => {
+            indicador.addEventListener('click', () => {
+                currentIndex = idx;
+                actualizarCarrusel();
+            });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') anteriorSlide();
+            else if (e.key === 'ArrowRight') siguienteSlide();
+        });
+
+        // ========== 3 BOTONES PRINCIPALES ==========
+        function setupButtonAction(btn, action) {
+            if (btn) btn.addEventListener('click', (e) => { e.preventDefault(); action(e); });
+        }
+
+        const btnInicio = document.getElementById('btnInicio');
+        const btnRegreso = document.getElementById('btnRegreso');
+        const btnSiguientePrincipal = document.getElementById('btnSiguientePrincipal');
+
+        // Botón REGRESO - Va a Ilustraciones
+        setupButtonAction(btnRegreso, () => {
+            window.location.href = 'http://127.0.0.1:5500/02-maquetacion-cv/portafolio/ilustraciones.html';
+        });
+        
+        // Botón SIGUIENTE - Va a Posters
+        setupButtonAction(btnSiguientePrincipal, () => {
+            window.location.href = 'http://127.0.0.1:5500/02-maquetacion-cv/portafolio/posters.html';
+        });
+        
+        // Botón INICIO - Va al inicio del CV
+        setupButtonAction(btnInicio, () => {
+            window.location.href = "http://127.0.0.1:5500/02-maquetacion-cv/index.html";
+        });
+    </script>
+</body>
+</html>

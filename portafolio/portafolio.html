@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio - Carrusel de Secciones</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Fondo del body (tu imagen) */
+        body {
+            background-image: url("../img/fondo-portafolio.png");
+            background-repeat: no-repeat;
+            background-size: 100% auto;
+            background-position: center top;
+            background-attachment: scroll;
+            background-color: #000;
+            min-height: 170vh;
+            width: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Contenedor del carrusel */
+        .carrusel-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            border-radius: 2rem;
+            position: relative;
+            top: 42rem;
+        }
+
+        /* Carrusel */
+        .carrusel {
+            width: 100%;
+            overflow: hidden;
+            border-radius: 1.5rem;
+        }
+
+        /* Pista de elementos */
+        .carrusel-pista {
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Cada elemento del carrusel */
+        .carrusel-item {
+            min-width: 25%;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+
+        /* Tarjeta de cada sección */
+        .tarjeta {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            border-radius: 1.5rem;
+            padding: 2rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(138, 6, 105, 0.685);
+            text-decoration: none;
+            display: block;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .tarjeta:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: rgba(0, 0, 0, 0.85);
+            border-color: #860b7caf;
+        }
+
+        /* Espacio para que pongas tus imágenes/elementos */
+        .tarjeta-contenido {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Imagen dentro de la tarjeta */
+        .tarjeta-imagen {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 1rem;
+        }
+
+        /* Título de cada tarjeta */
+        .tarjeta h3 {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Controles */
+        .controles {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: rgba(99, 5, 70, 0.432);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #7a0260d2;
+            transform: scale(1.05);
+        }
+
+        /* Indicadores */
+        .indicadores {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+        }
+
+        .punto {
+            width: 10px;
+            height: 10px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .punto.activo {
+            background: #880250b4;
+            width: 25px;
+            border-radius: 10px;
+        }
+
+        .auto-status {
+            text-align: center;
+            margin-top: 1rem;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.8rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .carrusel-item {
+                min-width: 33.33%;
+            }
+            .carrusel-container {
+                margin: 2rem;
+                top: 28rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .carrusel-item {
+                min-width: 50%;
+            }
+            .carrusel-container {
+                margin: 1rem;
+                padding: 1rem;
+                top: 18rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .carrusel-item {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="carrusel-container">
+        <div class="carrusel">
+            <div class="carrusel-pista" id="pista">
+                <!-- 1. Branding -->
+                <div class="carrusel-item">
+                    <a href="http://127.0.0.1:5500/02-maquetacion-cv/portafolio/branding.html" class="tarjeta" target="_blank">
+                        <div class="tarjeta-contenido">
+                            <img src="../img/c-branding.png" alt="Branding" class="tarjeta-imagen">
+                            <h3>Branding</h3>
+                        </div>
+                    </a>
+                </div>
+                <!-- 2. Flyers -->
+                <div class="carrusel-item">
+                    <a href="http://127.0.0.1:5500/02-maquetacion-cv/portafolio/flyers.html" class="tarjeta" target="_blank">
+                        <div class="tarjeta-contenido">
+                            <img src="../img/c-flyers.png" alt="Flyers" class="tarjeta-imagen">
+                            <h3>Flyers</h3>
+                        </div>
+                    </a>
+                </div>
+                <!-- 3. Ilustraciones -->
+                <div class="carrusel-item">
+                    <a href="http://127.0.0.1:5500/02-maquetacion-cv/portafolio/ilustraciones.html" class="tarjeta" target="_blank">
+                        <div class="tarjeta-contenido">
+                            <img src="../img/c-ilustraciones.png" alt="Ilustraciones" class="tarjeta-imagen">
+                            <h3>Ilustraciones</h3>
+                        </div>
+                    </a>
+                </div>
+                <!-- 4. Infografías -->
+                <div class="carrusel-item">
+                    <a href="http://127.0.0.1:5500/02-maquetacion-cv/portafolio/infografia.html" class="tarjeta" target="_blank">
+                        <div class="tarjeta-contenido">
+                            <img src="../img/c-infografias.png" alt="Infografías" class="tarjeta-imagen">
+                            <h3>Infografías</h3>
+                        </div>
+                    </a>
+                </div>
+                <!-- 5. Posters -->
+                <div class="carrusel-item">
+                    <a href="http://127.0.0.1:5500/02-maquetacion-cv/portafolio/posters.html" class="tarjeta" target="_blank">
+                        <div class="tarjeta-contenido">
+                            <img src="../img/c-posters.png" alt="Posters" class="tarjeta-imagen">
+                            <h3>Pósters</h3>
+                        </div>
+                    </a>
+                </div>
+                <!-- 6. Logos -->
+                <div class="carrusel-item">
+                    <a href="http://127.0.0.1:5500/02-maquetacion-cv/portafolio/logos.html" class="tarjeta" target="_blank">
+                        <div class="tarjeta-contenido">
+                            <img src="../img/c-logos.png" alt="Logos" class="tarjeta-imagen">
+                            <h3>Logos</h3>
+                        </div>
+                    </a>
+                </div>
+                <!-- 7. Modelados -->
+                <div class="carrusel-item">
+                    <a href="http://127.0.0.1:5500/02-maquetacion-cv/portafolio/modelado.html" class="tarjeta" target="_blank">
+                        <div class="tarjeta-contenido">
+                            <img src="../img/c-modelados.png" alt="Modelado" class="tarjeta-imagen">
+                            <h3>Modelados</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="controles">
+            <button id="btnAnterior">◀ ANTERIOR</button>
+            <button id="btnPausaReanudar"> PAUSA</button>
+            <button id="btnSiguiente">SIGUIENTE ▶</button>
+        </div>
+
+        <div class="indicadores" id="indicadores"></div>
+        <div class="auto-status" id="autoStatus">🟢 Movimiento automático activado</div>
+    </div>
+
+    <script>
+        const pista = document.getElementById('pista');
+        const items = document.querySelectorAll('.carrusel-item');
+        const btnAnterior = document.getElementById('btnAnterior');
+        const btnSiguiente = document.getElementById('btnSiguiente');
+        const btnPausaReanudar = document.getElementById('btnPausaReanudar');
+        const contenedorIndicadores = document.getElementById('indicadores');
+        const autoStatus = document.getElementById('autoStatus');
+        
+        let index = 0;
+        let autoInterval;
+        let isAutoPlaying = true;
+        let itemsPorVista = 4;
+        
+        function calcularItemsPorVista() {
+            const width = window.innerWidth;
+            if (width <= 400) return 1;
+            if (width <= 600) return 2;
+            if (width <= 900) return 3;
+            return 4;
+        }
+        
+        const totalItems = items.length;
+        
+        function calcularTotalGrupos() {
+            itemsPorVista = calcularItemsPorVista();
+            return Math.ceil(totalItems / itemsPorVista);
+        }
+        
+        function crearIndicadores() {
+            contenedorIndicadores.innerHTML = '';
+            const totalGrupos = calcularTotalGrupos();
+            for (let i = 0; i < totalGrupos; i++) {
+                const punto = document.createElement('div');
+                punto.classList.add('punto');
+                if (i === 0) punto.classList.add('activo');
+                punto.addEventListener('click', () => {
+                    index = i;
+                    actualizarCarrusel();
+                    resetearAuto();
+                });
+                contenedorIndicadores.appendChild(punto);
+            }
+        }
+        
+        function actualizarCarrusel() {
+            itemsPorVista = calcularItemsPorVista();
+            const maxIndex = Math.ceil(totalItems / itemsPorVista) - 1;
+            if (index > maxIndex) index = maxIndex;
+            if (index < 0) index = 0;
+            
+            const desplazamiento = index * (100 / (totalItems / itemsPorVista));
+            pista.style.transform = `translateX(-${desplazamiento}%)`;
+            
+            const puntos = document.querySelectorAll('.punto');
+            puntos.forEach((punto, i) => {
+                if (i === index) {
+                    punto.classList.add('activo');
+                } else {
+                    punto.classList.remove('activo');
+                }
+            });
+        }
+        
+        function siguiente() {
+            const totalGrupos = calcularTotalGrupos();
+            index = (index + 1) % totalGrupos;
+            actualizarCarrusel();
+        }
+        
+        function anterior() {
+            const totalGrupos = calcularTotalGrupos();
+            index = (index - 1 + totalGrupos) % totalGrupos;
+            actualizarCarrusel();
+        }
+        
+        function iniciarAuto() {
+            if (autoInterval) clearInterval(autoInterval);
+            autoInterval = setInterval(() => {
+                if (isAutoPlaying) {
+                    siguiente();
+                }
+            }, 4000);
+        }
+        
+        function pausarAuto() {
+            isAutoPlaying = false;
+            btnPausaReanudar.innerHTML = '▶️ REANUDAR';
+            autoStatus.innerHTML = '🔴 Movimiento automático pausado';
+            autoStatus.style.color = '#ff6666';
+        }
+        
+        function reanudarAuto() {
+            isAutoPlaying = true;
+            btnPausaReanudar.innerHTML = ' PAUSA';
+            autoStatus.innerHTML = '🟢 Movimiento automático activado';
+            autoStatus.style.color = 'rgba(255,255,255,0.7)';
+        }
+        
+        function toggleAuto() {
+            if (isAutoPlaying) {
+                pausarAuto();
+            } else {
+                reanudarAuto();
+            }
+        }
+        
+        function resetearAuto() {
+            if (isAutoPlaying) {
+                iniciarAuto();
+            }
+        }
+        
+        btnSiguiente.addEventListener('click', () => {
+            siguiente();
+            resetearAuto();
+        });
+        
+        btnAnterior.addEventListener('click', () => {
+            anterior();
+            resetearAuto();
+        });
+        
+        btnPausaReanudar.addEventListener('click', toggleAuto);
+        
+        window.addEventListener('resize', () => {
+            crearIndicadores();
+            actualizarCarrusel();
+        });
+        
+        crearIndicadores();
+        actualizarCarrusel();
+        iniciarAuto();
+    </script>
+</body>
+</html>

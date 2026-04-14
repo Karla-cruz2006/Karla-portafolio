@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio - Carrusel con Flipbooks Interactivos</title>
+    <style>
+        /* ===== RESET Y ESTILOS BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-image: url("../img/fondo-secciones.png");
+            background-repeat: no-repeat;
+            background-size: 100% auto;
+            background-position: center top;
+            background-attachment: scroll;
+            background-color: #000;
+            min-height: 170vh;
+            width: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ===== 3 BOTONES DE NAVEGACIÓN ===== */
+        .botones-navegacion {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 25px;
+            z-index: 10000;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 12px 30px;
+            border-radius: 60px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .boton-nav {
+            padding: 10px 24px;
+            font-size: 15px;
+            font-weight: bold;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .boton-nav:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-regreso {
+            background-color: #ff9800;
+            color: white;
+        }
+        .btn-regreso:hover { background-color: #e68900; }
+
+        .btn-inicio {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .btn-inicio:hover { background-color: #45a049; }
+
+        .btn-siguiente {
+            background-color: #2196F3;
+            color: white;
+        }
+        .btn-siguiente:hover { background-color: #0b7dda; }
+
+        /* ===== CARRUSEL PRINCIPAL ===== */
+        .carrusel-principal {
+            position: fixed;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            max-width: 85vw;
+            z-index: 9999;
+        }
+
+        .carrusel-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 25px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border: 2px solid rgba(255, 215, 0, 0.4);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .carrusel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            gap: 20px;
+        }
+
+        .carrusel-item {
+            min-width: 100%;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .carrusel-item img {
+            width: auto;
+            max-width: 90%;
+            max-height: 500px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .carrusel-item img:hover {
+            transform: scale(1.02);
+        }
+
+        /* Botones del carrusel */
+        .carrusel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: #FFD700;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 28px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carrusel-btn:hover {
+            background: rgba(255, 215, 0, 0.9);
+            color: black;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carrusel-prev { left: -20px; }
+        .carrusel-next { right: -20px; }
+
+        /* Indicadores */
+        .carrusel-indicadores {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .indicador {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .indicador.activo {
+            background: #FFD700;
+            width: 30px;
+            border-radius: 6px;
+        }
+
+        .indicador:hover {
+            background: rgba(255, 215, 0, 0.8);
+            transform: scale(1.2);
+        }
+
+        /* Título del carrusel */
+        .carrusel-titulo {
+            text-align: center;
+            color: #FFD700;
+            font-size: 24px;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            font-weight: bold;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        /* ===== MODAL PARA FLIPBOOK (VENTANA EMERGENTE) ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 20000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-contenido {
+            position: relative;
+            width: 90%;
+            height: 90%;
+            margin: 2% auto;
+            background: transparent;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        .modal-contenido iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 15px;
+        }
+
+        .cerrar-modal {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            color: #FFD700;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 20001;
+            background: rgba(0, 0, 0, 0.6);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .cerrar-modal:hover {
+            color: white;
+            background: rgba(255, 0, 0, 0.7);
+            transform: scale(1.1);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .carrusel-principal { width: 90%; }
+            .carrusel-container { padding: 20px; }
+            .carrusel-btn { width: 40px; height: 40px; font-size: 22px; }
+            .carrusel-prev { left: -15px; }
+            .carrusel-next { right: -15px; }
+            .carrusel-titulo { font-size: 20px; }
+            .carrusel-item img { max-height: 400px; }
+        }
+
+        @media (max-width: 600px) {
+            .carrusel-principal { width: 95%; top: 48%;}
+            .carrusel-container { padding: 15px; }
+            .carrusel-btn { width: 35px; height: 35px; font-size: 18px; }
+            .carrusel-item img { max-height: 300px; }
+            .carrusel-titulo { font-size: 18px; }
+            .botones-navegacion {
+                bottom: 8px;
+                padding: 8px 16px;
+                gap: 12px;
+            }
+            .boton-nav { padding: 6px 14px; font-size: 12px; }
+            .cerrar-modal { width: 40px; height: 40px; font-size: 30px; top: 10px; right: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== 3 BOTONES DE NAVEGACIÓN ===== -->
+    <div class="botones-navegacion">
+        <button class="boton-nav btn-regreso" id="btnRegreso">◀ Regreso</button>
+        <button class="boton-nav btn-inicio" id="btnInicio">🏠 Inicio</button>
+        <button class="boton-nav btn-siguiente" id="btnSiguientePrincipal">Siguiente ▶</button>
+    </div>
+
+    <!-- ===== CARRUSEL PRINCIPAL ===== -->
+    <div class="carrusel-principal">
+        <div class="carrusel-titulo">✨ MIS TRABAJOS ✨</div>
+        <div class="carrusel-container">
+            <button class="carrusel-btn carrusel-prev" id="btnPrev">‹</button>
+            <div class="carrusel-track" id="carruselTrack">
+                <!-- 1. Tortuga (CON FLIPBOOK) -->
+                <div class="carrusel-item" id="itemTortugaFlipbook">
+                    <img src="../img/Ilustracion-tortuga.png" alt="Ilustración Tortuga - Click para ver revista" id="imgTortugaFlipbook" style="cursor: pointer;" onerror="this.src='https://via.placeholder.com/500x400?text=Tortuga'">
+                </div>
+                <!-- 2. Kalxi 1 -->
+                <div class="carrusel-item">
+                    <img src="../img/Kalxi.png" alt="Kalxi 1" onerror="this.src='https://via.placeholder.com/500x400?text=Kalxi+1'">
+                </div>
+                <!-- 3. Kalxi 2 -->
+                <div class="carrusel-item">
+                    <img src="../img/Kalxi2.png" alt="Kalxi 2" onerror="this.src='https://via.placeholder.com/500x400?text=Kalxi+2'">
+                </div>
+                <!-- 4. Kalxi 3 -->
+                <div class="carrusel-item">
+                    <img src="../img/Kalxi3.png" alt="Kalxi 3" onerror="this.src='https://via.placeholder.com/500x400?text=Kalxi+3'">
+                </div>
+                <!-- 5. Ilustración Kalxi (CON SU PROPIO FLIPBOOK) -->
+                <div class="carrusel-item" id="itemKalxiFlipbook">
+                    <img src="../img/Ilustracion-kalxi.png" alt="Ilustración Kalxi - Click para ver su revista" id="imgKalxiFlipbook" style="cursor: pointer;" onerror="this.src='https://via.placeholder.com/500x400?text=Ilustracion+Kalxi'">
+                </div>
+            </div>
+            <button class="carrusel-btn carrusel-next" id="btnNext">›</button>
+        </div>
+        <div class="carrusel-indicadores" id="indicadores">
+            <!-- Se generarán dinámicamente con JavaScript -->
+        </div>
+    </div>
+
+    <!-- ===== MODAL PARA FLIPBOOK (VENTANA EMERGENTE REUTILIZABLE) ===== -->
+    <div id="modalFlipbook" class="modal">
+        <div class="modal-contenido">
+            <span class="cerrar-modal" id="cerrarModalBtn">&times;</span>
+            <iframe id="flipbookIframe" src="" title="Revista Interactiva" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <script>
+        // ========== 1. CONFIGURACIÓN DE LOS FLIPBOOKS ==========
+        // Enlaces proporcionados por la usuaria
+        const FLIPBOOK_TORTUGA_URL = "https://heyzine.com/flip-book/f88afc1dc3.html";
+        const FLIPBOOK_KALXI_URL = "https://heyzine.com/flip-book/7fd74e88c7.html";
+        
+        // ========== 2. LÓGICA DEL CARRUSEL ==========
+        const track = document.getElementById('carruselTrack');
+        const items = document.querySelectorAll('.carrusel-item');
+        const btnPrev = document.getElementById('btnPrev');
+        const btnNext = document.getElementById('btnNext');
+        const contenedorIndicadores = document.getElementById('indicadores');
+        
+        let currentIndex = 0;
+        const totalItems = items.length;
+
+        // Crear indicadores dinámicamente
+        function crearIndicadores() {
+            contenedorIndicadores.innerHTML = '';
+            for (let i = 0; i < totalItems; i++) {
+                const indicador = document.createElement('div');
+                indicador.classList.add('indicador');
+                if (i === 0) indicador.classList.add('activo');
+                indicador.addEventListener('click', () => {
+                    currentIndex = i;
+                    actualizarCarrusel();
+                });
+                contenedorIndicadores.appendChild(indicador);
+            }
+        }
+
+        function actualizarCarrusel() {
+            const desplazamiento = currentIndex * 100;
+            track.style.transform = `translateX(-${desplazamiento}%)`;
+            const indicadores = document.querySelectorAll('.indicador');
+            indicadores.forEach((ind, idx) => {
+                if (idx === currentIndex) ind.classList.add('activo');
+                else ind.classList.remove('activo');
+            });
+        }
+
+        function siguienteSlide() {
+            currentIndex = (currentIndex + 1) % totalItems;
+            actualizarCarrusel();
+        }
+
+        function anteriorSlide() {
+            currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+            actualizarCarrusel();
+        }
+
+        btnNext.addEventListener('click', siguienteSlide);
+        btnPrev.addEventListener('click', anteriorSlide);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') anteriorSlide();
+            else if (e.key === 'ArrowRight') siguienteSlide();
+        });
+
+        // ========== 3. MODAL REUTILIZABLE PARA LOS FLIPBOOKS ==========
+        const modal = document.getElementById('modalFlipbook');
+        const iframe = document.getElementById('flipbookIframe');
+        const cerrarModal = document.getElementById('cerrarModalBtn');
+
+        // Función genérica para abrir cualquier URL en el modal
+        function abrirFlipbook(url) {
+            if (!url) {
+                console.error("No se proporcionó una URL para el flipbook");
+                return;
+            }
+            iframe.src = url;
+            modal.style.display = "block";
+            document.body.style.overflow = "hidden"; // Evita scroll detrás del modal
+        }
+
+        function cerrarFlipbook() {
+            modal.style.display = "none";
+            iframe.src = ""; // Limpia el iframe al cerrar para detener la carga/audio
+            document.body.style.overflow = "auto";
+        }
+
+        // Eventos para cerrar el modal
+        cerrarModal.addEventListener('click', cerrarFlipbook);
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) cerrarFlipbook();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'block') cerrarFlipbook();
+        });
+
+        // ========== 4. ASIGNAR CADA FLIPBOOK A SU IMAGEN ==========
+        const imgTortuga = document.getElementById('imgTortugaFlipbook');
+        const imgKalxi = document.getElementById('imgKalxiFlipbook');
+
+        if (imgTortuga) {
+            imgTortuga.addEventListener('click', () => abrirFlipbook(FLIPBOOK_TORTUGA_URL));
+        }
+        if (imgKalxi) {
+            imgKalxi.addEventListener('click', () => abrirFlipbook(FLIPBOOK_KALXI_URL));
+        }
+
+        // ========== 5. BOTONES PRINCIPALES DE NAVEGACIÓN ==========
+        function setupButtonAction(btn, action) {
+            if (btn) btn.addEventListener('click', (e) => { 
+                e.preventDefault(); 
+                action(e); 
+            });
+        }
+
+        const btnInicio = document.getElementById('btnInicio');
+        const btnRegreso = document.getElementById('btnRegreso');
+        const btnSiguientePrincipal = document.getElementById('btnSiguientePrincipal');
+
+        // Botón REGRESO - Va a Flyers
+        setupButtonAction(btnRegreso, () => {
+            window.location.href = 'http://127.0.0.1:5500/02-maquetacion-cv/portafolio/flyers.html';
+        });
+        
+        // Botón SIGUIENTE - Va a Infografía
+        setupButtonAction(btnSiguientePrincipal, () => {
+            window.location.href = 'http://127.0.0.1:5500/02-maquetacion-cv/portafolio/infografia.html';
+        });
+        
+        // Botón INICIO - Va al inicio del CV
+        setupButtonAction(btnInicio, () => {
+            window.location.href = "http://127.0.0.1:5500/02-maquetacion-cv/index.html";
+        });
+
+        // ========== 6. INICIALIZACIÓN FINAL ==========
+        crearIndicadores();
+        actualizarCarrusel();
+        
+        console.log("✅ Carrusel y Flipbooks listos.");
+        console.log(`📘 Tortuga → ${FLIPBOOK_TORTUGA_URL}`);
+        console.log(`📘 Kalxi → ${FLIPBOOK_KALXI_URL}`);
+    </script>
+</body>
+</html>

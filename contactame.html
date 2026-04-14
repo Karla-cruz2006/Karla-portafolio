@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - Karla Sherlyn</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            overflow-x: hidden;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* CONTENEDOR PRINCIPAL */
+        .fullscreen-container {
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* IMAGEN DE FONDO */
+        .fullscreen-img {
+            width: 100%;
+            display: block;
+            pointer-events: none;
+        }
+
+        /* CAPA DE ELEMENTOS MOVIBLES */
+        .scrapbook-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ELEMENTOS MOVIBLES */
+        .scrap-item {
+            position: absolute;
+            cursor: grab;
+            transition: outline 0.1s ease;
+        }
+
+        .scrap-item:active {
+            cursor: grabbing;
+        }
+
+        /* HANDLE DE REDIMENSIÓN */
+        .resize-handle {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff0000;
+            border-radius: 50%;
+            bottom: -10px;
+            right: -10px;
+            cursor: nwse-resize;
+            z-index: 999;
+            border: 2px solid white;
+            box-shadow: 0 0 4px rgba(0,0,0,0.5);
+        }
+
+        /* HANDLE PARA ROTACIÓN */
+        .rotate-handle {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #cc0000;
+            border-radius: 50%;
+            top: -10px;
+            left: -10px;
+            cursor: grab;
+            z-index: 999;
+            border: 2px solid white;
+            box-shadow: 0 0 4px rgba(0,0,0,0.5);
+        }
+
+        .rotate-handle:active {
+            cursor: grabbing;
+        }
+
+        /* ===== ESTILOS DE LOS CUADROS DEL FORMULARIO ===== */
+        .form-cuadro {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,0,0,0.3);
+            transition: all 0.2s ease;
+        }
+
+        .form-cuadro:hover {
+            border: 1px solid rgba(255,0,0,0.8);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+        }
+
+        .form-cuadro-interno {
+            width: 100%;
+        }
+
+        .form-label {
+            display: block;
+            color: #ff3333;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.95);
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus {
+            outline: none;
+            background: white;
+            box-shadow: 0 0 8px rgba(255,0,0,0.5);
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.95);
+            font-size: 1rem;
+            min-height: 100px;
+            resize: vertical;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            background: white;
+            box-shadow: 0 0 8px rgba(255,0,0,0.5);
+        }
+
+        /* Estilo para botones */
+        .btn-enviar {
+            background: linear-gradient(135deg, #ff0000, #990000);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-enviar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,0,0,0.4);
+        }
+
+        .btn-enviar:active {
+            transform: translateY(0);
+        }
+
+        .btn-limpiar {
+            background: linear-gradient(135deg, #333333, #1a1a1a);
+            color: white;
+            border: 1px solid #ff0000;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-limpiar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,0,0,0.3);
+            border: 1px solid #ff4444;
+        }
+
+        .btn-limpiar:active {
+            transform: translateY(0);
+        }
+
+        /* Contenedor para botones juntos */
+        .botones-container {
+            display: flex;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .botones-container .btn-enviar,
+        .botones-container .btn-limpiar {
+            flex: 1;
+        }
+
+        /* Estilo para la marca de agua */
+        .watermark {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 12px;
+            font-family: 'Courier New', 'Segoe UI', monospace;
+            letter-spacing: 1px;
+            background: rgba(0,0,0,0.5);
+            padding: 6px 16px;
+            width: fit-content;
+            margin: 0 auto;
+            pointer-events: none;
+            z-index: 20;
+            font-weight: 400;
+            text-transform: uppercase;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+        }
+
+        /* Mensaje flotante de confirmación */
+        .toast-message {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.9);
+            border: 1px solid #ff0000;
+            color: #ff3333;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 1000;
+            animation: fadeInOut 2.5s ease forwards;
+            pointer-events: none;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            15% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            85% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="fullscreen-container">
+        <img src="img/Contactame.png" class="fullscreen-img">
+
+        <div class="scrapbook-layer">
+            
+            <!-- ===== CUADRO 1: NOMBRE ===== -->
+            <div class="scrap-item form-cuadro" style="top:8%; left:8%; width:28%;">
+                <div class="form-cuadro-interno">
+                    <label class="form-label">NOMBRE</label>
+                    <input type="text" id="nombre" class="form-input" placeholder="Tu nombre completo">
+                </div>
+            </div>
+            
+            <!-- ===== CUADRO 2: CORREO ===== -->
+            <div class="scrap-item form-cuadro" style="top:28%; left:8%; width:28%;">
+                <div class="form-cuadro-interno">
+                    <label class="form-label">CORREO</label>
+                    <input type="email" id="correo" class="form-input" placeholder="tu@email.com">
+                </div>
+            </div>
+            
+            <!-- ===== CUADRO 3: MENSAJE ===== -->
+            <div class="scrap-item form-cuadro" style="top:48%; left:8%; width:28%;">
+                <div class="form-cuadro-interno">
+                    <label class="form-label">MENSAJE</label>
+                    <textarea id="mensaje" class="form-textarea" placeholder="Escribe tu mensaje..."></textarea>
+                </div>
+            </div>
+
+            <!-- ===== CUADRO 4: BOTONES ENVIAR Y LIMPIAR JUNTOS ===== -->
+            <div class="scrap-item form-cuadro" style="top:72%; left:8%; width:28%;">
+                <div class="form-cuadro-interno">
+                    <div class="botones-container">
+                        <button id="btnEnviar" class="btn-enviar">✉️ ENVIAR</button>
+                        <button id="btnLimpiar" class="btn-limpiar">🗑️ LIMPIAR</button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+        <!-- ===== MARCA DE AGUA ===== -->
+        <div class="watermark">
+            © 2026 Karla Cruz | YANG'S LAB
+        </div>
+        
+    </div>
+
+    <script>
+        // ===== VARIABLES GLOBALES =====
+        let selected = null;
+        let isDragging = false;
+        let isResizing = false;
+        let isRotating = false;
+        let startX, startY, startLeft, startTop, startWidth;
+        let startAngle = 0;
+        let currentAngle = 0;
+
+        // ===== FUNCIÓN MOSTRAR MENSAJE FLOTANTE =====
+        function showToast(message, isError = false) {
+            const toast = document.createElement('div');
+            toast.className = 'toast-message';
+            toast.textContent = message;
+            if (isError) {
+                toast.style.color = '#ff6666';
+                toast.style.borderColor = '#ff0000';
+            } else {
+                toast.style.color = '#ff3333';
+                toast.style.borderColor = '#ff0000';
+            }
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.remove();
+            }, 2500);
+        }
+
+        // ===== FUNCIÓN ENVIAR FORMULARIO =====
+        function enviarFormulario() {
+            const nombre = document.getElementById('nombre').value.trim();
+            const correo = document.getElementById('correo').value.trim();
+            const mensaje = document.getElementById('mensaje').value.trim();
+
+            // Validación
+            if (!nombre) {
+                showToast('❌ Por favor, ingresa tu nombre', true);
+                return;
+            }
+            if (!correo) {
+                showToast('❌ Por favor, ingresa tu correo electrónico', true);
+                return;
+            }
+            if (!mensaje) {
+                showToast('❌ Por favor, escribe un mensaje', true);
+                return;
+            }
+
+            // Validar formato de correo
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(correo)) {
+                showToast('❌ Por favor, ingresa un correo válido (ejemplo@dominio.com)', true);
+                return;
+            }
+
+            // Simular envío
+            console.log('📨 Datos enviados:', { nombre, correo, mensaje });
+            showToast('✅ ¡Mensaje enviado con éxito!', false);
+        }
+
+        // ===== FUNCIÓN LIMPIAR FORMULARIO =====
+        function limpiarFormulario() {
+            document.getElementById('nombre').value = '';
+            document.getElementById('correo').value = '';
+            document.getElementById('mensaje').value = '';
+            showToast('🧹 Todos los campos han sido limpiados', false);
+            console.log('🧹 Formulario limpiado');
+        }
+
+        // ===== GUARDAR POSICIONES =====
+        function savePositions() {
+            const data = [];
+            document.querySelectorAll('.scrap-item').forEach(el => {
+                data.push({
+                    top: el.style.top,
+                    left: el.style.left,
+                    width: el.style.width,
+                    transform: el.style.transform
+                });
+            });
+            localStorage.setItem("layoutContacto", JSON.stringify(data));
+            console.log("💾 Posiciones guardadas");
+        }
+
+        // ===== CARGAR POSICIONES =====
+        function loadPositions() {
+            const data = JSON.parse(localStorage.getItem("layoutContacto"));
+            if (!data) {
+                console.log("📂 No hay posiciones guardadas, usando las del HTML");
+                return;
+            }
+
+            document.querySelectorAll('.scrap-item').forEach((el, i) => {
+                if (data[i]) {
+                    el.style.top = data[i].top;
+                    el.style.left = data[i].left;
+                    el.style.width = data[i].width;
+                    if (data[i].transform) el.style.transform = data[i].transform;
+                }
+            });
+            console.log("📂 Posiciones cargadas desde localStorage");
+        }
+
+        // ===== CREAR MANIJAS =====
+        function createHandles(el) {
+            const oldResize = el.querySelector('.resize-handle');
+            const oldRotate = el.querySelector('.rotate-handle');
+            if (oldResize) oldResize.remove();
+            if (oldRotate) oldRotate.remove();
+
+            const resizeHandle = document.createElement("div");
+            resizeHandle.className = "resize-handle";
+            el.appendChild(resizeHandle);
+
+            const rotateHandle = document.createElement("div");
+            rotateHandle.className = "rotate-handle";
+            el.appendChild(rotateHandle);
+
+            resizeHandle.onmousedown = (e) => {
+                e.stopPropagation();
+                isResizing = true;
+                startX = e.clientX;
+                startWidth = el.offsetWidth;
+                document.onmousemove = resize;
+                document.onmouseup = stop;
+            };
+
+            rotateHandle.onmousedown = (e) => {
+                e.stopPropagation();
+                isRotating = true;
+                
+                const rect = el.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                
+                startAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX) * 180 / Math.PI;
+                
+                const transform = el.style.transform;
+                const match = transform.match(/rotate\(([-\d.]+)deg\)/);
+                currentAngle = match ? parseFloat(match[1]) : 0;
+                
+                document.onmousemove = rotate;
+                document.onmouseup = stop;
+            };
+        }
+
+        // ===== ROTAR =====
+        function rotate(e) {
+            if (!isRotating || !selected) return;
+            
+            const rect = selected.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            let newAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX) * 180 / Math.PI;
+            let angleDiff = newAngle - startAngle;
+            let finalAngle = currentAngle + angleDiff;
+            
+            selected.style.transform = `rotate(${finalAngle}deg)`;
+        }
+
+        // ===== REDIMENSIONAR =====
+        function resize(e) {
+            if (!isResizing || !selected) return;
+            let newWidth = Math.max(80, startWidth + (e.clientX - startX));
+            selected.style.width = newWidth + "px";
+        }
+
+        // ===== ARRASTRAR =====
+        function startDrag(e, el) {
+            // Evitar arrastrar si se hizo clic en botones dentro del cuadro
+            if (e.target.classList.contains("resize-handle")) return;
+            if (e.target.classList.contains("rotate-handle")) return;
+            if (e.target.tagName === 'BUTTON') return;
+            if (e.target.type === 'text' || e.target.type === 'email' || e.target.tagName === 'TEXTAREA') return;
+            
+            isDragging = true;
+            selected = el;
+            startX = e.clientX;
+            startY = e.clientY;
+            startLeft = parseFloat(el.style.left || 0);
+            startTop = parseFloat(el.style.top || 0);
+            
+            document.onmousemove = drag;
+            document.onmouseup = stop;
+        }
+
+        function drag(e) {
+            if (!isDragging || !selected) return;
+            selected.style.left = (startLeft + (e.clientX - startX)) + "px";
+            selected.style.top = (startTop + (e.clientY - startY)) + "px";
+        }
+
+        // ===== ROTAR CON TECLADO =====
+        document.addEventListener('keydown', (e) => {
+            if (!selected) return;
+            if (e.key === "q") rotateKeyboard(-5);
+            if (e.key === "e") rotateKeyboard(5);
+        });
+
+        function rotateKeyboard(d) {
+            let transform = selected.style.transform || "rotate(0deg)";
+            let match = transform.match(/rotate\(([-\d.]+)deg\)/);
+            let currentRot = match ? parseFloat(match[1]) : 0;
+            let newRot = currentRot + d;
+            selected.style.transform = `rotate(${newRot}deg)`;
+        }
+
+        // ===== DETENER =====
+        function stop() {
+            isDragging = false;
+            isResizing = false;
+            isRotating = false;
+            document.onmousemove = null;
+            document.onmouseup = null;
+            savePositions();
+        }
+
+        // ===== SELECCIONAR ELEMENTO =====
+        function selectElement(el) {
+            if (selected && selected !== el) {
+                selected.style.outline = "none";
+            }
+            
+            selected = el;
+            selected.style.outline = "3px dashed #ff0000";
+            createHandles(selected);
+        }
+
+        // ===== ASIGNAR EVENTOS A LOS CUADROS =====
+        function asignarEventos() {
+            document.querySelectorAll('.scrap-item').forEach(el => {
+                // CLICK: seleccionar
+                el.addEventListener('click', (e) => {
+                    // No seleccionar si se hizo clic en un botón o input
+                    if (e.target.tagName === 'BUTTON') return;
+                    if (e.target.type === 'text' || e.target.type === 'email' || e.target.tagName === 'TEXTAREA') return;
+                    
+                    e.stopPropagation();
+                    selectElement(el);
+                });
+                
+                // Arrastrar
+                el.addEventListener('mousedown', (e) => {
+                    startDrag(e, el);
+                });
+            });
+        }
+
+        // ===== CLICK FUERA =====
+        document.body.addEventListener('click', (e) => {
+            if (!e.target.closest('.scrap-item')) {
+                if (selected) {
+                    selected.style.outline = "none";
+                    selected = null;
+                }
+            }
+        });
+
+        // ===== ASIGNAR EVENTOS A LOS BOTONES =====
+        function asignarBotones() {
+            const btnEnviar = document.getElementById('btnEnviar');
+            const btnLimpiar = document.getElementById('btnLimpiar');
+            
+            if (btnEnviar) {
+                btnEnviar.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    enviarFormulario();
+                });
+            }
+            
+            if (btnLimpiar) {
+                btnLimpiar.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    limpiarFormulario();
+                });
+            }
+        }
+
+        // ===== INICIALIZAR =====
+        window.onload = () => {
+            loadPositions();
+            asignarEventos();
+            asignarBotones();
+            
+            console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            console.log("✅ EDITOR ACTIVADO - LAS POSICIONES SE GUARDAN");
+            console.log("📌 Mueve, redimensiona o rota cualquier cuadro");
+            console.log("📌 Las posiciones se guardan AUTOMÁTICAMENTE");
+            console.log("📌 Al recargar la página, TODO se mantiene");
+            console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        };
+    </script>
+</body>
+</html>

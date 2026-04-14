@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portafolio - Branding con Canva</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    user-select:none;
+}
+
+body{
+    background-image:url("../img/fondo-secciones.png");
+    background-repeat:no-repeat;
+    background-size:100% auto;
+    background-position:center top;
+    background-attachment:scroll;
+    background-color:#000;
+    min-height:170vh;
+    width:100%;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position:relative;
+    overflow-x:hidden;
+}
+
+.contenedor-libre{
+    position:relative;
+    width:100%;
+    min-height:170vh;
+}
+
+.contenedor-canva{
+    position:absolute;
+    top:35%;
+    left:60%;
+    transform:translate(-50%,-50%);
+    width:65%;
+    max-width:850px;
+    min-width:320px;
+    z-index:500;
+    background:transparent;
+    border:none;
+    box-shadow:none;
+}
+
+.contenedor-canva iframe{
+    width:100%;
+    height:auto;
+    aspect-ratio:16/9;
+    border:none;
+    border-radius:12px;
+    background:transparent;
+}
+
+.contenedor-cuadros{
+    position:absolute;
+    bottom:3%;
+    right:12%;
+    display:flex;
+    justify-content:flex-end;
+    gap:35px;
+    flex-wrap:wrap;
+    z-index:500;
+}
+
+.cuadro{
+    background:rgba(0,0,0,0.7);
+    backdrop-filter:blur(10px);
+    border-radius:25px;
+    padding:20px;
+    width:180px;
+    height:180px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border:2px solid rgba(185,1,124,0.692);
+    transition:all 0.3s ease;
+    overflow:hidden;
+}
+
+.cuadro:hover{
+    border-color:rgba(76,0,255,0.7);
+    background:rgba(0,0,0,0.8);
+}
+
+.cuadro-imagen{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+    pointer-events:none;
+}
+
+.cuadro h4,
+.cuadro p,
+.cuadro-icono{
+    display:none;
+}
+
+.boton-movible{
+    position:absolute;
+    padding:12px 24px;
+    font-size:16px;
+    font-weight:bold;
+    border:none;
+    border-radius:25px;
+    cursor:grab;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    z-index:1000;
+    white-space:nowrap;
+    transform-origin:center center;
+}
+
+.boton-movible:active{
+    cursor:grabbing;
+}
+
+.boton-movible:focus{
+    outline:3px solid rgba(190,1,105,0.753);
+    outline-offset:3px;
+}
+
+.btn-inicio{
+    background-color:#4CAF50;
+    color:white;
+    top:100px;
+    left:100px;
+}
+
+.btn-inicio:hover{
+    background-color:#45a049;
+}
+
+.btn-regreso{
+    background-color:#a0005d;
+    color:white;
+    top:100px;
+    left:300px;
+}
+
+.btn-regreso:hover{
+    background-color:#db03a5b9;
+}
+
+.btn-siguiente{
+    background-color:#2196F3;
+    color:white;
+    top:100px;
+    left:500px;
+}
+
+.btn-siguiente:hover{
+    background-color:#0b7dda;
+}
+
+@media (max-width:768px){
+    .contenedor-canva{
+        width:80%;
+        left:55%;
+        top:30%;
+        max-width:700px;
+    }
+    .contenedor-cuadros{
+        bottom:2%;
+        right:8%;
+        gap:20px;
+    }
+    .cuadro{
+        width:130px;
+        height:130px;
+        padding:15px;
+    }
+    .boton-movible{
+        padding:6px 12px;
+        font-size:11px;
+    }
+    .btn-inicio{top:15px;left:15px;}
+    .btn-regreso{top:15px;left:100px;}
+    .btn-siguiente{top:15px;left:185px;}
+}
+
+@media (max-width:480px){
+    .contenedor-canva{
+        width:90%;
+        left:50%;
+        top:28%;
+        max-width:500px;
+    }
+    .contenedor-cuadros{
+        bottom:1%;
+        right:5%;
+        gap:12px;
+    }
+    .cuadro{
+        width:95px;
+        height:95px;
+        padding:10px;
+    }
+    .btn-inicio{top:10px;left:10px;}
+    .btn-regreso{top:10px;left:85px;}
+    .btn-siguiente{top:10px;left:160px;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="contenedor-libre">
+
+    <div class="contenedor-canva">
+        <iframe 
+            loading="lazy"
+            src="https://www.canva.com/design/DAHBHf_eAPw/8muR5EXWnOXgJ9YuueN--w/watch?embed"
+            allowfullscreen
+            allow="fullscreen">
+        </iframe>
+    </div>
+
+    <div class="contenedor-cuadros">
+        <div class="cuadro"><img src="" class="cuadro-imagen" id="img1"></div>
+        <div class="cuadro"><img src="" class="cuadro-imagen" id="img2"></div>
+        <div class="cuadro"><img src="" class="cuadro-imagen" id="img3"></div>
+        <div class="cuadro"><img src="" class="cuadro-imagen" id="img4"></div>
+    </div>
+
+    <a href="http://127.0.0.1:5500/02-maquetacion-cv/index.html"
+       class="boton-movible btn-inicio"
+       id="btnInicio"
+       tabindex="0">🏠 Inicio</a>
+
+    <button class="boton-movible btn-regreso" id="btnRegreso">◀ Regreso</button>
+    <button class="boton-movible btn-siguiente" id="btnSiguiente">Siguiente ▶</button>
+
+</div>
+
+<script>
+let botonSeleccionado=null;
+
+function makeFullyDraggableAndRotatable(elemento){
+    let startX=0,startY=0,startLeft=0,startTop=0,startRotate=0;
+    let isDragging=false,isRotating=false;
+
+    const id=elemento.id;
+    const savedLeft=localStorage.getItem(`${id}_left`);
+    const savedTop=localStorage.getItem(`${id}_top`);
+    const savedRotate=localStorage.getItem(`${id}_rotate`);
+    const savedScale=localStorage.getItem(`${id}_scale`);
+    
+    if(savedLeft!==null&&savedTop!==null){
+        elemento.style.left=savedLeft+'px';
+        elemento.style.top=savedTop+'px';
+    }
+    
+    if(savedRotate!==null){
+        elemento.style.transform=`rotate(${savedRotate}deg) scale(${savedScale||1})`;
+    }else if(savedScale!==null){
+        elemento.style.transform=`scale(${savedScale})`;
+    }
+
+    function getCurrentRotation(){
+        const t=elemento.style.transform;
+        if(t&&t.includes('rotate')){
+            const m=t.match(/rotate\(([-\d.]+)deg\)/);
+            if(m)return parseFloat(m[1]);
+        }
+        return 0;
+    }
+
+    function getCurrentScale(){
+        const t=elemento.style.transform;
+        if(t&&t.includes('scale')){
+            const m=t.match(/scale\(([\d.]+)\)/);
+            if(m)return parseFloat(m[1]);
+        }
+        return 1;
+    }
+
+    function setScale(s){
+        const r=getCurrentRotation();
+        elemento.style.transform=r?`rotate(${r}deg) scale(${s})`:`scale(${s})`;
+        localStorage.setItem(`${elemento.id}_scale`,s);
+    }
+
+    elemento.addEventListener('focus',()=>botonSeleccionado=elemento);
+
+    elemento.addEventListener('keydown',(e)=>{
+        let s=getCurrentScale();
+        if(e.key==='+'||e.key==='='||e.key===']'){
+            e.preventDefault();
+            setScale(Math.min(3,s*1.1));
+        }else if(e.key==='-'||e.key==='_'||e.key==='['){
+            e.preventDefault();
+            setScale(Math.max(0.5,s*0.9));
+        }
+    });
+
+    elemento.addEventListener('mousedown',(e)=>{
+        if(elemento.tagName==='A')e.preventDefault();
+        startX=e.clientX;
+        startY=e.clientY;
+        if(e.ctrlKey){
+            isRotating=true;
+            startRotate=getCurrentRotation();
+        }else{
+            isDragging=true;
+            startLeft=parseFloat(getComputedStyle(elemento).left);
+            startTop=parseFloat(getComputedStyle(elemento).top);
+        }
+    });
+
+    window.addEventListener('mousemove',(e)=>{
+        if(isDragging){
+            elemento.style.left=(startLeft+(e.clientX-startX))+'px';
+            elemento.style.top=(startTop+(e.clientY-startY))+'px';
+        }else if(isRotating){
+            const r=startRotate+(e.clientY-startY)*0.5;
+            elemento.style.transform=`rotate(${r}deg) scale(${getCurrentScale()})`;
+        }
+    });
+
+    window.addEventListener('mouseup',()=>{
+        if(isDragging){
+            isDragging=false;
+            localStorage.setItem(`${id}_left`,parseFloat(getComputedStyle(elemento).left));
+            localStorage.setItem(`${id}_top`,parseFloat(getComputedStyle(elemento).top));
+        }else if(isRotating){
+            isRotating=false;
+            localStorage.setItem(`${id}_rotate`,getCurrentRotation());
+        }
+    });
+}
+
+const btnInicio=document.getElementById('btnInicio');
+const btnRegreso=document.getElementById('btnRegreso');
+const btnSiguiente=document.getElementById('btnSiguiente');
+
+if(btnInicio)makeFullyDraggableAndRotatable(btnInicio);
+if(btnRegreso)makeFullyDraggableAndRotatable(btnRegreso);
+if(btnSiguiente)makeFullyDraggableAndRotatable(btnSiguiente);
+
+function expandirConRueda(event) {
+    const boton = event.target.closest('.boton-movible');
+    if (!boton) return;
+    
+    event.preventDefault();
+    
+    let currentScale = 1;
+    let currentRotate = 0;
+    const transform = boton.style.transform;
+    
+    if (transform && transform.includes('scale')) {
+        const matchScale = transform.match(/scale\(([\d.]+)\)/);
+        if (matchScale) currentScale = parseFloat(matchScale[1]);
+    }
+    
+    if (transform && transform.includes('rotate')) {
+        const matchRotate = transform.match(/rotate\(([-\d.]+)deg\)/);
+        if (matchRotate) currentRotate = parseFloat(matchRotate[1]);
+    }
+    
+    if (event.deltaY < 0) {
+        currentScale *= 1.1;
+    } else {
+        currentScale *= 0.9;
+    }
+    
+    currentScale = Math.max(0.5, Math.min(3, currentScale));
+    
+    if (currentRotate !== 0) {
+        boton.style.transform = `rotate(${currentRotate}deg) scale(${currentScale})`;
+    } else {
+        boton.style.transform = `scale(${currentScale})`;
+    }
+    
+    localStorage.setItem(`${boton.id}_scale`, currentScale);
+}
+
+document.querySelectorAll('.boton-movible').forEach(boton => {
+    boton.addEventListener('wheel', expandirConRueda, { passive: false });
+});
+
+// ========== FUNCIÓN SIMPLIFICADA PARA BOTONES (SIN RETRASOS) ==========
+function setupButtonAction(btn, action) {
+    if (!btn) return;
+    
+    // Variable para detectar si se movió el mouse
+    let hasMoved = false;
+    let startX = 0, startY = 0;
+    
+    btn.addEventListener('mousedown', (e) => {
+        hasMoved = false;
+        startX = e.clientX;
+        startY = e.clientY;
+    });
+    
+    btn.addEventListener('mousemove', (e) => {
+        // Si el mouse se movió más de 5px, consideramos que es un arrastre
+        if (Math.abs(e.clientX - startX) > 5 || Math.abs(e.clientY - startY) > 5) {
+            hasMoved = true;
+        }
+    });
+    
+    btn.addEventListener('click', (e) => {
+        // Solo prevenir si realmente se arrastró
+        if (hasMoved) {
+            e.preventDefault();
+            return;
+        }
+        action(e);
+    });
+}
+
+// Botón REGRESO - Va a Logos
+if(btnRegreso){
+    setupButtonAction(btnRegreso,()=>{
+        window.location.href = 'http://127.0.0.1:5500/02-maquetacion-cv/portafolio/logos.html';
+    });
+}
+
+// Botón SIGUIENTE - Va a Portafolio principal
+if(btnSiguiente){
+    setupButtonAction(btnSiguiente,()=>{
+        window.location.href = 'http://127.0.0.1:5500/02-maquetacion-cv/portafolio/portafolio.html';
+    });
+}
+
+// Botón INICIO - Va al inicio del CV
+if(btnInicio){
+    setupButtonAction(btnInicio,()=>{
+        window.location.href = btnInicio.href;
+    });
+}
+
+if(btnInicio)btnInicio.focus();
+
+document.getElementById('img1').src="../img/bote.png";
+document.getElementById('img2').src="../img/sofa.png";
+document.getElementById('img3').src="../img/proyector.png";
+document.getElementById('img4').src="../img/extintor.png";
+</script>
+
+</body>
+</html>
