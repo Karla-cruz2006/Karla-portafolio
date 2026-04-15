@@ -33,24 +33,31 @@ body{
 /* ELEMENTOS */
 .scrap-item{
     position:absolute;
-    cursor:pointer;
-    transition:transform 0.2s ease;
+    cursor:grab;
+    transition: transform 0.2s ease;
+    transform-origin:center center;
 }
 
+.scrap-item:active{
+    cursor:grabbing;
+}
+
+/* IMAGEN */
 .scrap-item img{
     width:100%;
     height:auto;
     display:block;
 }
 
-/* HOVER PRO */
+/* HOVER (SIN ROMPER ROTACIÓN JS) */
 .scrap-item:hover{
-    transform:scale(1.05);
+    transform: scale(1.05);
 }
 
-/* ARÁNDANOS */
-.rotate-animation{
+/* ARÁNDANO (FIX REAL) */
+.rotate-animation img{
     animation: blueberryRotate 40s linear infinite;
+    transform-origin:center center;
 }
 
 @keyframes blueberryRotate{
@@ -70,18 +77,4 @@ body{
     background:rgba(0,0,0,0.5);
     padding:4px 12px;
     border-radius:20px;
-}
-.scrap-item{
-    position:absolute;
-    cursor:grab;
-}
-
-.scrap-item:active{
-    cursor:grabbing;
-}
-
-.scrap-item img{
-    width:100%;
-    height:auto;
-    display:block;
 }
