@@ -1,476 +1,282 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portafolio - Logos</title>
-    
-    <!-- ✅ ANTI-CACHÉ - Para que los cambios siempre se actualicen -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            user-select: none;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portafolio - Logos</title>
 
-        /* ✅ Fondo corregido - sin espacios en blanco */
-        body {
-            background-image: url("../img/fondo-secciones.png");
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-position: center top;
-            background-attachment: scroll;
-            background-color: #000;
-            min-height: 100vh;
-            width: 100%;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            position: relative;
-            overflow-x: hidden;
-        }
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 
-        .contenedor-libre {
-            position: relative;
-            width: 100%;
-            min-height: 100vh;
-        }
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
 
-        .boton-movible {
-            position: absolute;
-            padding: 12px 24px;
-            font-size: 16px;
-            font-weight: bold;
-            border: none;
-            border-radius: 25px;
-            cursor: grab;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            z-index: 1000;
-            white-space: nowrap;
-            transform-origin: center center;
-        }
+/* ===== FONDO ===== */
+body {
+    background-image: url("../img/fondo-secciones.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center top;
+    background-attachment: scroll;
+    background-color: #000;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+}
 
-        .boton-movible:active {
-            cursor: grabbing;
-        }
+/* ===== CONTENEDOR ===== */
+.contenedor-libre {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+}
 
-        .boton-movible:focus {
-            outline: 3px solid yellow;
-            outline-offset: 3px;
-        }
+/* ===== BARRA DE BOTONES (ACOMODADA) ===== */
+.barra-botones {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 15px;
+    padding: 10px 15px;
+    border-radius: 50px;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+}
 
-        .btn-inicio {
-            background-color: #4CAF50;
-            color: white;
-            top: 100px;
-            left: 100px;
-        }
+/* BOTONES */
+.boton-movible {
+    padding: 12px 22px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 30px;
+    cursor: grab;
+    transition: .3s;
+    white-space: nowrap;
+}
 
-        .btn-inicio:hover {
-            background-color: #45a049;
-        }
+.boton-movible:active {
+    cursor: grabbing;
+}
 
-        .btn-regreso {
-            background-color: #ff9800;
-            color: white;
-            top: 100px;
-            left: 300px;
-        }
+/* COLORES */
+.btn-inicio { background:#4CAF50; color:white; }
+.btn-regreso { background:#ff9800; color:white; }
+.btn-siguiente { background:#2196F3; color:white; }
 
-        .btn-regreso:hover {
-            background-color: #e68900;
-        }
+/* HOVER */
+.boton-movible:hover {
+    transform: scale(1.08);
+}
 
-        .btn-siguiente {
-            background-color: #2196F3;
-            color: white;
-            top: 100px;
-            left: 500px;
-        }
+/* ===== GALERÍA ===== */
+.galeria-logos {
+    position: fixed;
+    top: 50%;
+    left: 62%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    display: flex;
+    gap: 60px;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    padding: 50px 80px;
+    border-radius: 30px;
+    border: 1px solid rgba(184, 33, 28, 0.3);
+}
 
-        .btn-siguiente:hover {
-            background-color: #0b7dda;
-        }
+.logo-item {
+    text-align: center;
+    transition: .3s;
+}
 
-        /* ========== GALERÍA DE LOGOS ========== */
-        .galeria-logos {
-            position: fixed;
-            top: 50%;
-            left: 62%;
-            transform: translate(-50%, -50%);
-            z-index: 99999;
-            display: flex;
-            flex-direction: row;
-            gap: 60px;
-            justify-content: center;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(10px);
-            padding: 50px 80px;
-            border-radius: 30px;
-            border: 1px solid rgba(184, 33, 28, 0.3);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        }
+.logo-item:hover {
+    transform: translateY(-8px);
+}
 
-        .logo-item {
-            text-align: center;
-            pointer-events: auto;
-            transition: all 0.3s ease;
-        }
+.logo-item img {
+    width: 400px;
+    max-width: 35vw;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: .2s;
+}
 
-        .logo-item:hover {
-            transform: translateY(-8px);
-        }
+.logo-item img:hover {
+    transform: scale(1.05);
+}
 
-        .logo-item img {
-            width: 400px;
-            max-width: 35vw;
-            height: auto;
-            display: block;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
+.logo-item p {
+    color: white;
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
 
-        .logo-item img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
-        }
+/* ===== RESPONSIVE ===== */
+@media (max-width: 650px) {
+    .galeria-logos {
+        flex-direction: column;
+        left: 50%;
+        gap: 40px;
+        padding: 40px;
+    }
 
-        .logo-item p {
-            color: white;
-            margin-top: 20px;
-            font-size: 18px;
-            font-weight: 600;
-            letter-spacing: 2px;
-            color: #ffffff;
-        }
+    .logo-item img {
+        width: 280px;
+    }
 
-        /* Responsive */
-        @media (max-width: 1200px) {
-            .galeria-logos {
-                left: 65%;
-                gap: 50px;
-                padding: 45px 70px;
-            }
-        }
+    .barra-botones {
+        flex-direction: row;
+        gap: 10px;
+        padding: 8px 10px;
+    }
 
-        @media (max-width: 1000px) {
-            .galeria-logos {
-                gap: 40px;
-                padding: 40px 60px;
-                left: 68%;
-            }
-            .logo-item img {
-                width: 300px;
-                max-width: 35vw;
-            }
-            .logo-item p {
-                font-size: 16px;
-            }
-        }
-
-        @media (max-width: 800px) {
-            .galeria-logos {
-                gap: 30px;
-                padding: 30px 40px;
-                left: 72%;
-            }
-            .logo-item img {
-                width: 250px;
-                max-width: 38vw;
-            }
-            .logo-item p {
-                font-size: 14px;
-            }
-        }
-
-        @media (max-width: 650px) {
-            .galeria-logos {
-                flex-direction: column;
-                gap: 40px;
-                padding: 40px 50px;
-                left: 50%;
-                top: 50%;
-            }
-            .logo-item img {
-                width: 280px;
-                max-width: 60vw;
-            }
-            .logo-item p {
-                font-size: 16px;
-            }
-        }
-    </style>
+    .boton-movible {
+        font-size: 14px;
+        padding: 10px 16px;
+    }
+}
+</style>
 </head>
+
 <body>
-    <div class="contenedor-libre">
-        <!-- ✅ Ruta relativa corregida para GitHub Pages -->
-        <a href="../index.html" 
-           class="boton-movible btn-inicio" 
-           id="btnInicio"
-           tabindex="0">
+
+<div class="contenedor-libre">
+
+    <!-- ===== BOTONES ===== -->
+    <div class="barra-botones">
+
+        <a href="../index.html"
+           class="boton-movible btn-inicio"
+           id="btnInicio">
             🏠 Inicio
         </a>
 
-        <button class="boton-movible btn-regreso" id="btnRegreso" tabindex="0">
+        <button class="boton-movible btn-regreso" id="btnRegreso">
             ◀ Regreso
         </button>
 
-        <button class="boton-movible btn-siguiente" id="btnSiguiente" tabindex="0">
+        <button class="boton-movible btn-siguiente" id="btnSiguiente">
             Siguiente ▶
         </button>
+
     </div>
 
-    <!-- ========== GALERÍA DE LOGOS ========== -->
-    <div class="galeria-logos">
-        <div class="logo-item">
-            <img src="../img/Logo-queseria.png" alt="Logo Quesería">
-            <p> QUESERÍA</p>
-        </div>
-        <div class="logo-item">
-            <img src="../img/Logo-reposteria.png" alt="Logo Repostería">
-            <p> REPOSTERÍA</p>
-        </div>
+</div>
+
+<!-- ===== GALERÍA ===== -->
+<div class="galeria-logos">
+
+    <div class="logo-item">
+        <img src="../img/Logo-queseria.png" alt="Logo Quesería">
+        <p>QUESERÍA</p>
     </div>
 
-    <script>
-        let botonSeleccionado = null;
+    <div class="logo-item">
+        <img src="../img/Logo-reposteria.png" alt="Logo Repostería">
+        <p>REPOSTERÍA</p>
+    </div>
 
-        function makeFullyDraggableAndRotatable(elemento) {
-            let startX = 0, startY = 0;
-            let startLeft = 0, startTop = 0;
-            let startRotate = 0;
-            let isDragging = false;
-            let isRotating = false;
+</div>
 
-            const id = elemento.id;
-            const savedLeft = localStorage.getItem(`${id}_left`);
-            const savedTop = localStorage.getItem(`${id}_top`);
-            const savedRotate = localStorage.getItem(`${id}_rotate`);
-            const savedScale = localStorage.getItem(`${id}_scale`);
-            
-            if (savedLeft !== null && savedTop !== null) {
-                elemento.style.left = savedLeft + 'px';
-                elemento.style.top = savedTop + 'px';
-            }
-            
-            if (savedRotate !== null) {
-                elemento.style.transform = `rotate(${savedRotate}deg) scale(${savedScale || 1})`;
-            } else if (savedScale !== null) {
-                elemento.style.transform = `scale(${savedScale})`;
-            }
+<script>
+let botonSeleccionado = null;
 
-            function getCurrentRotation() {
-                const transform = elemento.style.transform;
-                if (transform && transform.includes('rotate')) {
-                    const match = transform.match(/rotate\(([-\d.]+)deg\)/);
-                    if (match) return parseFloat(match[1]);
-                }
-                return 0;
-            }
+/* ===== DRAG / ROTATE ===== */
+function makeFullyDraggableAndRotatable(elemento) {
 
-            function getCurrentScale() {
-                const transform = elemento.style.transform;
-                if (transform && transform.includes('scale')) {
-                    const match = transform.match(/scale\(([\d.]+)\)/);
-                    if (match) return parseFloat(match[1]);
-                }
-                return 1;
-            }
+    let startX = 0, startY = 0;
+    let startLeft = 0, startTop = 0;
+    let startRotate = 0;
+    let isDragging = false;
+    let isRotating = false;
 
-            function setScale(nuevaEscala) {
-                const currentRotate = getCurrentRotation();
-                if (currentRotate !== 0) {
-                    elemento.style.transform = `rotate(${currentRotate}deg) scale(${nuevaEscala})`;
-                } else {
-                    elemento.style.transform = `scale(${nuevaEscala})`;
-                }
-                localStorage.setItem(`${elemento.id}_scale`, nuevaEscala);
-            }
+    const id = elemento.id;
 
-            elemento.addEventListener('focus', () => {
-                botonSeleccionado = elemento;
-            });
+    const savedLeft = localStorage.getItem(`${id}_left`);
+    const savedTop = localStorage.getItem(`${id}_top`);
+    const savedRotate = localStorage.getItem(`${id}_rotate`);
+    const savedScale = localStorage.getItem(`${id}_scale`);
 
-            elemento.addEventListener('keydown', (e) => {
-                let currentScale = getCurrentScale();
-                
-                if (e.key === '+' || e.key === '=' || e.key === ']') {
-                    e.preventDefault();
-                    currentScale = Math.min(3, currentScale * 1.1);
-                    setScale(currentScale);
-                } else if (e.key === '-' || e.key === '_' || e.key === '[') {
-                    e.preventDefault();
-                    currentScale = Math.max(0.5, currentScale * 0.9);
-                    setScale(currentScale);
-                }
-            });
+    if (savedLeft && savedTop) {
+        elemento.style.left = savedLeft + 'px';
+        elemento.style.top = savedTop + 'px';
+    }
 
-            elemento.addEventListener('mousedown', (e) => {
-                if (elemento.tagName === 'A') {
-                    e.preventDefault();
-                }
-                
-                const usarRotacion = e.ctrlKey;
-                
-                startX = e.clientX;
-                startY = e.clientY;
-                
-                if (usarRotacion) {
-                    isRotating = true;
-                    startRotate = getCurrentRotation();
-                    elemento.style.cursor = 'grabbing';
-                } else {
-                    isDragging = true;
-                    startLeft = parseFloat(getComputedStyle(elemento).left);
-                    startTop = parseFloat(getComputedStyle(elemento).top);
-                    elemento.style.cursor = 'grabbing';
-                }
-                
-                e.stopPropagation();
-            });
+    if (savedRotate) {
+        elemento.style.transform = `rotate(${savedRotate}deg) scale(${savedScale || 1})`;
+    }
 
-            window.addEventListener('mousemove', (e) => {
-                if (isDragging) {
-                    const dx = e.clientX - startX;
-                    const dy = e.clientY - startY;
-                    
-                    let newLeft = startLeft + dx;
-                    let newTop = startTop + dy;
-                    
-                    elemento.style.left = newLeft + 'px';
-                    elemento.style.top = newTop + 'px';
-                    
-                } else if (isRotating) {
-                    const dy = e.clientY - startY;
-                    const currentScale = getCurrentScale();
-                    const newRotate = startRotate + (dy * 0.5);
-                    elemento.style.transform = `rotate(${newRotate}deg) scale(${currentScale})`;
-                }
-            });
+    function getCurrentRotation() {
+        const match = elemento.style.transform.match(/rotate\(([-\d.]+)deg\)/);
+        return match ? parseFloat(match[1]) : 0;
+    }
 
-            window.addEventListener('mouseup', () => {
-                if (isDragging) {
-                    isDragging = false;
-                    elemento.style.cursor = 'grab';
-                    
-                    const left = parseFloat(getComputedStyle(elemento).left);
-                    const top = parseFloat(getComputedStyle(elemento).top);
-                    localStorage.setItem(`${elemento.id}_left`, left);
-                    localStorage.setItem(`${elemento.id}_top`, top);
-                    
-                } else if (isRotating) {
-                    isRotating = false;
-                    elemento.style.cursor = 'grab';
-                    
-                    const rotate = getCurrentRotation();
-                    localStorage.setItem(`${elemento.id}_rotate`, rotate);
-                }
-            });
+    function getCurrentScale() {
+        const match = elemento.style.transform.match(/scale\(([\d.]+)\)/);
+        return match ? parseFloat(match[1]) : 1;
+    }
+
+    elemento.addEventListener('mousedown', (e) => {
+
+        const usarRotacion = e.ctrlKey;
+
+        startX = e.clientX;
+        startY = e.clientY;
+
+        if (usarRotacion) {
+            isRotating = true;
+            startRotate = getCurrentRotation();
+        } else {
+            isDragging = true;
+            startLeft = elemento.offsetLeft;
+            startTop = elemento.offsetTop;
         }
 
-        const btnInicio = document.getElementById('btnInicio');
-        const btnRegreso = document.getElementById('btnRegreso');
-        const btnSiguiente = document.getElementById('btnSiguiente');
-        
-        if (btnInicio) makeFullyDraggableAndRotatable(btnInicio);
-        if (btnRegreso) makeFullyDraggableAndRotatable(btnRegreso);
-        if (btnSiguiente) makeFullyDraggableAndRotatable(btnSiguiente);
+        e.preventDefault();
+    });
 
-        function expandirConRueda(event) {
-            const boton = event.target.closest('.boton-movible');
-            if (!boton) return;
-            
-            event.preventDefault();
-            
-            let currentScale = 1;
-            let currentRotate = 0;
-            const transform = boton.style.transform;
-            
-            if (transform && transform.includes('scale')) {
-                const matchScale = transform.match(/scale\(([\d.]+)\)/);
-                if (matchScale) currentScale = parseFloat(matchScale[1]);
-            }
-            
-            if (transform && transform.includes('rotate')) {
-                const matchRotate = transform.match(/rotate\(([-\d.]+)deg\)/);
-                if (matchRotate) currentRotate = parseFloat(matchRotate[1]);
-            }
-            
-            if (event.deltaY < 0) {
-                currentScale *= 1.1;
-            } else {
-                currentScale *= 0.9;
-            }
-            
-            currentScale = Math.max(0.5, Math.min(3, currentScale));
-            
-            if (currentRotate !== 0) {
-                boton.style.transform = `rotate(${currentRotate}deg) scale(${currentScale})`;
-            } else {
-                boton.style.transform = `scale(${currentScale})`;
-            }
-            
-            localStorage.setItem(`${boton.id}_scale`, currentScale);
+    window.addEventListener('mousemove', (e) => {
+
+        if (isDragging) {
+            elemento.style.left = startLeft + (e.clientX - startX) + 'px';
+            elemento.style.top = startTop + (e.clientY - startY) + 'px';
         }
 
-        document.querySelectorAll('.boton-movible').forEach(boton => {
-            boton.addEventListener('wheel', expandirConRueda, { passive: false });
-        });
+        if (isRotating) {
+            const rotate = startRotate + (e.clientY - startY) * 0.5;
+            elemento.style.transform = `rotate(${rotate}deg)`;
+        }
+    });
 
-        // ========== FUNCIÓN PARA BOTONES (DETECTA ARRASTRE) ==========
-        function setupButtonAction(btn, action) {
-            if (!btn) return;
-            
-            let hasMoved = false;
-            let startX = 0, startY = 0;
-            
-            btn.addEventListener('mousedown', (e) => {
-                hasMoved = false;
-                startX = e.clientX;
-                startY = e.clientY;
-            });
-            
-            btn.addEventListener('mousemove', (e) => {
-                if (Math.abs(e.clientX - startX) > 5 || Math.abs(e.clientY - startY) > 5) {
-                    hasMoved = true;
-                }
-            });
-            
-            btn.addEventListener('click', (e) => {
-                if (hasMoved) {
-                    e.preventDefault();
-                    return;
-                }
-                action(e);
-            });
-        }
+    window.addEventListener('mouseup', () => {
+        isDragging = false;
+        isRotating = false;
+    });
+}
 
-        // ✅ RUTAS RELATIVAS CORREGIDAS PARA GITHUB PAGES
-        if (btnRegreso) {
-            setupButtonAction(btnRegreso, () => {
-                window.location.href = 'posters.html';
-            });
-        }
-        
-        if (btnSiguiente) {
-            setupButtonAction(btnSiguiente, () => {
-                window.location.href = 'modelado.html';
-            });
-        }
-        
-        if (btnInicio) {
-            setupButtonAction(btnInicio, (e) => {
-                window.location.href = btnInicio.href;
-            });
-        }
+/* ===== BOTONES ===== */
+const btnInicio = document.getElementById('btnInicio');
+const btnRegreso = document.getElementById('btnRegreso');
+const btnSiguiente = document.getElementById('btnSiguiente');
 
-        if (btnInicio) btnInicio.focus();
-    </script>
+if (btnRegreso) btnRegreso.onclick = () => location.href = 'posters.html';
+if (btnSiguiente) btnSiguiente.onclick = () => location.href = 'modelado.html';
+
+</script>
+
 </body>
 </html>
