@@ -5,110 +5,88 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Karla Sherlyn · Curriculum Vitae</title>
 
-<!-- ✅ ANTI-CACHÉ para ver cambios -->
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-
 <style>
-/* RESET Y BASE */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+    background:#000;
+    overflow-x:hidden;
 }
 
-body {
-    background: #000;
-    overflow-x: hidden;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+.fullscreen-container{
+    position:relative;
+    min-height:100vh;
 }
 
-/* CONTENEDOR PRINCIPAL */
-.fullscreen-container {
-    position: relative;
-    min-height: 100vh;
-    width: 100%;
+.fullscreen-img{
+    width:100%;
+    display:block;
+    pointer-events:none;
 }
 
-/* FONDO: imagen a ancho completo */
-.fullscreen-img {
-    width: 100%;
-    display: block;
-    pointer-events: none; /* El fondo no interfiere con clics en botones */
+.scrapbook-layer{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
 }
 
-/* CAPA DE ELEMENTOS SUPERPUESTOS */
-.scrapbook-layer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none; /* La capa no bloquea, pero los hijos la anulan */
+/* ELEMENTOS */
+.scrap-item{
+    position:absolute;
+    cursor:grab;
+    user-select:none;
+    transform-origin:center center;
 }
 
-/* CADA ELEMENTO: posiciones fijas, sin interacción de arrastre/redimensión */
-.scrap-item {
-    position: absolute;
-    cursor: pointer;      /* Cambia a mano para indicar que es clickeable */
-    transition: transform 0.2s ease;
-    transform-origin: center center;
-    pointer-events: auto; /* Para que los botones sean clickeables */
+.scrap-item img{
+    width:100%;
+    display:block;
+    pointer-events:none;
 }
 
-/* Las imágenes dentro responden al contenedor */
-.scrap-item img {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 0;
+/* HANDLES */
+.resize-handle{
+    position:absolute;
+    width:14px;
+    height:14px;
+    background:#ff4d6d;
+    border-radius:50%;
+    bottom:-7px;
+    right:-7px;
+    cursor:nwse-resize;
+    border:2px solid white;
 }
 
-/* Efecto hover sutil (solo visual, sin romper funcionalidad) */
-.scrap-item:hover {
-    transform: scale(1.03);
-    filter: drop-shadow(0 0 6px rgba(255,255,200,0.3));
-    transition: transform 0.2s ease, filter 0.2s;
+.rotate-handle{
+    position:absolute;
+    width:14px;
+    height:14px;
+    background:#4d9eff;
+    border-radius:50%;
+    top:-7px;
+    left:-7px;
+    cursor:grab;
+    border:2px solid white;
 }
 
-/* ARÁNDANO: rotación continua e independiente (sin afectar clicks) */
-.rotate-animation {
-    animation: blueberryRotate 40s linear infinite;
-    transform-origin: center center;
+/* WATERMARK */
+.watermark{
+    position:absolute;
+    bottom:10px;
+    left:50%;
+    transform:translateX(-50%);
+    color:white;
+    font-size:12px;
+    background:rgba(0,0,0,0.5);
+    padding:5px 12px;
+    border-radius:20px;
 }
 
-@keyframes blueberryRotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-/* WATERMARK (créditos) */
-.watermark {
-    position: absolute;
-    bottom: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 12px;
-    background: rgba(0, 0, 0, 0.6);
-    padding: 5px 15px;
-    border-radius: 30px;
-    pointer-events: none;
-    z-index: 20;
-    white-space: nowrap;
-    backdrop-filter: blur(3px);
-}
-
-/* Ajuste responsivo ligero: en móviles no se rompen las proporciones */
-@media (max-width: 768px) {
-    .scrap-item:hover {
-        transform: scale(1.02); /* Hover más sutil en móvil */
-    }
-    .watermark {
-        font-size: 9px;
-        padding: 3px 10px;
-    }
+/* SELECTED */
+.selected{
+    outline:3px solid #ff4d6d;
 }
 </style>
 </head>
@@ -116,165 +94,158 @@ body {
 <body>
 
 <div class="fullscreen-container">
-    <!-- FONDO principal (debe existir en carpeta img/) -->
-    <img src="img/fondo.png" class="fullscreen-img" alt="Fondo Karla Sherlyn">
+<img src="img/fondo.png" class="fullscreen-img">
 
-    <div class="scrapbook-layer">
-        <div class="watermark">
-            © 2026 Karla Cruz | YANG´S LAB
-        </div>
+<div class="scrapbook-layer">
 
-        <!-- BOTÓN CURRÍCULUM - posición fija exacta según tu CSS -->
-        <div class="scrap-item" data-action="cv" style="top:75%; left:7%; width:18%; transform:rotate(-2deg);">
-            <img src="img/Boton_curriculum.png" alt="Descargar currículum">
-        </div>
+<div class="watermark">© 2026 Karla Cruz | YANG´S LAB</div>
 
-        <!-- BOTÓN CONTÁCTAME - posición fija -->
-        <div class="scrap-item" data-action="contacto" style="top:75%; left:31%; width:18%; transform:rotate(2deg);">
-            <img src="img/Boton_contactame.png" alt="Ir a contacto">
-        </div>
+<div class="scrap-item" style="top:75%;left:7%;width:18%;">
+<img src="img/Boton_curriculum.png">
+</div>
 
-        <!-- BOTÓN PORTAFOLIO - posición fija (ligeramente más ancho) -->
-        <div class="scrap-item" data-action="portafolio" style="top:45%; left:41%; width:22%; transform:rotate(1deg); z-index:5;">
-            <img src="img/Boton_portafolio.png" alt="Ver portafolio">
-        </div>
+<div class="scrap-item" style="top:75%;left:31%;width:18%;">
+<img src="img/Boton_contactame.png">
+</div>
 
-        <!-- ARÁNDANO DECORATIVO - rotación perpetua y posición fija -->
-        <div class="scrap-item rotate-animation" data-action="none" style="top:50%; left:12%; width:22%; transform:rotate(4deg); cursor:pointer;">
-            <img src="img/Arandanos.png" alt="Arándanos decorativos">
-        </div>
-    </div>
+<div class="scrap-item" style="top:45%;left:41%;width:22%;">
+<img src="img/Boton_portafolio.png">
+</div>
+
+<div class="scrap-item" style="top:50%;left:12%;width:22%;">
+<img src="img/Arandanos.png">
+</div>
+
+</div>
 </div>
 
 <script>
-// ============================================================
-// FUNCIONES DE NAVEGACIÓN Y ACCIONES (TOTALMENTE OPERATIVAS)
-// ============================================================
 
-// Descarga del archivo CV (ruta relativa a docs/)
-function descargarCV() {
-    console.log("📄 Descargando CV...");
-    const link = document.createElement('a');
-    link.href = "docs/Karla_Cruz_CV.pdf";
-    link.download = "Karla_Cruz_CV.pdf";
-    link.style.display = "none";
-    document.body.appendChild(link);
-    link.click();
-    setTimeout(() => {
-        document.body.removeChild(link);
-    }, 150);
-    console.log("✅ Descarga iniciada: docs/Karla_Cruz_CV.pdf");
+let selected=null;
+let mode=null;
+let startX,startY,startLeft,startTop,startW,startRot;
+
+/* ROTACIÓN */
+function getRot(el){
+    return parseFloat(el.dataset.rot || 0);
 }
 
-// Redirección a contacto.html
-function irContacto() {
-    console.log("📞 Navegando a contacto.html");
-    window.location.href = "contacto.html";
+function setTransform(el){
+    el.style.transform = `rotate(${getRot(el)}deg)`;
 }
 
-// Redirección a portafolio (carpeta portafolio)
-function irPortafolio() {
-    console.log("🎨 Navegando a portafolio/portafolio.html");
-    window.location.href = "portafolio/portafolio.html";
+/* HANDLES */
+function addHandles(el){
+
+    el.querySelectorAll(".resize-handle,.rotate-handle").forEach(e=>e.remove());
+
+    const r=document.createElement("div");
+    r.className="resize-handle";
+
+    const rot=document.createElement("div");
+    rot.className="rotate-handle";
+
+    el.appendChild(r);
+    el.appendChild(rot);
+
+    r.onmousedown=(e)=>{
+        e.stopPropagation();
+        mode="resize";
+        selected=el;
+        startX=e.clientX;
+        startW=el.offsetWidth;
+    };
+
+    rot.onmousedown=(e)=>{
+        e.stopPropagation();
+        mode="rotate";
+        selected=el;
+
+        const rect=el.getBoundingClientRect();
+        const cx=rect.left+rect.width/2;
+        const cy=rect.top+rect.height/2;
+
+        startX=Math.atan2(e.clientY-cy,e.clientX-cx);
+        startRot=getRot(el);
+    };
 }
 
-// ============================================================
-// ASIGNACIÓN DE EVENTOS: CLICK SIMPLE EJECUTA ACCIÓN
-// (Sin arrastre, sin redimensión, sin rotación manual)
-// ============================================================
-function asignarAccionesBotones() {
-    const items = document.querySelectorAll('.scrap-item');
-    
-    items.forEach(item => {
-        // Obtenemos la acción según el atributo data-action o por nombre de imagen
-        const img = item.querySelector('img');
-        if (!img) return;
-        
-        const srcLower = img.src.toLowerCase();
-        let accion = null;
-        
-        if (srcLower.includes('boton_curriculum')) {
-            accion = descargarCV;
-        } else if (srcLower.includes('boton_contactame')) {
-            accion = irContacto;
-        } else if (srcLower.includes('boton_portafolio')) {
-            accion = irPortafolio;
-        } else if (srcLower.includes('arandanos')) {
-            // Arándano: solo decorativo, no hace nada al hacer clic (pero se puede dejar sin acción)
-            accion = () => console.log("🫐 Arándano decorativo (sin acción)");
-        }
-        
-        // Asignar evento click
-        if (accion) {
-            // Eliminar listeners previos si existieran (por si se llama dos veces)
-            item.removeEventListener('click', accion);
-            item.addEventListener('click', (e) => {
-                e.stopPropagation();
-                accion();
-            });
-        }
-        
-        // Opcional: mantener tooltip nativo o un pequeño feedback visual
-        item.style.cursor = 'pointer';
-    });
-}
+/* DRAG FIX DEFINITIVO */
+document.querySelectorAll(".scrap-item").forEach(el=>{
 
-// ============================================================
-// VERIFICACIÓN DE RECURSOS (IMÁGENES Y PDF) PARA DIAGNÓSTICO
-// ============================================================
-function verificarRecursos() {
-    const imagenes = document.querySelectorAll('img');
-    imagenes.forEach(img => {
-        img.onerror = () => {
-            console.warn(`⚠️ Imagen no encontrada: ${img.src}`);
-            img.style.border = "1px dashed rgba(255,80,80,0.6)";
-        };
-        img.onload = () => {
-            console.log(`✅ Imagen cargada: ${img.src.split('/').pop()}`);
-        };
-    });
-    
-    // Verificar existencia del PDF
-    fetch('docs/Karla_Cruz_CV.pdf', { method: 'HEAD' })
-        .then(resp => {
-            if (resp.ok) {
-                console.log("✅ PDF encontrado en docs/Karla_Cruz_CV.pdf");
-            } else {
-                console.warn("⚠️ No se encontró el PDF en la ruta docs/Karla_Cruz_CV.pdf");
-            }
-        })
-        .catch(() => console.warn("⚠️ No se pudo verificar el PDF (posible problema de red o ruta)"));
-}
+    el.onmousedown=(e)=>{
 
-// ============================================================
-// INICIALIZACIÓN COMPLETA (posiciones fijas, sin modificación)
-// ============================================================
-window.onload = () => {
-    // Asignar eventos de click a los botones
-    asignarAccionesBotones();
-    
-    // Verificar imágenes y recursos
-    verificarRecursos();
-    
-    // Mensaje en consola para confirmar estado
-    console.log("%c✨ POSICIONES FIJAS · FUNCIONES ACTIVAS ✨", "color: #ff4d6d; font-size: 14px; font-weight: bold");
-    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-    console.log("✅ Los elementos NO se pueden arrastrar, redimensionar ni rotar manualmente.");
-    console.log("✅ Sus posiciones están FIJAS según el diseño original.");
-    console.log("✅ Los botones conservan TODAS sus funciones:");
-    console.log("   • Currículum → descarga PDF");
-    console.log("   • Contáctame → redirige a contacto.html");
-    console.log("   • Portafolio → redirige a portafolio/portafolio.html");
-    console.log("✅ El arándano mantiene su animación de rotación (40s).");
-    console.log("✅ Efecto hover: leve escala visual, sin alterar funciones.");
-    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-    
-    // Aseguramos que el arándano tenga la clase de animación (por si acaso)
-    const arandano = document.querySelector('.scrap-item.rotate-animation');
-    if (arandano && !arandano.classList.contains('rotate-animation')) {
-        arandano.classList.add('rotate-animation');
+        if(e.target.classList.contains("resize-handle") ||
+           e.target.classList.contains("rotate-handle")) return;
+
+        selected=el;
+        addHandles(el);
+
+        mode="drag";
+
+        const rect = el.getBoundingClientRect();
+        const parentRect = el.parentElement.getBoundingClientRect();
+
+        startX=e.clientX;
+        startY=e.clientY;
+
+        // 🔥 FIX REAL: siempre trabajar en px
+        startLeft = rect.left - parentRect.left;
+        startTop = rect.top - parentRect.top;
+
+        el.style.left = startLeft + "px";
+        el.style.top = startTop + "px";
+
+        e.preventDefault();
+    };
+
+    el.onclick=()=>{ selected=el; };
+});
+
+/* MOVE SYSTEM */
+document.onmousemove=(e)=>{
+    if(!selected) return;
+
+    if(mode==="drag"){
+        selected.style.left = (startLeft + (e.clientX-startX)) + "px";
+        selected.style.top  = (startTop + (e.clientY-startY)) + "px";
+    }
+
+    if(mode==="resize"){
+        let w=Math.max(60,startW+(e.clientX-startX));
+        selected.style.width=w+"px";
+    }
+
+    if(mode==="rotate"){
+        const rect=selected.getBoundingClientRect();
+        const cx=rect.left+rect.width/2;
+        const cy=rect.top+rect.height/2;
+
+        let ang=Math.atan2(e.clientY-cy,e.clientX-cx);
+        let deg=(ang-startX)*180/Math.PI;
+
+        selected.dataset.rot=startRot+deg;
+        setTransform(selected);
     }
 };
+
+document.onmouseup=()=>{
+    mode=null;
+    selected=null;
+};
+
+/* TECLAS */
+document.addEventListener("keydown",(e)=>{
+    if(!selected) return;
+
+    let rot=getRot(selected);
+
+    if(e.key==="q") selected.dataset.rot=rot-5;
+    if(e.key==="e") selected.dataset.rot=rot+5;
+
+    setTransform(selected);
+});
+
 </script>
 
 </body>
