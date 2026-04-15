@@ -5,11 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Karla Sherlyn · Curriculum Vitae</title>
 
-<!-- ✅ ANTI-CACHÉ para que siempre veas los cambios -->
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 
@@ -18,20 +13,17 @@ body{
     overflow-x:hidden;
 }
 
-/* CONTENEDOR */
 .fullscreen-container{
     position:relative;
     min-height:100vh;
 }
 
-/* FONDO */
 .fullscreen-img{
     width:100%;
     display:block;
     pointer-events:none;
 }
 
-/* CAPA */
 .scrapbook-layer{
     position:absolute;
     top:0;
@@ -44,51 +36,40 @@ body{
 .scrap-item{
     position:absolute;
     cursor:grab;
-    transition: outline 0.1s ease;
+    user-select:none;
 }
 
-.scrap-item:active{
-    cursor:grabbing;
-}
+.scrap-item:active{cursor:grabbing;}
 
 .scrap-item img{
     width:100%;
     display:block;
-    pointer-events:auto;
+    pointer-events:none;
 }
 
-/* HANDLE DE REDIMENSIÓN */
+/* HANDLES */
 .resize-handle{
     position:absolute;
-    width:16px;
-    height:16px;
+    width:14px;
+    height:14px;
     background:#ff4d6d;
     border-radius:50%;
-    bottom:-8px;
-    right:-8px;
+    bottom:-7px;
+    right:-7px;
     cursor:nwse-resize;
-    z-index:999;
     border:2px solid white;
-    box-shadow:0 0 4px rgba(0,0,0,0.5);
 }
 
-/* HANDLE PARA ROTACIÓN */
 .rotate-handle{
     position:absolute;
-    width:16px;
-    height:16px;
+    width:14px;
+    height:14px;
     background:#4d9eff;
     border-radius:50%;
-    top:-8px;
-    left:-8px;
+    top:-7px;
+    left:-7px;
     cursor:grab;
-    z-index:999;
     border:2px solid white;
-    box-shadow:0 0 4px rgba(0,0,0,0.5);
-}
-
-.rotate-handle:active{
-    cursor:grabbing;
 }
 
 /* WATERMARK */
@@ -99,52 +80,14 @@ body{
     transform:translateX(-50%);
     color:white;
     font-size:12px;
-    font-family:'Segoe UI',system-ui;
     background:rgba(0,0,0,0.5);
-    padding:4px 12px;
+    padding:5px 12px;
     border-radius:20px;
-    pointer-events:none;
-    z-index:20;
 }
 
-/* Tooltip para indicar doble clic */
-.scrap-item::after {
-    content: "🔧";
-    position: absolute;
-    top: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 12px;
-    background: rgba(0,0,0,0.7);
-    color: white;
-    padding: 2px 6px;
-    border-radius: 10px;
-    opacity: 0;
-    transition: opacity 0.2s;
-    pointer-events: none;
-    white-space: nowrap;
-}
-
-.scrap-item:hover::after {
-    opacity: 0.7;
-    content: "✨ Doble clic | ✋ Arrastrar | 🔄 Ctrl+arrastrar rotar";
-}
-
-/* ROTACIÓN DEL ARÁNDANO (40 SEGUNDOS) */
-.rotate-animation{
-    animation: blueberryRotate 40s linear infinite;
-}
-
-@keyframes blueberryRotate{
-    from{ transform: rotate(0deg); }
-    to{ transform: rotate(360deg); }
-}
-
-/* Estilo para elemento seleccionado */
-.scrap-item.selected {
-    outline: 3px solid #ff4d6d;
-    outline-offset: 4px;
-    box-shadow: 0 0 0 2px rgba(255,77,109,0.3);
+/* SELECTED */
+.selected{
+    outline:3px solid #ff4d6d;
 }
 </style>
 </head>
@@ -152,365 +95,139 @@ body{
 <body>
 
 <div class="fullscreen-container">
-    <img src="img/fondo.png" class="fullscreen-img" alt="Fondo de página">
+<img src="img/fondo.png" class="fullscreen-img">
 
-    <div class="scrapbook-layer">
+<div class="scrapbook-layer">
 
-        <div class="watermark">
-            © 2026 Karla Cruz | YANG´S LAB
-        </div>
+<div class="watermark">© 2026 Karla Cruz | YANG´S LAB</div>
 
-        <!-- Botón curriculum -->
-        <div class="scrap-item" style="top:75%; left:7%; width:18%; transform:rotate(-2deg);">
-            <img src="img/Boton_curriculum.png" alt="Botón currículum">
-        </div>
+<div class="scrap-item" style="top:75%;left:7%;width:18%;" data-rot="0">
+<img src="img/Boton_curriculum.png">
+</div>
 
-        <!-- Botón contactame -->
-        <div class="scrap-item" style="top:75%; left:31%; width:18%; transform:rotate(2deg);">
-            <img src="img/Boton_contactame.png" alt="Botón contáctame">
-        </div>
+<div class="scrap-item" style="top:75%;left:31%;width:18%;" data-rot="0">
+<img src="img/Boton_contactame.png">
+</div>
 
-        <!-- Botón portafolio -->
-        <div class="scrap-item" style="top:45%; left:41%; width:22%; transform:rotate(1deg); z-index:100;">
-            <img src="img/Boton_portafolio.png" alt="Botón portafolio">
-        </div>
+<div class="scrap-item" style="top:45%;left:41%;width:22%;" data-rot="0">
+<img src="img/Boton_portafolio.png">
+</div>
 
-        <!-- ARÁNDANO CON ROTACIÓN -->
-        <div class="scrap-item rotate-animation" style="top:50%; left:12%; width:22%; transform:rotate(4deg); cursor:pointer;">
-            <img src="img/Arandanos.png" alt="Arándanos decorativos">
-        </div>
-        
-    </div>
+<div class="scrap-item" style="top:50%;left:12%;width:22%;" data-rot="0">
+<img src="img/Arandanos.png">
+</div>
+
+</div>
 </div>
 
 <script>
-// ===== FUNCIONES PRINCIPALES =====
-function descargarCV() {
-    console.log("📄 Descargando CV...");
-    
-    const link = document.createElement('a');
-    link.href = "docs/Karla_Cruz_CV.pdf";
-    link.download = "Karla_Cruz_CV.pdf";
-    link.style.display = 'none';
-    
-    document.body.appendChild(link);
-    link.click();
-    
-    setTimeout(() => {
-        document.body.removeChild(link);
-    }, 100);
-    
-    console.log("✅ Descarga iniciada");
+let selected=null;
+let mode=null;
+let startX,startY,startLeft,startTop,startW,startRot;
+
+function getRot(el){
+    return parseFloat(el.dataset.rot || 0);
 }
 
-// ✅ RUTAS RELATIVAS CORREGIDAS
-function irContacto() {
-    console.log("📞 Navegando a contacto.html");
-    window.location.href = "contacto.html";
+function setTransform(el){
+    el.style.transform = `rotate(${getRot(el)}deg)`;
 }
 
-function irPortafolio() {
-    console.log("🎨 Navegando a portafolio.html");
-    window.location.href = "portafolio/portafolio.html";
-}
+/* ===== CREAR CONTROLES ===== */
+function addHandles(el){
 
-// ===== VARIABLES GLOBALES =====
-let selected = null;
-let isDragging = false;
-let isResizing = false;
-let isRotating = false;
-let startX, startY, startLeft, startTop, startWidth;
-let startAngle = 0;
-let currentAngle = 0;
-let dragStarted = false;
+    el.querySelectorAll(".resize-handle,.rotate-handle").forEach(e=>e.remove());
 
-// ===== GUARDAR POSICIONES =====
-function savePositions(){
-    const data = [];
-    document.querySelectorAll('.scrap-item').forEach(el => {
-        data.push({
-            top: el.style.top,
-            left: el.style.left,
-            width: el.style.width,
-            transform: el.style.transform
-        });
-    });
-    localStorage.setItem("layout", JSON.stringify(data));
-    console.log("💾 Posiciones guardadas");
-}
+    const r=document.createElement("div");
+    r.className="resize-handle";
 
-// ===== CARGAR POSICIONES =====
-function loadPositions(){
-    const data = JSON.parse(localStorage.getItem("layout"));
-    if(!data) {
-        console.log("📂 No hay posiciones guardadas, usando las del HTML");
-        return;
-    }
+    const rot=document.createElement("div");
+    rot.className="rotate-handle";
 
-    document.querySelectorAll('.scrap-item').forEach((el, i) => {
-        if(data[i]){
-            el.style.top = data[i].top;
-            el.style.left = data[i].left;
-            el.style.width = data[i].width;
-            if(data[i].transform) el.style.transform = data[i].transform;
-        }
-    });
-    console.log("📂 Posiciones cargadas desde localStorage");
-}
+    el.appendChild(r);
+    el.appendChild(rot);
 
-// ===== CREAR MANIJAS =====
-function createHandles(el){
-    const oldResize = el.querySelector('.resize-handle');
-    const oldRotate = el.querySelector('.rotate-handle');
-    if(oldResize) oldResize.remove();
-    if(oldRotate) oldRotate.remove();
-
-    const resizeHandle = document.createElement("div");
-    resizeHandle.className = "resize-handle";
-    el.appendChild(resizeHandle);
-
-    const rotateHandle = document.createElement("div");
-    rotateHandle.className = "rotate-handle";
-    el.appendChild(rotateHandle);
-
-    resizeHandle.onmousedown = (e) => {
+    r.onmousedown=(e)=>{
         e.stopPropagation();
-        isResizing = true;
-        startX = e.clientX;
-        startWidth = el.offsetWidth;
-        document.onmousemove = resize;
-        document.onmouseup = stop;
+        mode="resize";
+        selected=el;
+        startX=e.clientX;
+        startW=el.offsetWidth;
     };
 
-    rotateHandle.onmousedown = (e) => {
+    rot.onmousedown=(e)=>{
         e.stopPropagation();
-        isRotating = true;
-        
-        const rect = el.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-        
-        startAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX) * 180 / Math.PI;
-        
-        const transform = el.style.transform;
-        const match = transform.match(/rotate\(([-\d.]+)deg\)/);
-        currentAngle = match ? parseFloat(match[1]) : 0;
-        
-        document.onmousemove = rotate;
-        document.onmouseup = stop;
+        mode="rotate";
+        selected=el;
+        const rect=el.getBoundingClientRect();
+        const cx=rect.left+rect.width/2;
+        const cy=rect.top+rect.height/2;
+        startX=Math.atan2(e.clientY-cy,e.clientX-cx);
+        startRot=getRot(el);
     };
 }
 
-// ===== ROTAR =====
-function rotate(e){
-    if(!isRotating || !selected) return;
-    
-    const rect = selected.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    
-    let newAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX) * 180 / Math.PI;
-    let angleDiff = newAngle - startAngle;
-    let finalAngle = currentAngle + angleDiff;
-    
-    selected.style.transform = `rotate(${finalAngle}deg)`;
-}
+/* ===== SELECCIÓN + DRAG ===== */
+document.querySelectorAll(".scrap-item").forEach(el=>{
 
-// ===== REDIMENSIONAR =====
-function resize(e){
-    if(!isResizing || !selected) return;
-    let newWidth = Math.max(50, startWidth + (e.clientX - startX));
-    selected.style.width = newWidth + "px";
-}
+    el.onmousedown=(e)=>{
+        if(e.target.classList.contains("resize-handle") ||
+           e.target.classList.contains("rotate-handle")) return;
 
-// ===== ARRASTRAR =====
-function startDrag(e, el){
-    if(e.target.classList.contains("resize-handle")) return;
-    if(e.target.classList.contains("rotate-handle")) return;
-    
-    dragStarted = false;
-    isDragging = true;
-    selected = el;
-    startX = e.clientX;
-    startY = e.clientY;
-    startLeft = parseFloat(el.style.left || 0);
-    startTop = parseFloat(el.style.top || 0);
-    
-    document.onmousemove = drag;
-    document.onmouseup = stopDrag;
-}
+        selected=el;
+        addHandles(el);
 
-function drag(e){
-    if(!isDragging || !selected) return;
-    
-    if(!dragStarted && (Math.abs(e.clientX - startX) > 3 || Math.abs(e.clientY - startY) > 3)) {
-        dragStarted = true;
-    }
-    
-    selected.style.left = (startLeft + (e.clientX - startX)) + "px";
-    selected.style.top = (startTop + (e.clientY - startY)) + "px";
-}
+        mode="drag";
+        startX=e.clientX;
+        startY=e.clientY;
 
-function stopDrag(){
-    isDragging = false;
-    document.onmousemove = null;
-    document.onmouseup = null;
-    
-    if(dragStarted) {
-        savePositions();
-    }
-    dragStarted = false;
-}
+        startLeft=parseFloat(el.style.left);
+        startTop=parseFloat(el.style.top);
+    };
 
-// ===== ROTAR CON TECLADO =====
-document.addEventListener('keydown', (e) => {
+    el.onclick=()=>{ selected=el; };
+});
+
+/* ===== MOVE SYSTEM ===== */
+document.onmousemove=(e)=>{
     if(!selected) return;
-    if(e.key === "q" || e.key === "Q") rotateKeyboard(-5);
-    if(e.key === "e" || e.key === "E") rotateKeyboard(5);
-});
 
-function rotateKeyboard(d){
-    let transform = selected.style.transform || "rotate(0deg)";
-    let match = transform.match(/rotate\(([-\d.]+)deg\)/);
-    let currentRot = match ? parseFloat(match[1]) : 0;
-    let newRot = currentRot + d;
-    selected.style.transform = `rotate(${newRot}deg)`;
-    savePositions();
-}
-
-// ===== DETENER =====
-function stop(){
-    isDragging = false;
-    isResizing = false;
-    isRotating = false;
-    document.onmousemove = null;
-    document.onmouseup = null;
-    savePositions();
-}
-
-// ===== SELECCIONAR ELEMENTO =====
-function selectElement(el) {
-    if(selected && selected !== el){
-        selected.classList.remove('selected');
-        selected.style.outline = "none";
+    if(mode==="drag"){
+        selected.style.left=(startLeft+(e.clientX-startX))+"px";
+        selected.style.top=(startTop+(e.clientY-startY))+"px";
     }
-    
-    selected = el;
-    selected.classList.add('selected');
-    createHandles(selected);
-}
 
-// ===== ASIGNAR FUNCIONES A LOS BOTONES =====
-function asignarFuncionesBotones() {
-    document.querySelectorAll('.scrap-item').forEach(el => {
-        const img = el.querySelector('img');
-        if(!img) return;
-        
-        const imgSrc = img.src.toLowerCase();
-        let clickTimeout = null;
-        let hasDoubleClicked = false;
-        
-        // CLICK: seleccionar
-        el.addEventListener('click', (e) => {
-            e.stopPropagation();
-            
-            if(hasDoubleClicked) {
-                hasDoubleClicked = false;
-                return;
-            }
-            
-            if(clickTimeout) {
-                clearTimeout(clickTimeout);
-                clickTimeout = null;
-            }
-            
-            clickTimeout = setTimeout(() => {
-                selectElement(el);
-                clickTimeout = null;
-            }, 150);
-        });
-        
-        // DOBLE CLICK: ejecutar acción
-        el.addEventListener('dblclick', (e) => {
-            e.stopPropagation();
-            hasDoubleClicked = true;
-            
-            if(clickTimeout) {
-                clearTimeout(clickTimeout);
-                clickTimeout = null;
-            }
-            
-            if(imgSrc.includes('boton_curriculum')) {
-                descargarCV();
-            } else if(imgSrc.includes('boton_contactame')) {
-                irContacto();
-            } else if(imgSrc.includes('boton_portafolio')) {
-                irPortafolio();
-            }
-        });
-        
-        // Arrastrar
-        el.addEventListener('mousedown', (e) => {
-            startDrag(e, el);
-        });
-    });
-}
-
-// ===== CLICK FUERA =====
-document.body.addEventListener('click', (e) => {
-    if(!e.target.closest('.scrap-item')) {
-        if(selected) {
-            selected.classList.remove('selected');
-            selected.style.outline = "none";
-            selected = null;
-        }
+    if(mode==="resize"){
+        let w=Math.max(60,startW+(e.clientX-startX));
+        selected.style.width=w+"px";
     }
-});
 
-// ===== VERIFICAR IMÁGENES =====
-function verificarImagenes() {
-    const imagenes = document.querySelectorAll('img');
-    imagenes.forEach(img => {
-        img.onerror = function() {
-            console.warn(`⚠️ Imagen no encontrada: ${this.src}`);
-            this.style.border = "2px dashed red";
-            this.style.opacity = "0.5";
-        };
-        img.onload = function() {
-            console.log(`✅ Imagen cargada: ${this.src.split('/').pop()}`);
-        };
-    });
-}
+    if(mode==="rotate"){
+        const rect=selected.getBoundingClientRect();
+        const cx=rect.left+rect.width/2;
+        const cy=rect.top+rect.height/2;
 
-// ===== INICIALIZAR =====
-window.onload = () => {
-    loadPositions();
-    asignarFuncionesBotones();
-    verificarImagenes();
-    
-    console.log("%c🎨 EDITOR COMPLETO ACTIVADO", "color: #ff4d6d; font-size: 16px; font-weight: bold");
-    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-    console.log("✅ CLIC SIMPLE: Selecciona el elemento");
-    console.log("✅ DOBLE CLIC: Ejecuta la acción");
-    console.log("✅ ARRASTRAR: Mueve el elemento");
-    console.log("✅ CTRL + ARRASTRAR: Rota el elemento");
-    console.log("✅ CÍRCULO ROSADO: Redimensiona");
-    console.log("✅ CÍRCULO AZUL: Rota");
-    console.log("✅ TECLAS Q/E: Rotan el elemento seleccionado");
-    console.log("✅ Las posiciones se guardan AUTOMÁTICAMENTE");
-    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-    
-    // Verificar PDF
-    fetch('docs/Karla_Cruz_CV.pdf', { method: 'HEAD' })
-        .then(response => {
-            if(response.ok) {
-                console.log("✅ PDF encontrado en docs/Karla_Cruz_CV.pdf");
-            } else {
-                console.warn("⚠️ No se encontró el PDF en la ruta especificada");
-            }
-        })
-        .catch(() => console.warn("⚠️ No se pudo verificar el PDF"));
+        let ang=Math.atan2(e.clientY-cy,e.clientX-cx);
+        let deg=(ang-startX)*180/Math.PI;
+
+        selected.dataset.rot=startRot+deg;
+        setTransform(selected);
+    }
 };
+
+document.onmouseup=()=>{
+    mode=null;
+    selected=null;
+};
+
+/* ===== TECLAS ROTAR ===== */
+document.addEventListener("keydown",(e)=>{
+    if(!selected) return;
+    let rot=getRot(selected);
+    if(e.key==="q") selected.dataset.rot=rot-5;
+    if(e.key==="e") selected.dataset.rot=rot+5;
+    setTransform(selected);
+});
 </script>
 
 </body>
