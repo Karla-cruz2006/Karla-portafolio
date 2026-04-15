@@ -37,6 +37,7 @@ body{
     position:absolute;
     cursor:grab;
     user-select:none;
+    transform-origin:center center;
 }
 
 .scrap-item:active{cursor:grabbing;}
@@ -121,10 +122,12 @@ body{
 </div>
 
 <script>
+
 let selected=null;
 let mode=null;
 let startX,startY,startLeft,startTop,startW,startRot;
 
+/* ROTACIÓN */
 function getRot(el){
     return parseFloat(el.dataset.rot || 0);
 }
@@ -133,7 +136,7 @@ function setTransform(el){
     el.style.transform = `rotate(${getRot(el)}deg)`;
 }
 
-/* ===== CREAR CONTROLES ===== */
+/* HANDLES */
 function addHandles(el){
 
     el.querySelectorAll(".resize-handle,.rotate-handle").forEach(e=>e.remove());
@@ -159,18 +162,21 @@ function addHandles(el){
         e.stopPropagation();
         mode="rotate";
         selected=el;
+
         const rect=el.getBoundingClientRect();
         const cx=rect.left+rect.width/2;
         const cy=rect.top+rect.height/2;
+
         startX=Math.atan2(e.clientY-cy,e.clientX-cx);
         startRot=getRot(el);
     };
 }
 
-/* ===== SELECCIÓN + DRAG ===== */
+/* DRAG + FIX % TO PX */
 document.querySelectorAll(".scrap-item").forEach(el=>{
 
     el.onmousedown=(e)=>{
+
         if(e.target.classList.contains("resize-handle") ||
            e.target.classList.contains("rotate-handle")) return;
 
@@ -178,23 +184,29 @@ document.querySelectorAll(".scrap-item").forEach(el=>{
         addHandles(el);
 
         mode="drag";
+
+        const rect = el.getBoundingClientRect();
+        const parentRect = el.parentElement.getBoundingClientRect();
+
         startX=e.clientX;
         startY=e.clientY;
 
-        startLeft=parseFloat(el.style.left);
-        startTop=parseFloat(el.style.top);
+        startLeft = rect.left - parentRect.left;
+        startTop = rect.top - parentRect.top;
+
+        e.preventDefault();
     };
 
     el.onclick=()=>{ selected=el; };
 });
 
-/* ===== MOVE SYSTEM ===== */
+/* MOVE SYSTEM */
 document.onmousemove=(e)=>{
     if(!selected) return;
 
     if(mode==="drag"){
-        selected.style.left=(startLeft+(e.clientX-startX))+"px";
-        selected.style.top=(startTop+(e.clientY-startY))+"px";
+        selected.style.left = (startLeft + (e.clientX-startX)) + "px";
+        selected.style.top  = (startTop + (e.clientY-startY)) + "px";
     }
 
     if(mode==="resize"){
@@ -220,14 +232,18 @@ document.onmouseup=()=>{
     selected=null;
 };
 
-/* ===== TECLAS ROTAR ===== */
+/* TECLAS ROTAR */
 document.addEventListener("keydown",(e)=>{
     if(!selected) return;
+
     let rot=getRot(selected);
+
     if(e.key==="q") selected.dataset.rot=rot-5;
     if(e.key==="e") selected.dataset.rot=rot+5;
+
     setTransform(selected);
 });
+
 </script>
 
 </body>
