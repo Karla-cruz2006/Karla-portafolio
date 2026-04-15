@@ -3,90 +3,166 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Karla Sherlyn · Curriculum Vitae</title>
+<title>Karla Sherlyn · Curriculum Vitae · Editor Completo</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-
-body{
-    background:#000;
-    overflow-x:hidden;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.fullscreen-container{
-    position:relative;
-    min-height:100vh;
+body {
+    background: #000;
+    overflow-x: hidden;
+    font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
-.fullscreen-img{
-    width:100%;
-    display:block;
-    pointer-events:none;
+.fullscreen-container {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
 }
 
-.scrapbook-layer{
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
+.fullscreen-img {
+    width: 100%;
+    display: block;
+    pointer-events: none;
 }
 
-/* ELEMENTOS */
-.scrap-item{
-    position:absolute;
-    cursor:grab;
-    user-select:none;
-    transform-origin:center center;
+.scrapbook-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
-.scrap-item img{
-    width:100%;
-    display:block;
-    pointer-events:none;
+/* ELEMENTOS EDITABLES */
+.scrap-item {
+    position: absolute;
+    cursor: grab;
+    user-select: none;
+    transform-origin: center center;
+    transition: outline 0.05s ease;
 }
 
-/* HANDLES */
-.resize-handle{
-    position:absolute;
-    width:14px;
-    height:14px;
-    background:#ff4d6d;
-    border-radius:50%;
-    bottom:-7px;
-    right:-7px;
-    cursor:nwse-resize;
-    border:2px solid white;
+.scrap-item:active {
+    cursor: grabbing;
 }
 
-.rotate-handle{
-    position:absolute;
-    width:14px;
-    height:14px;
-    background:#4d9eff;
-    border-radius:50%;
-    top:-7px;
-    left:-7px;
-    cursor:grab;
-    border:2px solid white;
+.scrap-item img {
+    width: 100%;
+    display: block;
+    pointer-events: none;
+}
+
+/* HANDLES DE EDICIÓN */
+.resize-handle {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background: #ff4d6d;
+    border-radius: 50%;
+    bottom: -9px;
+    right: -9px;
+    cursor: nwse-resize;
+    border: 2px solid white;
+    box-shadow: 0 0 6px rgba(255, 77, 109, 0.6);
+    z-index: 100;
+    transition: transform 0.1s;
+}
+
+.resize-handle:hover {
+    transform: scale(1.2);
+    background: #ff1e4d;
+}
+
+.rotate-handle {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background: #4d9eff;
+    border-radius: 50%;
+    top: -9px;
+    left: -9px;
+    cursor: grab;
+    border: 2px solid white;
+    box-shadow: 0 0 6px rgba(77, 158, 255, 0.6);
+    z-index: 100;
+    transition: transform 0.1s;
+}
+
+.rotate-handle:hover {
+    transform: scale(1.2);
+    background: #2b7be6;
+}
+
+.rotate-handle:active {
+    cursor: grabbing;
+}
+
+/* ELEMENTO SELECCIONADO */
+.scrap-item.selected {
+    outline: 3px solid #ff4d6d;
+    outline-offset: 4px;
+    filter: drop-shadow(0 0 8px rgba(255, 77, 109, 0.3));
+    z-index: 1000 !important;
+}
+
+/* Tooltip flotante */
+.scrap-item::after {
+    content: "✏️";
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 20px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+    white-space: nowrap;
+    font-family: monospace;
+    z-index: 200;
+}
+
+.scrap-item:hover::after {
+    opacity: 0.9;
+    content: "🖱️ Arrastrar | 🔵 Rotar | 🔴 Redimensionar | Q/E girar";
 }
 
 /* WATERMARK */
-.watermark{
-    position:absolute;
-    bottom:10px;
-    left:50%;
-    transform:translateX(-50%);
-    color:white;
-    font-size:12px;
-    background:rgba(0,0,0,0.5);
-    padding:5px 12px;
-    border-radius:20px;
+.watermark {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 12px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 5px 15px;
+    border-radius: 30px;
+    pointer-events: none;
+    z-index: 20;
+    backdrop-filter: blur(3px);
+    white-space: nowrap;
 }
 
-/* SELECTED */
-.selected{
-    outline:3px solid #ff4d6d;
+/* Responsive */
+@media (max-width: 768px) {
+    .resize-handle, .rotate-handle {
+        width: 14px;
+        height: 14px;
+    }
+    .scrap-item::after {
+        font-size: 9px;
+        top: -25px;
+        white-space: nowrap;
+    }
 }
 </style>
 </head>
@@ -94,158 +170,370 @@ body{
 <body>
 
 <div class="fullscreen-container">
-<img src="img/fondo.png" class="fullscreen-img">
+    <!-- FONDO -->
+    <img src="img/fondo.png" class="fullscreen-img" alt="Fondo">
 
-<div class="scrapbook-layer">
+    <div class="scrapbook-layer">
+        <div class="watermark">© 2026 Karla Cruz | YANG´S LAB</div>
 
-<div class="watermark">© 2026 Karla Cruz | YANG´S LAB</div>
+        <!-- BOTÓN CURRÍCULUM -->
+        <div class="scrap-item" data-type="cv" style="top:75%; left:7%; width:18%;">
+            <img src="img/Boton_curriculum.png" alt="Currículum">
+        </div>
 
-<div class="scrap-item" style="top:75%;left:7%;width:18%;">
-<img src="img/Boton_curriculum.png">
-</div>
+        <!-- BOTÓN CONTÁCTAME -->
+        <div class="scrap-item" data-type="contacto" style="top:75%; left:31%; width:18%;">
+            <img src="img/Boton_contactame.png" alt="Contáctame">
+        </div>
 
-<div class="scrap-item" style="top:75%;left:31%;width:18%;">
-<img src="img/Boton_contactame.png">
-</div>
+        <!-- BOTÓN PORTAFOLIO -->
+        <div class="scrap-item" data-type="portafolio" style="top:45%; left:41%; width:22%;">
+            <img src="img/Boton_portafolio.png" alt="Portafolio">
+        </div>
 
-<div class="scrap-item" style="top:45%;left:41%;width:22%;">
-<img src="img/Boton_portafolio.png">
-</div>
-
-<div class="scrap-item" style="top:50%;left:12%;width:22%;">
-<img src="img/Arandanos.png">
-</div>
-
-</div>
+        <!-- ARÁNDANO DECORATIVO -->
+        <div class="scrap-item" data-type="deco" style="top:50%; left:12%; width:22%;">
+            <img src="img/Arandanos.png" alt="Arándanos">
+        </div>
+    </div>
 </div>
 
 <script>
+// ============================================================
+// FUNCIONES DE NAVEGACIÓN (COMPATIBLES CON GITHUB PAGES)
+// ============================================================
 
-let selected=null;
-let mode=null;
-let startX,startY,startLeft,startTop,startW,startRot;
-
-/* ROTACIÓN */
-function getRot(el){
-    return parseFloat(el.dataset.rot || 0);
+// Descarga del archivo CV
+function descargarCV() {
+    console.log("📄 Descargando CV...");
+    const link = document.createElement('a');
+    link.href = "docs/Karla_Cruz_CV.pdf";
+    link.download = "Karla_Cruz_CV.pdf";
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    setTimeout(() => document.body.removeChild(link), 150);
+    console.log("✅ Descarga iniciada");
 }
 
-function setTransform(el){
-    el.style.transform = `rotate(${getRot(el)}deg)`;
+// Navegación a contacto.html (funciona en local y GitHub Pages)
+function irContacto() {
+    console.log("📞 Redirigiendo a contactame.html");
+    // Ruta relativa: funciona en localhost y en GitHub Pages
+    window.location.href = "contactame.html";
 }
 
-/* HANDLES */
-function addHandles(el){
+// Navegación a portafolio (funciona en local y GitHub Pages)
+function irPortafolio() {
+    console.log("🎨 Navegando a portafolio/portafolio.html");
+    // Ruta relativa al portafolio dentro de su carpeta
+    window.location.href = "portafolio/portafolio.html";
+}
 
-    el.querySelectorAll(".resize-handle,.rotate-handle").forEach(e=>e.remove());
+// ============================================================
+// EDITOR: MOVER, REDIMENSIONAR, ROTAR
+// ============================================================
+let selectedElement = null;
+let actionMode = null; // 'drag', 'resize', 'rotate'
+let startX = 0, startY = 0;
+let startLeft = 0, startTop = 0;
+let startWidth = 0;
+let startRotationAngle = 0;
+let currentRotation = 0;
 
-    const r=document.createElement("div");
-    r.className="resize-handle";
+// Obtener rotación actual desde transform
+function getRotation(element) {
+    const transform = element.style.transform;
+    if (!transform) return 0;
+    const match = transform.match(/rotate\(([-\d.]+)deg\)/);
+    return match ? parseFloat(match[1]) : 0;
+}
 
-    const rot=document.createElement("div");
-    rot.className="rotate-handle";
+// Aplicar rotación
+function setRotation(element, deg) {
+    element.style.transform = `rotate(${deg}deg)`;
+}
 
-    el.appendChild(r);
-    el.appendChild(rot);
+// ===== CREAR MANIJAS =====
+function createHandles(element) {
+    // Remover handles existentes
+    element.querySelectorAll('.resize-handle, .rotate-handle').forEach(h => h.remove());
 
-    r.onmousedown=(e)=>{
+    // Handle de redimension (rosado)
+    const resizeHandle = document.createElement('div');
+    resizeHandle.className = 'resize-handle';
+    element.appendChild(resizeHandle);
+
+    // Handle de rotación (azul)
+    const rotateHandle = document.createElement('div');
+    rotateHandle.className = 'rotate-handle';
+    element.appendChild(rotateHandle);
+
+    // Evento redimension
+    resizeHandle.onmousedown = (e) => {
         e.stopPropagation();
-        mode="resize";
-        selected=el;
-        startX=e.clientX;
-        startW=el.offsetWidth;
-    };
-
-    rot.onmousedown=(e)=>{
-        e.stopPropagation();
-        mode="rotate";
-        selected=el;
-
-        const rect=el.getBoundingClientRect();
-        const cx=rect.left+rect.width/2;
-        const cy=rect.top+rect.height/2;
-
-        startX=Math.atan2(e.clientY-cy,e.clientX-cx);
-        startRot=getRot(el);
-    };
-}
-
-/* DRAG FIX DEFINITIVO */
-document.querySelectorAll(".scrap-item").forEach(el=>{
-
-    el.onmousedown=(e)=>{
-
-        if(e.target.classList.contains("resize-handle") ||
-           e.target.classList.contains("rotate-handle")) return;
-
-        selected=el;
-        addHandles(el);
-
-        mode="drag";
-
-        const rect = el.getBoundingClientRect();
-        const parentRect = el.parentElement.getBoundingClientRect();
-
-        startX=e.clientX;
-        startY=e.clientY;
-
-        // 🔥 FIX REAL: siempre trabajar en px
-        startLeft = rect.left - parentRect.left;
-        startTop = rect.top - parentRect.top;
-
-        el.style.left = startLeft + "px";
-        el.style.top = startTop + "px";
-
+        actionMode = 'resize';
+        startX = e.clientX;
+        startWidth = element.offsetWidth;
         e.preventDefault();
     };
 
-    el.onclick=()=>{ selected=el; };
-});
+    // Evento rotación
+    rotateHandle.onmousedown = (e) => {
+        e.stopPropagation();
+        actionMode = 'rotate';
+        
+        const rect = element.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        startRotationAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
+        currentRotation = getRotation(element);
+        
+        e.preventDefault();
+    };
+}
 
-/* MOVE SYSTEM */
-document.onmousemove=(e)=>{
-    if(!selected) return;
-
-    if(mode==="drag"){
-        selected.style.left = (startLeft + (e.clientX-startX)) + "px";
-        selected.style.top  = (startTop + (e.clientY-startY)) + "px";
+// ===== SELECCIONAR ELEMENTO =====
+function selectElement(element) {
+    // Quitar selección anterior
+    if (selectedElement) {
+        selectedElement.classList.remove('selected');
     }
+    
+    selectedElement = element;
+    selectedElement.classList.add('selected');
+    createHandles(selectedElement);
+}
 
-    if(mode==="resize"){
-        let w=Math.max(60,startW+(e.clientX-startX));
-        selected.style.width=w+"px";
+// ===== ARRASTRAR =====
+function startDrag(element, e) {
+    actionMode = 'drag';
+    selectedElement = element;
+    
+    const rect = element.getBoundingClientRect();
+    const parentRect = element.parentElement.getBoundingClientRect();
+    
+    startX = e.clientX;
+    startY = e.clientY;
+    startLeft = rect.left - parentRect.left;
+    startTop = rect.top - parentRect.top;
+    
+    // Asegurar que los valores estén en px
+    element.style.left = startLeft + 'px';
+    element.style.top = startTop + 'px';
+}
+
+// ===== GUARDAR POSICIONES EN LOCALSTORAGE =====
+function savePositions() {
+    const items = document.querySelectorAll('.scrap-item');
+    const data = [];
+    items.forEach(el => {
+        data.push({
+            top: el.style.top,
+            left: el.style.left,
+            width: el.style.width,
+            transform: el.style.transform
+        });
+    });
+    localStorage.setItem('karla_layout', JSON.stringify(data));
+    console.log("💾 Posiciones guardadas");
+}
+
+// ===== CARGAR POSICIONES =====
+function loadPositions() {
+    const saved = localStorage.getItem('karla_layout');
+    if (!saved) {
+        console.log("📂 No hay posiciones guardadas");
+        return;
     }
+    
+    try {
+        const data = JSON.parse(saved);
+        const items = document.querySelectorAll('.scrap-item');
+        items.forEach((el, i) => {
+            if (data[i]) {
+                if (data[i].top) el.style.top = data[i].top;
+                if (data[i].left) el.style.left = data[i].left;
+                if (data[i].width) el.style.width = data[i].width;
+                if (data[i].transform) el.style.transform = data[i].transform;
+            }
+        });
+        console.log("📂 Posiciones cargadas");
+    } catch(e) {
+        console.warn("Error al cargar:", e);
+    }
+}
 
-    if(mode==="rotate"){
-        const rect=selected.getBoundingClientRect();
-        const cx=rect.left+rect.width/2;
-        const cy=rect.top+rect.height/2;
+// ============================================================
+// EVENTOS GLOBALES
+// ============================================================
 
-        let ang=Math.atan2(e.clientY-cy,e.clientX-cx);
-        let deg=(ang-startX)*180/Math.PI;
-
-        selected.dataset.rot=startRot+deg;
-        setTransform(selected);
+// Mouse move para arrastrar, redimensionar y rotar
+document.onmousemove = (e) => {
+    if (!selectedElement) return;
+    
+    // ARRASTRAR
+    if (actionMode === 'drag') {
+        const newLeft = startLeft + (e.clientX - startX);
+        const newTop = startTop + (e.clientY - startY);
+        selectedElement.style.left = newLeft + 'px';
+        selectedElement.style.top = newTop + 'px';
+    }
+    
+    // REDIMENSIONAR
+    if (actionMode === 'resize') {
+        let newWidth = Math.max(60, startWidth + (e.clientX - startX));
+        selectedElement.style.width = newWidth + 'px';
+    }
+    
+    // ROTAR
+    if (actionMode === 'rotate') {
+        const rect = selectedElement.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        const currentAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
+        let deltaDeg = (currentAngle - startRotationAngle) * 180 / Math.PI;
+        let newRotation = currentRotation + deltaDeg;
+        
+        setRotation(selectedElement, newRotation);
     }
 };
 
-document.onmouseup=()=>{
-    mode=null;
-    selected=null;
+// Mouse up: finalizar acción y guardar
+document.onmouseup = () => {
+    if (actionMode && selectedElement) {
+        savePositions();
+    }
+    actionMode = null;
 };
 
-/* TECLAS */
-document.addEventListener("keydown",(e)=>{
-    if(!selected) return;
+// ===== ASIGNAR EVENTOS A CADA ELEMENTO =====
+function bindEvents() {
+    document.querySelectorAll('.scrap-item').forEach(el => {
+        // CLICK: seleccionar elemento
+        el.onclick = (e) => {
+            e.stopPropagation();
+            selectElement(el);
+        };
+        
+        // MOUSEDOWN: iniciar arrastre
+        el.onmousedown = (e) => {
+            if (e.target.classList.contains('resize-handle') || 
+                e.target.classList.contains('rotate-handle')) {
+                return;
+            }
+            startDrag(el, e);
+            e.preventDefault();
+        };
+    });
+}
 
-    let rot=getRot(selected);
+// ===== DOBLE CLIC: EJECUTAR ACCIONES =====
+function bindDoubleClickActions() {
+    document.querySelectorAll('.scrap-item').forEach(el => {
+        el.ondblclick = (e) => {
+            e.stopPropagation();
+            const img = el.querySelector('img');
+            if (!img) return;
+            
+            const src = img.src.toLowerCase();
+            
+            if (src.includes('boton_curriculum')) {
+                descargarCV();
+            } else if (src.includes('boton_contactame')) {
+                irContacto();
+            } else if (src.includes('boton_portafolio')) {
+                irPortafolio();
+            } else if (src.includes('arandanos')) {
+                console.log("🫐 Arándano decorativo (sin acción)");
+            }
+        };
+    });
+}
 
-    if(e.key==="q") selected.dataset.rot=rot-5;
-    if(e.key==="e") selected.dataset.rot=rot+5;
-
-    setTransform(selected);
+// ===== ROTACIÓN CON TECLADO (Q / E) =====
+document.addEventListener('keydown', (e) => {
+    if (!selectedElement) return;
+    
+    const key = e.key.toLowerCase();
+    let rot = getRotation(selectedElement);
+    
+    if (key === 'q') {
+        e.preventDefault();
+        rot -= 5;
+        setRotation(selectedElement, rot);
+        savePositions();
+        console.log(`🔄 Rotación: ${rot}°`);
+    } else if (key === 'e') {
+        e.preventDefault();
+        rot += 5;
+        setRotation(selectedElement, rot);
+        savePositions();
+        console.log(`🔄 Rotación: ${rot}°`);
+    }
 });
 
+// ===== CLICK FUERA: DESELECCIONAR =====
+document.body.addEventListener('click', (e) => {
+    if (!e.target.closest('.scrap-item')) {
+        if (selectedElement) {
+            selectedElement.classList.remove('selected');
+            selectedElement = null;
+        }
+    }
+});
+
+// ===== VERIFICAR RECURSOS =====
+function checkResources() {
+    const images = document.querySelectorAll('img');
+    images.forEach(img => {
+        img.onerror = () => console.warn(`⚠️ Imagen no encontrada: ${img.src}`);
+        img.onload = () => console.log(`✅ Imagen: ${img.src.split('/').pop()}`);
+    });
+    
+    // Verificar PDF
+    fetch('docs/Karla_Cruz_CV.pdf', { method: 'HEAD' })
+        .then(res => res.ok ? console.log("✅ PDF disponible") : console.warn("⚠️ PDF no encontrado"))
+        .catch(() => console.warn("⚠️ No se pudo verificar PDF"));
+}
+
+// ===== INFORMACIÓN DE RUTAS (DEBUG) =====
+function showPathInfo() {
+    console.log("📁 Información de rutas:");
+    console.log("   - Ruta actual:", window.location.pathname);
+    console.log("   - Origen:", window.location.origin);
+    console.log("   - Contacto → contactame.html");
+    console.log("   - Portafolio → portafolio/portafolio.html");
+    console.log("   - CV → docs/Karla_Cruz_CV.pdf");
+}
+
+// ============================================================
+// INICIALIZACIÓN
+// ============================================================
+window.onload = () => {
+    loadPositions();
+    bindEvents();
+    bindDoubleClickActions();
+    checkResources();
+    showPathInfo();
+    
+    console.log("%c✨ EDITOR ACTIVADO ✨", "color: #ff4d6d; font-size: 14px; font-weight: bold");
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    console.log("✅ CLIC: Seleccionar elemento");
+    console.log("✅ ARRASTRAR: Mover elemento");
+    console.log("✅ CÍRCULO ROSADO: Redimensionar");
+    console.log("✅ CÍRCULO AZUL: Rotar");
+    console.log("✅ TECLAS Q / E: Rotar elemento seleccionado");
+    console.log("✅ DOBLE CLIC: Ejecutar acción del botón");
+    console.log("");
+    console.log("🔗 ENLACES CONFIGURADOS:");
+    console.log("   📞 Contáctame → contactame.html");
+    console.log("   🎨 Portafolio → portafolio/portafolio.html");
+    console.log("   📄 Currículum → descarga PDF");
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+};
 </script>
 
 </body>
