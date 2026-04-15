@@ -12,7 +12,7 @@
 <body>
 
 <div class="fullscreen-container">
-    <img src="img/fondo.png" class="fullscreen-img" alt="Fondo">
+    <img src="img/fondo.png" class="fullscreen-img">
 
     <div class="scrapbook-layer">
 
@@ -20,22 +20,19 @@
             © 2026 Karla Cruz | YANG´S LAB
         </div>
 
-        <!-- BOTÓN CV -->
+        <!-- BOTONES -->
         <div class="scrap-item" style="top:500px; left:120px; width:220px;">
             <img src="img/Boton_curriculum.png">
         </div>
 
-        <!-- BOTÓN CONTACTO -->
         <div class="scrap-item" style="top:500px; left:420px; width:220px;">
             <img src="img/Boton_contactame.png">
         </div>
 
-        <!-- BOTÓN PORTAFOLIO -->
         <div class="scrap-item" style="top:300px; left:550px; width:260px;">
             <img src="img/Boton_portafolio.png">
         </div>
 
-        <!-- ARÁNDANOS -->
         <div class="scrap-item rotate-animation" style="top:320px; left:150px; width:250px;">
             <img src="img/Arandanos.png">
         </div>
@@ -44,41 +41,93 @@
 </div>
 
 <script>
-function descargarCV() {
-    const link = document.createElement('a');
-    link.href = "docs/Karla_Cruz_CV.pdf";
-    link.download = "Karla_Cruz_CV.pdf";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+let selected=null, isDragging=false, startX, startY, startLeft, startTop;
+
+/* 🔥 GUARDAR POSICIONES */
+function save(){
+    const data=[];
+    document.querySelectorAll('.scrap-item').forEach(el=>{
+        data.push({
+            top:el.style.top,
+            left:el.style.left,
+            width:el.style.width,
+            transform:el.style.transform
+        });
+    });
+    localStorage.setItem("layout", JSON.stringify(data));
 }
 
-function irContacto() {
-    window.location.href = "contactame.html"; // 🔥 corregido
+/* 🔥 CARGAR */
+function load(){
+    const data=JSON.parse(localStorage.getItem("layout"));
+    if(!data) return;
+    document.querySelectorAll('.scrap-item').forEach((el,i)=>{
+        if(data[i]){
+            el.style.top=data[i].top;
+            el.style.left=data[i].left;
+            el.style.width=data[i].width;
+            if(data[i].transform) el.style.transform=data[i].transform;
+        }
+    });
 }
 
-function irPortafolio() {
-    window.location.href = "portafolio/portafolio.html";
+/* 🔥 DRAG */
+function startDrag(e,el){
+    selected=el;
+    isDragging=true;
+    startX=e.clientX;
+    startY=e.clientY;
+    startLeft=parseFloat(el.style.left);
+    startTop=parseFloat(el.style.top);
+
+    document.onmousemove=drag;
+    document.onmouseup=stop;
 }
 
-let selected = null;
+function drag(e){
+    if(!isDragging) return;
+    selected.style.left=(startLeft+(e.clientX-startX))+"px";
+    selected.style.top=(startTop+(e.clientY-startY))+"px";
+}
 
-function asignarFuncionesBotones() {
-    document.querySelectorAll('.scrap-item').forEach(el => {
-        const img = el.querySelector('img');
+function stop(){
+    isDragging=false;
+    document.onmousemove=null;
+    document.onmouseup=null;
+    save();
+}
+
+/* 🔥 BOTONES */
+function acciones(){
+    document.querySelectorAll('.scrap-item').forEach(el=>{
+        const img=el.querySelector('img');
         if(!img) return;
 
-        const src = img.src.toLowerCase();
+        const src=img.src.toLowerCase();
 
-        el.addEventListener('dblclick', () => {
-            if(src.includes('boton_curriculum')) descargarCV();
-            else if(src.includes('boton_contactame')) irContacto();
-            else if(src.includes('boton_portafolio')) irPortafolio();
+        el.addEventListener('mousedown',(e)=>startDrag(e,el));
+
+        el.addEventListener('dblclick',()=>{
+            if(src.includes('curriculum')) descargarCV();
+            else if(src.includes('contactame')) window.location.href="contactame.html";
+            else if(src.includes('portafolio')) window.location.href="portafolio/portafolio.html";
         });
     });
 }
 
-window.onload = asignarFuncionesBotones;
+/* 🔥 DESCARGA */
+function descargarCV(){
+    const link=document.createElement('a');
+    link.href="docs/Karla_Cruz_CV.pdf";
+    link.download="Karla_Cruz_CV.pdf";
+    link.click();
+}
+
+/* INIT */
+window.onload=()=>{
+    load();
+    acciones();
+};
 </script>
 
 </body>

@@ -71,3 +71,17 @@ body{
     padding:4px 12px;
     border-radius:20px;
 }
+.scrap-item{
+    position:absolute;
+    cursor:grab;
+}
+
+.scrap-item:active{
+    cursor:grabbing;
+}
+
+.scrap-item img{
+    width:100%;
+    height:auto;
+    display:block;
+}
