@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portafolio - Carrusel de Secciones</title>
+    
+    <!-- ✅ ANTI-CACHÉ -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
     <style>
         * {
             margin: 0;
@@ -11,15 +17,15 @@
             box-sizing: border-box;
         }
 
-        /* Fondo del body (tu imagen) */
+        /* ✅ CORREGIDO: background-size: cover elimina el espacio debajo */
         body {
             background-image: url("../img/fondo-portafolio.png");
             background-repeat: no-repeat;
-            background-size: 100% auto;
+            background-size: cover;           /* ← CORREGIDO: ya no deja espacio negro */
             background-position: center top;
             background-attachment: scroll;
             background-color: #000;
-            min-height: 170vh;
+            min-height: 100vh;                /* ← CORREGIDO: altura mínima completa */
             width: 100%;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
@@ -32,30 +38,26 @@
             padding: 2rem;
             border-radius: 2rem;
             position: relative;
-            top: 42rem;
+            margin-top: 42rem;
         }
 
-        /* Carrusel */
         .carrusel {
             width: 100%;
             overflow: hidden;
             border-radius: 1.5rem;
         }
 
-        /* Pista de elementos */
         .carrusel-pista {
             display: flex;
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Cada elemento del carrusel */
         .carrusel-item {
             min-width: 25%;
             padding: 1rem;
             box-sizing: border-box;
         }
 
-        /* Tarjeta de cada sección */
         .tarjeta {
             background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(5px);
@@ -66,12 +68,11 @@
             transition: all 0.3s ease;
             border: 1px solid rgba(138, 6, 105, 0.685);
             text-decoration: none;
-            display: block;
-            min-height: 200px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            min-height: 200px;
         }
 
         .tarjeta:hover {
@@ -80,7 +81,6 @@
             border-color: #860b7caf;
         }
 
-        /* Espacio para que pongas tus imágenes/elementos */
         .tarjeta-contenido {
             width: 100%;
             display: flex;
@@ -89,7 +89,6 @@
             justify-content: center;
         }
 
-        /* Imagen dentro de la tarjeta */
         .tarjeta-imagen {
             width: 80px;
             height: 80px;
@@ -97,7 +96,6 @@
             margin-bottom: 1rem;
         }
 
-        /* Título de cada tarjeta */
         .tarjeta h3 {
             color: white;
             font-size: 1.2rem;
@@ -105,7 +103,6 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Controles */
         .controles {
             display: flex;
             justify-content: center;
@@ -131,7 +128,6 @@
             transform: scale(1.05);
         }
 
-        /* Indicadores */
         .indicadores {
             display: flex;
             justify-content: center;
@@ -168,7 +164,7 @@
             }
             .carrusel-container {
                 margin: 2rem;
-                top: 28rem;
+                margin-top: 28rem;
             }
         }
 
@@ -178,8 +174,7 @@
             }
             .carrusel-container {
                 margin: 1rem;
-                padding: 1rem;
-                top: 18rem;
+                margin-top: 18rem;
             }
         }
 
@@ -187,6 +182,15 @@
             .carrusel-item {
                 min-width: 100%;
             }
+            .carrusel-container {
+                margin-top: 12rem;
+            }
+        }
+        
+        /* Feedback visual para imágenes rotas */
+        .tarjeta-imagen.error {
+            outline: 2px solid red;
+            opacity: 0.5;
         }
     </style>
 </head>
@@ -194,63 +198,63 @@
     <div class="carrusel-container">
         <div class="carrusel">
             <div class="carrusel-pista" id="pista">
-                <!-- 1. Branding -->
+                <!-- Branding -->
                 <div class="carrusel-item">
-                    <a href="http://127.0.0.1:5500/02-maquetacion-cv/portafolio/branding.html" class="tarjeta" target="_blank">
+                    <a href="branding.html" class="tarjeta">
                         <div class="tarjeta-contenido">
                             <img src="../img/c-branding.png" alt="Branding" class="tarjeta-imagen">
                             <h3>Branding</h3>
                         </div>
                     </a>
                 </div>
-                <!-- 2. Flyers -->
+                <!-- Flyers -->
                 <div class="carrusel-item">
-                    <a href="http://127.0.0.1:5500/02-maquetacion-cv/portafolio/flyers.html" class="tarjeta" target="_blank">
+                    <a href="flyers.html" class="tarjeta">
                         <div class="tarjeta-contenido">
                             <img src="../img/c-flyers.png" alt="Flyers" class="tarjeta-imagen">
                             <h3>Flyers</h3>
                         </div>
                     </a>
                 </div>
-                <!-- 3. Ilustraciones -->
+                <!-- Ilustraciones -->
                 <div class="carrusel-item">
-                    <a href="http://127.0.0.1:5500/02-maquetacion-cv/portafolio/ilustraciones.html" class="tarjeta" target="_blank">
+                    <a href="ilustraciones.html" class="tarjeta">
                         <div class="tarjeta-contenido">
                             <img src="../img/c-ilustraciones.png" alt="Ilustraciones" class="tarjeta-imagen">
                             <h3>Ilustraciones</h3>
                         </div>
                     </a>
                 </div>
-                <!-- 4. Infografías -->
+                <!-- Infografías -->
                 <div class="carrusel-item">
-                    <a href="http://127.0.0.1:5500/02-maquetacion-cv/portafolio/infografia.html" class="tarjeta" target="_blank">
+                    <a href="infografia.html" class="tarjeta">
                         <div class="tarjeta-contenido">
                             <img src="../img/c-infografias.png" alt="Infografías" class="tarjeta-imagen">
                             <h3>Infografías</h3>
                         </div>
                     </a>
                 </div>
-                <!-- 5. Posters -->
+                <!-- Posters -->
                 <div class="carrusel-item">
-                    <a href="http://127.0.0.1:5500/02-maquetacion-cv/portafolio/posters.html" class="tarjeta" target="_blank">
+                    <a href="posters.html" class="tarjeta">
                         <div class="tarjeta-contenido">
                             <img src="../img/c-posters.png" alt="Posters" class="tarjeta-imagen">
                             <h3>Pósters</h3>
                         </div>
                     </a>
                 </div>
-                <!-- 6. Logos -->
+                <!-- Logos -->
                 <div class="carrusel-item">
-                    <a href="http://127.0.0.1:5500/02-maquetacion-cv/portafolio/logos.html" class="tarjeta" target="_blank">
+                    <a href="logos.html" class="tarjeta">
                         <div class="tarjeta-contenido">
                             <img src="../img/c-logos.png" alt="Logos" class="tarjeta-imagen">
                             <h3>Logos</h3>
                         </div>
                     </a>
                 </div>
-                <!-- 7. Modelados -->
+                <!-- Modelados -->
                 <div class="carrusel-item">
-                    <a href="http://127.0.0.1:5500/02-maquetacion-cv/portafolio/modelado.html" class="tarjeta" target="_blank">
+                    <a href="modelado.html" class="tarjeta">
                         <div class="tarjeta-contenido">
                             <img src="../img/c-modelados.png" alt="Modelado" class="tarjeta-imagen">
                             <h3>Modelados</h3>
@@ -383,6 +387,18 @@
             }
         }
         
+        // Verificar imágenes rotas
+        function verificarImagenes() {
+            const imagenes = document.querySelectorAll('.tarjeta-imagen');
+            imagenes.forEach(img => {
+                img.addEventListener('error', function() {
+                    console.warn(`⚠️ Imagen no encontrada: ${this.src}`);
+                    this.classList.add('error');
+                    this.src = 'https://via.placeholder.com/80x80?text=No+Image';
+                });
+            });
+        }
+        
         btnSiguiente.addEventListener('click', () => {
             siguiente();
             resetearAuto();
@@ -403,6 +419,14 @@
         crearIndicadores();
         actualizarCarrusel();
         iniciarAuto();
+        verificarImagenes();
+        
+        console.log("🎨 Portafolio - Carrusel cargado correctamente");
+        console.log("✅ Correcciones aplicadas:");
+        console.log("   - background-size: cover (sin espacios negros)");
+        console.log("   - min-height: 100vh (altura completa)");
+        console.log("   - Meta etiquetas anti-caché");
+        console.log("   - Enlaces relativos corregidos");
     </script>
 </body>
 </html>

@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portafolio - Logos</title>
+    
+    <!-- ✅ ANTI-CACHÉ - Para que los cambios siempre se actualicen -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
     <style>
         * {
             margin: 0;
@@ -12,14 +18,15 @@
             user-select: none;
         }
 
+        /* ✅ Fondo corregido - sin espacios en blanco */
         body {
             background-image: url("../img/fondo-secciones.png");
             background-repeat: no-repeat;
-            background-size: 100% auto;
+            background-size: cover;
             background-position: center top;
             background-attachment: scroll;
             background-color: #000;
-            min-height: 170vh;
+            min-height: 100vh;
             width: 100%;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             position: relative;
@@ -29,7 +36,7 @@
         .contenedor-libre {
             position: relative;
             width: 100%;
-            min-height: 170vh;
+            min-height: 100vh;
         }
 
         .boton-movible {
@@ -88,7 +95,7 @@
             background-color: #0b7dda;
         }
 
-        /* ========== GALERÍA DE LOGOS DESPLAZADA MÁS A LA DERECHA ========== */
+        /* ========== GALERÍA DE LOGOS ========== */
         .galeria-logos {
             position: fixed;
             top: 50%;
@@ -202,7 +209,8 @@
 </head>
 <body>
     <div class="contenedor-libre">
-        <a href="http://127.0.0.1:5500/02-maquetacion-cv/index.html" 
+        <!-- ✅ Ruta relativa corregida para GitHub Pages -->
+        <a href="../index.html" 
            class="boton-movible btn-inicio" 
            id="btnInicio"
            tabindex="0">
@@ -218,7 +226,7 @@
         </button>
     </div>
 
-    <!-- ========== GALERÍA DE LOGOS DESPLAZADA MÁS A LA DERECHA ========== -->
+    <!-- ========== GALERÍA DE LOGOS ========== -->
     <div class="galeria-logos">
         <div class="logo-item">
             <img src="../img/Logo-queseria.png" alt="Logo Quesería">
@@ -415,11 +423,10 @@
             boton.addEventListener('wheel', expandirConRueda, { passive: false });
         });
 
-        // ========== FUNCIÓN SIMPLIFICADA PARA BOTONES (SIN RETRASOS) ==========
+        // ========== FUNCIÓN PARA BOTONES (DETECTA ARRASTRE) ==========
         function setupButtonAction(btn, action) {
             if (!btn) return;
             
-            // Variable para detectar si se movió el mouse
             let hasMoved = false;
             let startX = 0, startY = 0;
             
@@ -430,14 +437,12 @@
             });
             
             btn.addEventListener('mousemove', (e) => {
-                // Si el mouse se movió más de 5px, consideramos que es un arrastre
                 if (Math.abs(e.clientX - startX) > 5 || Math.abs(e.clientY - startY) > 5) {
                     hasMoved = true;
                 }
             });
             
             btn.addEventListener('click', (e) => {
-                // Solo prevenir si realmente se arrastró
                 if (hasMoved) {
                     e.preventDefault();
                     return;
@@ -446,21 +451,19 @@
             });
         }
 
-        // Botón REGRESO - Va a Posters
+        // ✅ RUTAS RELATIVAS CORREGIDAS PARA GITHUB PAGES
         if (btnRegreso) {
             setupButtonAction(btnRegreso, () => {
-                window.location.href = 'http://127.0.0.1:5500/02-maquetacion-cv/portafolio/posters.html';
+                window.location.href = 'posters.html';
             });
         }
         
-        // Botón SIGUIENTE - Va a Modelado
         if (btnSiguiente) {
             setupButtonAction(btnSiguiente, () => {
-                window.location.href = 'http://127.0.0.1:5500/02-maquetacion-cv/portafolio/modelado.html';
+                window.location.href = 'modelado.html';
             });
         }
         
-        // Botón INICIO - Va al inicio del CV
         if (btnInicio) {
             setupButtonAction(btnInicio, (e) => {
                 window.location.href = btnInicio.href;

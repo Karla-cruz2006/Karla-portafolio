@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contacto - Karla Sherlyn</title>
+    
+    <!-- ✅ ANTI-CACHÉ -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
     <style>
         * {
             margin: 0;
@@ -257,7 +263,8 @@
 </head>
 <body>
     <div class="fullscreen-container">
-        <img src="img/Contactame.png" class="fullscreen-img">
+        <!-- ✅ Verificar que esta imagen existe: img/Contactame.png -->
+        <img src="img/Contactame.png" class="fullscreen-img" alt="Fondo página de contacto" onerror="this.style.display='none'; console.warn('⚠️ Imagen de fondo no encontrada: img/Contactame.png')">
 
         <div class="scrapbook-layer">
             
@@ -583,11 +590,26 @@
             }
         }
 
+        // ===== VERIFICAR IMAGEN DE FONDO =====
+        function verificarImagenFondo() {
+            const imgFondo = document.querySelector('.fullscreen-img');
+            if (imgFondo) {
+                imgFondo.addEventListener('error', () => {
+                    console.warn('⚠️ La imagen de fondo no se encuentra en: img/Contactame.png');
+                    document.body.style.background = '#000';
+                });
+                imgFondo.addEventListener('load', () => {
+                    console.log('✅ Imagen de fondo cargada correctamente');
+                });
+            }
+        }
+
         // ===== INICIALIZAR =====
         window.onload = () => {
             loadPositions();
             asignarEventos();
             asignarBotones();
+            verificarImagenFondo();
             
             console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
             console.log("✅ EDITOR ACTIVADO - LAS POSICIONES SE GUARDAN");

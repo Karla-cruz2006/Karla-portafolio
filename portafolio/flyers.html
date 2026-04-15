@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portafolio - FLYER'S BY YANG</title>
+    
+    <!-- ✅ ANTI-CACHÉ -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
     <style>
         * {
             margin: 0;
@@ -12,21 +18,22 @@
             user-select: none;
         }
 
+        /* ✅ Fondo corregido - sin espacios */
         body {
             background-image: url("../img/fondo-secciones.png");
             background-repeat: no-repeat;
-            background-size: 100% auto;
+            background-size: cover;
             background-position: center top;
             background-attachment: scroll;
             background-color: #000;
-            min-height: 170vh;
+            min-height: 100vh;
             width: 100%;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             position: relative;
             overflow-x: hidden;
         }
 
-        /* ========== BOTONES DE NAVEGACIÓN DEBAJO DEL CARRUSEL ========== */
+        /* ========== BOTONES DE NAVEGACIÓN ========== */
         .botones-navegacion {
             position: fixed;
             bottom: 30px;
@@ -84,9 +91,10 @@
             background-color: #0b7dda;
         }
 
+        /* ========== CARRUSEL ========== */
         .carrusel-container {
             position: fixed;
-            top: 55%;  
+            top: 55%;
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 9999;
@@ -123,13 +131,14 @@
 
         .carrusel-track {
             display: flex;
-            transition: transform 0.8s ease-in-out;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             gap: 25px;
             padding: 15px;
         }
 
         .carrusel-item {
-            min-width: calc(20% - 20px);
+            flex: 0 0 auto;
+            width: calc(20% - 20px);
             background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.08));
             border-radius: 20px;
             padding: 25px;
@@ -171,7 +180,7 @@
             margin-top: 5px;
         }
 
-        /* Botones de navegación del carrusel */
+        /* Botones del carrusel */
         .carrusel-btn {
             position: absolute;
             top: 50%;
@@ -207,7 +216,7 @@
             right: -25px;
         }
 
-        /* Indicadores de página */
+        /* Indicadores */
         .carrusel-indicadores {
             display: flex;
             justify-content: center;
@@ -238,7 +247,7 @@
         /* Responsive */
         @media (max-width: 1200px) {
             .carrusel-item {
-                min-width: calc(33.33% - 17px);
+                width: calc(33.33% - 17px);
             }
             .carrusel-btn {
                 width: 45px;
@@ -256,7 +265,7 @@
                 top: 55%;
             }
             .carrusel-item {
-                min-width: calc(50% - 12.5px);
+                width: calc(50% - 12.5px);
                 padding: 15px;
             }
             .carrusel-titulo {
@@ -289,7 +298,7 @@
 
         @media (max-width: 480px) {
             .carrusel-item {
-                min-width: calc(100% - 0px);
+                width: calc(100% - 0px);
             }
             .carrusel-container {
                 top: 55%;
@@ -313,7 +322,7 @@
     </style>
 </head>
 <body>
-    <!-- ========== BOTONES DE NAVEGACIÓN DEBAJO DEL CARRUSEL ========== -->
+    <!-- ========== BOTONES DE NAVEGACIÓN ========== -->
     <div class="botones-navegacion">
         <button class="boton-nav btn-regreso" id="btnRegreso">
             ◀ Regreso
@@ -326,7 +335,7 @@
         </button>
     </div>
 
-    <!-- ========== CARRUSEL CENTRADO Y ELEVADO ========== -->
+    <!-- ========== CARRUSEL ========== -->
     <div class="carrusel-container">
         <div class="carrusel-titulo">
             ✨ FLYER'S BY YANG ✨
@@ -369,14 +378,14 @@
                     <p>Noticias Mundiales</p>
                     <p>43 NORMALISTAS</p>
                 </div>
-                <!-- Elemento 6 (NUEVO) -->
+                <!-- Elemento 6 -->
                 <div class="carrusel-item">
                     <img src="../img/1080x1350instagram.png" alt="Flyer 6" onerror="this.src='https://via.placeholder.com/200x200?text=Flyer+6'">
                     <p>⭐ 2025</p>
                     <p>Educación</p>
                     <p>INGENIERÍA EN DISEÑO MULTIMEDIA</p>
                 </div>
-                <!-- Elemento 7 (NUEVO) -->
+                <!-- Elemento 7 -->
                 <div class="carrusel-item">
                     <img src="../img/1080xx1920historia.png" alt="Flyer 7" onerror="this.src='https://via.placeholder.com/200x200?text=Flyer+7'">
                     <p>⭐ 2025</p>
@@ -386,15 +395,7 @@
             </div>
             <button class="carrusel-btn btn-next" id="btnNext">›</button>
         </div>
-        <div class="carrusel-indicadores" id="indicadores">
-            <div class="indicador activo"></div>
-            <div class="indicador"></div>
-            <div class="indicador"></div>
-            <div class="indicador"></div>
-            <div class="indicador"></div>
-            <div class="indicador"></div>
-            <div class="indicador"></div>
-        </div>
+        <div class="carrusel-indicadores" id="indicadores"></div>
     </div>
 
     <script>
@@ -402,35 +403,68 @@
         const items = document.querySelectorAll('.carrusel-item');
         const btnPrev = document.getElementById('btnPrev');
         const btnNext = document.getElementById('btnNext');
-        const indicadores = document.querySelectorAll('.indicador');
+        const indicadoresContainer = document.getElementById('indicadores');
         
         let currentIndex = 0;
         let itemsPerView = 5;
+        let totalPages = 0;
         let autoPlayInterval = null;
-        let direction = 1; // 1 = derecha, -1 = izquierda
-        const AUTO_PLAY_DELAY = 4000; // 4 segundos
+        let isAutoPlaying = true;
+        const AUTO_PLAY_DELAY = 4000;
 
+        // ========== ACTUALIZAR ITEMS POR VISTA ==========
         function updateItemsPerView() {
-            if (window.innerWidth <= 480) {
+            const width = window.innerWidth;
+            if (width <= 480) {
                 itemsPerView = 1;
-            } else if (window.innerWidth <= 768) {
+            } else if (width <= 768) {
                 itemsPerView = 2;
-            } else if (window.innerWidth <= 1200) {
+            } else if (width <= 1200) {
                 itemsPerView = 3;
             } else {
                 itemsPerView = 5;
             }
+            
+            totalPages = Math.ceil(items.length / itemsPerView);
+            crearIndicadores();
             updateCarrusel();
         }
         
+        // ========== CREAR INDICADORES DINÁMICAMENTE ==========
+        function crearIndicadores() {
+            if (!indicadoresContainer) return;
+            indicadoresContainer.innerHTML = '';
+            
+            for (let i = 0; i < totalPages; i++) {
+                const indicador = document.createElement('div');
+                indicador.classList.add('indicador');
+                if (i === Math.floor(currentIndex / itemsPerView)) {
+                    indicador.classList.add('activo');
+                }
+                indicador.addEventListener('click', () => {
+                    currentIndex = i * itemsPerView;
+                    const maxIndex = items.length - itemsPerView;
+                    if (currentIndex > maxIndex) currentIndex = maxIndex;
+                    if (currentIndex < 0) currentIndex = 0;
+                    updateCarrusel();
+                    resetearAuto();
+                });
+                indicadoresContainer.appendChild(indicador);
+            }
+        }
+        
+        // ========== ACTUALIZAR CARRUSEL ==========
         function updateCarrusel() {
             if (items.length === 0) return;
-            const itemWidth = items[0].offsetWidth + 25;
+            
+            // Obtener el ancho real del primer item
+            const itemWidth = items[0].offsetWidth + 25; // 25 es el gap
             const desplazamiento = currentIndex * itemWidth;
             track.style.transform = `translateX(-${desplazamiento}px)`;
             
+            // Actualizar indicadores
             const currentPage = Math.floor(currentIndex / itemsPerView);
-            
+            const indicadores = document.querySelectorAll('.indicador');
             indicadores.forEach((ind, idx) => {
                 if (idx === currentPage) {
                     ind.classList.add('activo');
@@ -440,94 +474,95 @@
             });
         }
         
+        // ========== SIGUIENTE SLIDE ==========
         function nextSlide() {
             const maxIndex = items.length - itemsPerView;
-            if (currentIndex < maxIndex) {
-                currentIndex++;
+            if (currentIndex + itemsPerView < items.length) {
+                currentIndex += itemsPerView;
             } else {
                 currentIndex = 0;
             }
             updateCarrusel();
         }
         
+        // ========== ANTERIOR SLIDE ==========
         function prevSlide() {
             const maxIndex = items.length - itemsPerView;
-            if (currentIndex > 0) {
-                currentIndex--;
+            if (currentIndex - itemsPerView >= 0) {
+                currentIndex -= itemsPerView;
             } else {
                 currentIndex = maxIndex;
             }
+            if (currentIndex < 0) currentIndex = 0;
             updateCarrusel();
         }
         
+        // ========== AUTO PLAY ==========
         function autoMove() {
-            const maxIndex = items.length - itemsPerView;
-            
-            if (direction === 1) {
-                // Moverse hacia la derecha
-                if (currentIndex < maxIndex) {
-                    currentIndex++;
-                } else {
-                    direction = -1; // Cambiar dirección hacia la izquierda
-                    currentIndex--;
-                }
-            } else {
-                // Moverse hacia la izquierda
-                if (currentIndex > 0) {
-                    currentIndex--;
-                } else {
-                    direction = 1; // Cambiar dirección hacia la derecha
-                    currentIndex++;
-                }
-            }
-            updateCarrusel();
+            if (!isAutoPlaying) return;
+            nextSlide();
         }
         
         function startAutoPlay() {
             if (autoPlayInterval) clearInterval(autoPlayInterval);
-            autoPlayInterval = setInterval(() => {
-                autoMove();
-            }, AUTO_PLAY_DELAY);
+            autoPlayInterval = setInterval(autoMove, AUTO_PLAY_DELAY);
         }
         
-        // Eventos
+        function stopAutoPlay() {
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+                autoPlayInterval = null;
+            }
+        }
+        
+        function resetearAuto() {
+            if (isAutoPlaying) {
+                startAutoPlay();
+            }
+        }
+        
+        // ========== PAUSAR/REANUDAR (opcional) ==========
+        function toggleAutoPlay() {
+            isAutoPlaying = !isAutoPlaying;
+            if (isAutoPlaying) {
+                startAutoPlay();
+            } else {
+                stopAutoPlay();
+            }
+        }
+        
+        // ========== EVENTOS ==========
         if (btnNext) {
             btnNext.addEventListener('click', () => {
                 nextSlide();
+                resetearAuto();
             });
         }
+        
         if (btnPrev) {
             btnPrev.addEventListener('click', () => {
                 prevSlide();
+                resetearAuto();
             });
         }
         
-        indicadores.forEach((indicador, idx) => {
-            indicador.addEventListener('click', () => {
-                currentIndex = idx * itemsPerView;
-                const maxIndex = items.length - itemsPerView;
-                if (currentIndex > maxIndex) currentIndex = maxIndex;
-                if (currentIndex < 0) currentIndex = 0;
-                updateCarrusel();
-            });
+        // Teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                prevSlide();
+                resetearAuto();
+            } else if (e.key === 'ArrowRight') {
+                nextSlide();
+                resetearAuto();
+            }
         });
         
+        // Redimensionar
         window.addEventListener('resize', () => {
             updateItemsPerView();
         });
         
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') {
-                prevSlide();
-            } else if (e.key === 'ArrowRight') {
-                nextSlide();
-            }
-        });
-        
-        // Inicializar
-        updateItemsPerView();
-        startAutoPlay();
-        
+        // ========== NAVEGACIÓN (RUTAS RELATIVAS CORREGIDAS) ==========
         function setupButtonAction(btn, action) {
             if (btn) {
                 btn.addEventListener('click', (e) => {
@@ -541,26 +576,46 @@
         const btnRegreso = document.getElementById('btnRegreso');
         const btnSiguienteNav = document.getElementById('btnSiguiente');
 
-        // Botón REGRESO - Va a Branding
+        // ✅ RUTAS RELATIVAS CORREGIDAS
         if (btnRegreso) {
             setupButtonAction(btnRegreso, () => {
-                window.location.href = 'http://127.0.0.1:5500/02-maquetacion-cv/portafolio/branding.html';
+                window.location.href = 'branding.html';
             });
         }
         
-        // Botón SIGUIENTE - Va a Ilustraciones
         if (btnSiguienteNav) {
             setupButtonAction(btnSiguienteNav, () => {
-                window.location.href = 'http://127.0.0.1:5500/02-maquetacion-cv/portafolio/ilustraciones.html';
+                window.location.href = 'ilustraciones.html';
             });
         }
         
-        // Botón INICIO - Va al inicio del CV
         if (btnInicio) {
             setupButtonAction(btnInicio, () => {
-                window.location.href = "http://127.0.0.1:5500/02-maquetacion-cv/index.html";
+                window.location.href = '../index.html';
             });
         }
+        
+        // ========== INICIALIZAR ==========
+        updateItemsPerView();
+        startAutoPlay();
+        
+        // Verificar imágenes
+        const imagenes = document.querySelectorAll('.carrusel-item img');
+        imagenes.forEach(img => {
+            img.addEventListener('error', () => {
+                console.warn(`⚠️ Imagen no encontrada: ${img.src}`);
+            });
+        });
+        
+        console.log("%c🎨 FLYER'S BY YANG - Portafolio", "color: #FFD700; font-size: 14px; font-weight: bold");
+        console.log("✅ Correcciones aplicadas:");
+        console.log("   - Rutas relativas (funciona en GitHub Pages)");
+        console.log("   - background-size: cover (sin espacios negros)");
+        console.log("   - Meta etiquetas anti-caché");
+        console.log("   - Indicadores dinámicos");
+        console.log("   - Auto-play funcionando correctamente");
+        console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        console.log(`📊 Items totales: ${items.length} | Items por vista: ${itemsPerView} | Páginas: ${totalPages}`);
     </script>
 </body>
 </html>

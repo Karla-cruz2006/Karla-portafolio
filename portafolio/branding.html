@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portafolio - Branding</title>
+    <title>Portafolio - Branding Interactivo</title>
+    
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
     <style>
         * {
             margin: 0;
@@ -15,24 +20,25 @@
         body {
             background-image: url("../img/fondo-secciones.png");
             background-repeat: no-repeat;
-            background-size: 100% auto;
+            background-size: cover;
             background-position: center top;
             background-attachment: scroll;
             background-color: #000;
-            min-height: 170vh;
+            min-height: 100vh;
             width: 100%;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            position: relative;
             overflow-x: hidden;
         }
 
-        .contenedor-libre {
+        /* Contenedor para elementos arrastrables */
+        .drag-container {
             position: relative;
             width: 100%;
-            min-height: 170vh;
+            min-height: 100vh;
         }
 
-        .boton-movible {
+        /* Botones de navegación */
+        .nav-btn {
             position: absolute;
             padding: 12px 24px;
             font-size: 16px;
@@ -40,19 +46,27 @@
             border: none;
             border-radius: 25px;
             cursor: grab;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: inherit;
             z-index: 1000;
             white-space: nowrap;
-            transform-origin: center center;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition: transform 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
 
-        .boton-movible:active {
+        .nav-btn:active {
             cursor: grabbing;
         }
 
-        .boton-movible:focus {
+        .nav-btn:focus {
             outline: 3px solid yellow;
             outline-offset: 3px;
+        }
+
+        .nav-btn:hover {
+            transform: scale(1.05);
         }
 
         .btn-inicio {
@@ -62,19 +76,11 @@
             left: 100px;
         }
 
-        .btn-inicio:hover {
-            background-color: #45a049;
-        }
-
         .btn-regreso {
             background-color: #ff9800;
             color: white;
             top: 100px;
             left: 300px;
-        }
-
-        .btn-regreso:hover {
-            background-color: #e68900;
         }
 
         .btn-siguiente {
@@ -84,262 +90,328 @@
             left: 500px;
         }
 
-        .btn-siguiente:hover {
-            background-color: #0b7dda;
+        /* ========== IMAGEN FLOTANTE INTERACTIVA ========== */
+        .interactive-image {
+            position: absolute;
+            z-index: 9999;
+            cursor: grab;
+            transition: box-shadow 0.2s ease;
         }
 
-        /* ========== IMAGEN FIJA CON ROTACIÓN HACIA LA IZQUIERDA ========== */
-        .imagen-flotante {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 99999;
-            text-align: center;
-            pointer-events: none;
+        .interactive-image:active {
+            cursor: grabbing;
         }
 
-        .imagen-flotante img {
+        .interactive-image.dragging {
+            cursor: grabbing;
+            opacity: 0.95;
+        }
+
+        .interactive-image img {
             width: 500px;
-            max-width: 85vw;
+            max-width: 75vw;
             height: auto;
             display: block;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            transition: all 0.2s ease;
-            pointer-events: auto;
-            cursor: pointer;
-            transform: rotate(-5deg);
+            pointer-events: none;
+            transition: transform 0.2s ease;
         }
 
-        .imagen-flotante img:hover {
-            transform: rotate(-5deg) scale(1.02);
+        .interactive-image:hover img {
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Panel de instrucciones */
+        .instructions {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-family: monospace;
+            z-index: 99999;
+            border: 1px solid rgba(255,255,255,0.2);
+            pointer-events: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .instructions kbd {
+            background: #333;
+            border-radius: 5px;
+            padding: 3px 8px;
+            font-size: 11px;
+            font-weight: bold;
+            margin: 0 4px;
+            border: 1px solid #666;
+            font-family: monospace;
+        }
+
+        .instructions .title {
+            color: #ff9800;
+            font-weight: bold;
+            margin-right: 10px;
         }
 
         @media (max-width: 768px) {
-            .imagen-flotante img {
+            .interactive-image img {
                 width: 320px;
-                transform: rotate(-3deg);
             }
-            .imagen-flotante img:hover {
-                transform: rotate(-3deg) scale(1.02);
+            .instructions {
+                bottom: 10px;
+                right: 10px;
+                font-size: 9px;
+                padding: 8px 12px;
             }
+            .instructions kbd {
+                padding: 2px 5px;
+                font-size: 9px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .instructions {
+                display: none;
+            }
+        }
+
+        /* Efecto de selección */
+        .selected {
+            outline: 3px solid #ff9800;
+            outline-offset: 8px;
+            border-radius: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="contenedor-libre">
-        <a href="http://127.0.0.1:5500/02-maquetacion-cv/index.html" 
-           class="boton-movible btn-inicio" 
-           id="btnInicio"
-           tabindex="0">
+    <div class="drag-container">
+        <!-- Botones de navegación -->
+        <a href="../index.html" class="nav-btn btn-inicio" id="btnInicio" tabindex="0">
             🏠 Inicio
         </a>
 
-        <button class="boton-movible btn-regreso" id="btnRegreso" tabindex="0">
+        <button class="nav-btn btn-regreso" id="btnRegreso" tabindex="0">
             ◀ Regreso
         </button>
 
-        <button class="boton-movible btn-siguiente" id="btnSiguiente" tabindex="0">
+        <button class="nav-btn btn-siguiente" id="btnSiguiente" tabindex="0">
             Siguiente ▶
         </button>
+
+        <!-- IMAGEN INTERACTIVA (los usuarios pueden moverla, rotarla, redimensionarla) -->
+        <div class="interactive-image" id="brandingImage">
+            <img src="../img/branding.png" alt="Branding - Proyectos de diseño">
+        </div>
     </div>
 
-    <!-- ========== IMAGEN FIJA ROTADA HACIA LA IZQUIERDA ========== -->
-    <div class="imagen-flotante">
-        <img src="../img/branding.png" alt="Branding">
+    <!-- Panel de instrucciones -->
+    <div class="instructions">
+        <span class="title">🎨 INTERACTIVO</span>
+        <kbd>🖱️ Arrastrar</kbd> mover ·
+        <kbd>Ctrl</kbd>+<kbd>arrastrar</kbd> rotar ·
+        <kbd>🐭 Rueda</kbd> tamaño ·
+        <kbd>+</kbd>/<kbd>-</kbd> escalar
     </div>
 
     <script>
-        let botonSeleccionado = null;
-
-        function makeFullyDraggableAndRotatable(elemento) {
-            let startX = 0, startY = 0;
-            let startLeft = 0, startTop = 0;
-            let startRotate = 0;
-            let isDragging = false;
-            let isRotating = false;
-
-            const id = elemento.id;
-            const savedLeft = localStorage.getItem(`${id}_left`);
-            const savedTop = localStorage.getItem(`${id}_top`);
-            const savedRotate = localStorage.getItem(`${id}_rotate`);
-            const savedScale = localStorage.getItem(`${id}_scale`);
-            
-            if (savedLeft !== null && savedTop !== null) {
-                elemento.style.left = savedLeft + 'px';
-                elemento.style.top = savedTop + 'px';
+        // ========== CLASE PARA ELEMENTOS ARRASTRABLES ==========
+        class DraggableElement {
+            constructor(elemento) {
+                this.el = elemento;
+                this.id = elemento.id;
+                this.isDragging = false;
+                this.isRotating = false;
+                this.startX = 0;
+                this.startY = 0;
+                this.startLeft = 0;
+                this.startTop = 0;
+                this.startRotate = 0;
+                
+                this.loadSavedPosition();
+                this.attachEvents();
             }
             
-            if (savedRotate !== null) {
-                elemento.style.transform = `rotate(${savedRotate}deg) scale(${savedScale || 1})`;
-            } else if (savedScale !== null) {
-                elemento.style.transform = `scale(${savedScale})`;
-            }
-
-            function getCurrentRotation() {
-                const transform = elemento.style.transform;
-                if (transform && transform.includes('rotate')) {
-                    const match = transform.match(/rotate\(([-\d.]+)deg\)/);
-                    if (match) return parseFloat(match[1]);
-                }
-                return 0;
-            }
-
-            function getCurrentScale() {
-                const transform = elemento.style.transform;
-                if (transform && transform.includes('scale')) {
-                    const match = transform.match(/scale\(([\d.]+)\)/);
-                    if (match) return parseFloat(match[1]);
-                }
-                return 1;
-            }
-
-            function setScale(nuevaEscala) {
-                const currentRotate = getCurrentRotation();
-                if (currentRotate !== 0) {
-                    elemento.style.transform = `rotate(${currentRotate}deg) scale(${nuevaEscala})`;
+            loadSavedPosition() {
+                const savedLeft = localStorage.getItem(`${this.id}_left`);
+                const savedTop = localStorage.getItem(`${this.id}_top`);
+                const savedRotate = localStorage.getItem(`${this.id}_rotate`);
+                const savedScale = localStorage.getItem(`${this.id}_scale`);
+                
+                if (savedLeft && savedTop) {
+                    this.el.style.left = savedLeft + 'px';
+                    this.el.style.top = savedTop + 'px';
                 } else {
-                    elemento.style.transform = `scale(${nuevaEscala})`;
+                    // Posición inicial centrada
+                    this.el.style.left = '50%';
+                    this.el.style.top = '50%';
+                    this.el.style.transform = 'translate(-50%, -50%)';
                 }
-                localStorage.setItem(`${elemento.id}_scale`, nuevaEscala);
+                
+                if (savedRotate && savedRotate != 0) {
+                    const scale = savedScale || 1;
+                    this.el.style.transform = `rotate(${savedRotate}deg) scale(${scale})`;
+                } else if (savedScale && savedScale != 1) {
+                    this.el.style.transform = `scale(${savedScale})`;
+                }
             }
-
-            elemento.addEventListener('focus', () => {
-                botonSeleccionado = elemento;
-            });
-
-            elemento.addEventListener('keydown', (e) => {
-                let currentScale = getCurrentScale();
-                
-                if (e.key === '+' || e.key === '=' || e.key === ']') {
-                    e.preventDefault();
-                    currentScale = Math.min(3, currentScale * 1.1);
-                    setScale(currentScale);
-                } else if (e.key === '-' || e.key === '_' || e.key === '[') {
-                    e.preventDefault();
-                    currentScale = Math.max(0.5, currentScale * 0.9);
-                    setScale(currentScale);
-                }
-            });
-
-            elemento.addEventListener('mousedown', (e) => {
-                if (elemento.tagName === 'A') {
-                    e.preventDefault();
-                }
-                
-                const usarRotacion = e.ctrlKey;
-                
-                startX = e.clientX;
-                startY = e.clientY;
-                
-                if (usarRotacion) {
-                    isRotating = true;
-                    startRotate = getCurrentRotation();
-                    elemento.style.cursor = 'grabbing';
+            
+            getCurrentRotation() {
+                const transform = this.el.style.transform;
+                const match = transform?.match(/rotate\(([-\d.]+)deg\)/);
+                return match ? parseFloat(match[1]) : 0;
+            }
+            
+            getCurrentScale() {
+                const transform = this.el.style.transform;
+                const match = transform?.match(/scale\(([\d.]+)\)/);
+                return match ? parseFloat(match[1]) : 1;
+            }
+            
+            setScale(scale) {
+                const rotate = this.getCurrentRotation();
+                scale = Math.min(3, Math.max(0.3, scale));
+                if (rotate !== 0) {
+                    this.el.style.transform = `rotate(${rotate}deg) scale(${scale})`;
                 } else {
-                    isDragging = true;
-                    startLeft = parseFloat(getComputedStyle(elemento).left);
-                    startTop = parseFloat(getComputedStyle(elemento).top);
-                    elemento.style.cursor = 'grabbing';
+                    this.el.style.transform = `scale(${scale})`;
                 }
+                localStorage.setItem(`${this.id}_scale`, scale);
+            }
+            
+            setRotate(rotate) {
+                const scale = this.getCurrentScale();
+                if (scale !== 1) {
+                    this.el.style.transform = `rotate(${rotate}deg) scale(${scale})`;
+                } else {
+                    this.el.style.transform = `rotate(${rotate}deg)`;
+                }
+                localStorage.setItem(`${this.id}_rotate`, rotate);
+            }
+            
+            attachEvents() {
+                // Mousedown: iniciar arrastre o rotación
+                this.el.addEventListener('mousedown', (e) => {
+                    e.preventDefault();
+                    
+                    const usarRotacion = e.ctrlKey;
+                    const rect = this.el.getBoundingClientRect();
+                    const parentRect = this.el.parentElement.getBoundingClientRect();
+                    
+                    this.startX = e.clientX;
+                    this.startY = e.clientY;
+                    
+                    if (usarRotacion) {
+                        this.isRotating = true;
+                        this.startRotate = this.getCurrentRotation();
+                    } else {
+                        this.isDragging = true;
+                        this.startLeft = rect.left - parentRect.left;
+                        this.startTop = rect.top - parentRect.top;
+                        this.el.style.left = this.startLeft + 'px';
+                        this.el.style.top = this.startTop + 'px';
+                        // Remover transform de centrado
+                        if (this.el.style.transform && !this.el.style.transform.includes('rotate') && !this.el.style.transform.includes('scale')) {
+                            this.el.style.transform = '';
+                        }
+                        this.el.classList.add('dragging');
+                    }
+                    
+                    this.el.style.cursor = 'grabbing';
+                    e.stopPropagation();
+                });
                 
-                e.stopPropagation();
-            });
-
-            window.addEventListener('mousemove', (e) => {
-                if (isDragging) {
-                    const dx = e.clientX - startX;
-                    const dy = e.clientY - startY;
-                    
-                    let newLeft = startLeft + dx;
-                    let newTop = startTop + dy;
-                    
-                    elemento.style.left = newLeft + 'px';
-                    elemento.style.top = newTop + 'px';
-                    
-                } else if (isRotating) {
-                    const dy = e.clientY - startY;
-                    const currentScale = getCurrentScale();
-                    const newRotate = startRotate + (dy * 0.5);
-                    elemento.style.transform = `rotate(${newRotate}deg) scale(${currentScale})`;
-                }
-            });
-
-            window.addEventListener('mouseup', () => {
-                if (isDragging) {
-                    isDragging = false;
-                    elemento.style.cursor = 'grab';
-                    
-                    const left = parseFloat(getComputedStyle(elemento).left);
-                    const top = parseFloat(getComputedStyle(elemento).top);
-                    localStorage.setItem(`${elemento.id}_left`, left);
-                    localStorage.setItem(`${elemento.id}_top`, top);
-                    
-                } else if (isRotating) {
-                    isRotating = false;
-                    elemento.style.cursor = 'grab';
-                    
-                    const rotate = getCurrentRotation();
-                    localStorage.setItem(`${elemento.id}_rotate`, rotate);
-                }
-            });
+                // Mousemove: mover o rotar
+                window.addEventListener('mousemove', (e) => {
+                    if (this.isDragging) {
+                        const dx = e.clientX - this.startX;
+                        const dy = e.clientY - this.startY;
+                        
+                        let newLeft = this.startLeft + dx;
+                        let newTop = this.startTop + dy;
+                        
+                        // Limitar dentro de la pantalla
+                        const maxX = Math.max(0, window.innerWidth - this.el.offsetWidth);
+                        const maxY = Math.max(0, document.body.scrollHeight - this.el.offsetHeight);
+                        newLeft = Math.min(Math.max(0, newLeft), maxX);
+                        newTop = Math.min(Math.max(0, newTop), maxY);
+                        
+                        this.el.style.left = newLeft + 'px';
+                        this.el.style.top = newTop + 'px';
+                        
+                    } else if (this.isRotating) {
+                        const dy = e.clientY - this.startY;
+                        const newRotate = this.startRotate + (dy * 0.5);
+                        this.setRotate(newRotate);
+                    }
+                });
+                
+                // Mouseup: guardar posición
+                window.addEventListener('mouseup', () => {
+                    if (this.isDragging) {
+                        this.isDragging = false;
+                        this.el.style.cursor = 'grab';
+                        this.el.classList.remove('dragging');
+                        
+                        const left = parseFloat(getComputedStyle(this.el).left);
+                        const top = parseFloat(getComputedStyle(this.el).top);
+                        localStorage.setItem(`${this.id}_left`, left);
+                        localStorage.setItem(`${this.id}_top`, top);
+                        
+                    } else if (this.isRotating) {
+                        this.isRotating = false;
+                        this.el.style.cursor = 'grab';
+                    }
+                });
+                
+                // Rueda del mouse para escalar
+                this.el.addEventListener('wheel', (e) => {
+                    e.preventDefault();
+                    let scale = this.getCurrentScale();
+                    if (e.deltaY < 0) {
+                        scale *= 1.1;
+                    } else {
+                        scale *= 0.9;
+                    }
+                    this.setScale(scale);
+                }, { passive: false });
+                
+                // Teclas para escalar
+                this.el.addEventListener('keydown', (e) => {
+                    let scale = this.getCurrentScale();
+                    if (e.key === '+' || e.key === '=') {
+                        e.preventDefault();
+                        this.setScale(scale * 1.1);
+                    } else if (e.key === '-' || e.key === '_') {
+                        e.preventDefault();
+                        this.setScale(scale * 0.9);
+                    }
+                });
+                
+                // Foco para teclado
+                this.el.setAttribute('tabindex', '0');
+            }
         }
-
+        
+        // ========== INICIALIZAR TODOS LOS ELEMENTOS ==========
         const btnInicio = document.getElementById('btnInicio');
         const btnRegreso = document.getElementById('btnRegreso');
         const btnSiguiente = document.getElementById('btnSiguiente');
+        const brandingImage = document.getElementById('brandingImage');
         
-        if (btnInicio) makeFullyDraggableAndRotatable(btnInicio);
-        if (btnRegreso) makeFullyDraggableAndRotatable(btnRegreso);
-        if (btnSiguiente) makeFullyDraggableAndRotatable(btnSiguiente);
-
-        function expandirConRueda(event) {
-            const boton = event.target.closest('.boton-movible');
-            if (!boton) return;
-            
-            event.preventDefault();
-            
-            let currentScale = 1;
-            let currentRotate = 0;
-            const transform = boton.style.transform;
-            
-            if (transform && transform.includes('scale')) {
-                const matchScale = transform.match(/scale\(([\d.]+)\)/);
-                if (matchScale) currentScale = parseFloat(matchScale[1]);
-            }
-            
-            if (transform && transform.includes('rotate')) {
-                const matchRotate = transform.match(/rotate\(([-\d.]+)deg\)/);
-                if (matchRotate) currentRotate = parseFloat(matchRotate[1]);
-            }
-            
-            if (event.deltaY < 0) {
-                currentScale *= 1.1;
-            } else {
-                currentScale *= 0.9;
-            }
-            
-            currentScale = Math.max(0.5, Math.min(3, currentScale));
-            
-            if (currentRotate !== 0) {
-                boton.style.transform = `rotate(${currentRotate}deg) scale(${currentScale})`;
-            } else {
-                boton.style.transform = `scale(${currentScale})`;
-            }
-            
-            localStorage.setItem(`${boton.id}_scale`, currentScale);
-        }
-
-        document.querySelectorAll('.boton-movible').forEach(boton => {
-            boton.addEventListener('wheel', expandirConRueda, { passive: false });
-        });
-
-        // ========== FUNCIÓN SIMPLIFICADA PARA BOTONES (SIN RETRASOS) ==========
-        function setupButtonAction(btn, action) {
+        // Hacer todos los elementos arrastrables
+        if (btnInicio) new DraggableElement(btnInicio);
+        if (btnRegreso) new DraggableElement(btnRegreso);
+        if (btnSiguiente) new DraggableElement(btnSiguiente);
+        if (brandingImage) new DraggableElement(brandingImage);
+        
+        // ========== FUNCIONES DE NAVEGACIÓN (evita navegar si se arrastró) ==========
+        function setupNavigation(btn, url) {
             if (!btn) return;
             
-            // Variable para detectar si se movió el mouse
             let hasMoved = false;
             let startX = 0, startY = 0;
             
@@ -350,44 +422,44 @@
             });
             
             btn.addEventListener('mousemove', (e) => {
-                // Si el mouse se movió más de 5px, consideramos que es un arrastre
                 if (Math.abs(e.clientX - startX) > 5 || Math.abs(e.clientY - startY) > 5) {
                     hasMoved = true;
                 }
             });
             
             btn.addEventListener('click', (e) => {
-                // Solo prevenir si realmente se arrastró
                 if (hasMoved) {
                     e.preventDefault();
                     return;
                 }
-                action(e);
-            });
-        }
-
-        // Botón REGRESO - Vuelve a la página de portafolio con ancla #branding
-        if (btnRegreso) {
-            setupButtonAction(btnRegreso, () => {
-                window.location.href = 'http://127.0.0.1:5500/02-maquetacion-cv/portafolio/portafolio.html#branding';
+                window.location.href = url;
             });
         }
         
-        // Botón SIGUIENTE - Va a la página de Flyers
-        if (btnSiguiente) {
-            setupButtonAction(btnSiguiente, () => {
-                window.location.href = 'http://127.0.0.1:5500/02-maquetacion-cv/portafolio/flyers.html';
-            });
-        }
-        
-        // Botón INICIO
+        // Configurar navegación (rutas relativas para GitHub Pages)
+        setupNavigation(btnRegreso, 'portafolio.html#branding');
+        setupNavigation(btnSiguiente, 'flyers.html');
         if (btnInicio) {
-            setupButtonAction(btnInicio, (e) => {
-                window.location.href = btnInicio.href;
+            setupNavigation(btnInicio, '../index.html');
+        }
+        
+        // Verificar que la imagen existe
+        const img = document.querySelector('.interactive-image img');
+        if (img) {
+            img.addEventListener('error', () => {
+                console.warn("⚠️ Imagen no encontrada: ../img/branding.png");
+                img.style.outline = "3px solid #ff9800";
+                img.style.outlineOffset = "5px";
+            });
+            img.addEventListener('load', () => {
+                console.log("✅ Imagen branding.png cargada correctamente");
             });
         }
-
-        if (btnInicio) btnInicio.focus();
+        
+        console.log("%c🎨 Portafolio Interactivo - Branding", "color: #ff9800; font-size: 14px; font-weight: bold");
+        console.log("✅ Los usuarios pueden: ARRASTRAR | ROTAR (Ctrl+arrastrar) | REDIMENSIONAR (rueda/teclas)");
+        console.log("✅ Las posiciones se guardan en su navegador");
+        console.log("✅ 100% compatible con GitHub Pages");
     </script>
 </body>
 </html>

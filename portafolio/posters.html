@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portafolio - Pósters</title>
+    
+    <!-- ✅ ANTI-CACHÉ -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
     <style>
         * {
             margin: 0;
@@ -12,14 +18,15 @@
             user-select: none;
         }
 
+        /* ✅ Fondo corregido */
         body {
             background-image: url("../img/fondo-secciones.png");
             background-repeat: no-repeat;
-            background-size: 100% auto;
+            background-size: cover;
             background-position: center top;
             background-attachment: scroll;
             background-color: #000;
-            min-height: 170vh;
+            min-height: 100vh;
             width: 100%;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             position: relative;
@@ -29,7 +36,7 @@
         .contenedor-libre {
             position: relative;
             width: 100%;
-            min-height: 170vh;
+            min-height: 100vh;
         }
 
         .boton-movible {
@@ -104,7 +111,7 @@
             width: 100%;
             overflow: hidden;
             border-radius: 20px;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(10px);
             padding: 20px;
             border: 1px solid rgba(255, 215, 0, 0.3);
@@ -210,6 +217,7 @@
             margin-bottom: 15px;
             letter-spacing: 2px;
             font-weight: bold;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
         }
 
         @media (max-width: 768px) {
@@ -232,7 +240,8 @@
 </head>
 <body>
     <div class="contenedor-libre">
-        <a href="http://127.0.0.1:5500/02-maquetacion-cv/index.html" 
+        <!-- ✅ Ruta relativa corregida -->
+        <a href="../index.html" 
            class="boton-movible btn-inicio" 
            id="btnInicio"
            tabindex="0">
@@ -248,7 +257,7 @@
         </button>
     </div>
 
-    <!-- ========== CARRUSEL CON 3 ELEMENTOS ========== -->
+    <!-- ========== CARRUSEL ========== -->
     <div class="carrusel-container">
         <div class="carrusel-titulo">
             ✨ PÓSTERS ✨
@@ -271,11 +280,7 @@
             </div>
             <button class="carrusel-btn carrusel-next" id="btnNext">›</button>
         </div>
-        <div class="carrusel-indicadores" id="indicadores">
-            <div class="indicador activo"></div>
-            <div class="indicador"></div>
-            <div class="indicador"></div>
-        </div>
+        <div class="carrusel-indicadores" id="indicadores"></div>
     </div>
 
     <script>
@@ -284,14 +289,31 @@
         const items = document.querySelectorAll('.carrusel-item');
         const btnPrev = document.getElementById('btnPrev');
         const btnNext = document.getElementById('btnNext');
-        const indicadores = document.querySelectorAll('.indicador');
+        const contenedorIndicadores = document.getElementById('indicadores');
         
         let currentIndex = 0;
         const totalItems = items.length;
 
+        // ✅ Crear indicadores dinámicamente
+        function crearIndicadores() {
+            if (!contenedorIndicadores) return;
+            contenedorIndicadores.innerHTML = '';
+            for (let i = 0; i < totalItems; i++) {
+                const indicador = document.createElement('div');
+                indicador.classList.add('indicador');
+                if (i === 0) indicador.classList.add('activo');
+                indicador.addEventListener('click', () => {
+                    currentIndex = i;
+                    actualizarCarrusel();
+                });
+                contenedorIndicadores.appendChild(indicador);
+            }
+        }
+
         function actualizarCarrusel() {
             const desplazamiento = currentIndex * 100;
             track.style.transform = `translateX(-${desplazamiento}%)`;
+            const indicadores = document.querySelectorAll('.indicador');
             indicadores.forEach((ind, idx) => {
                 if (idx === currentIndex) ind.classList.add('activo');
                 else ind.classList.remove('activo');
@@ -308,16 +330,10 @@
             actualizarCarrusel();
         }
 
-        btnNext.addEventListener('click', siguienteSlide);
-        btnPrev.addEventListener('click', anteriorSlide);
+        if (btnNext) btnNext.addEventListener('click', siguienteSlide);
+        if (btnPrev) btnPrev.addEventListener('click', anteriorSlide);
 
-        indicadores.forEach((indicador, idx) => {
-            indicador.addEventListener('click', () => {
-                currentIndex = idx;
-                actualizarCarrusel();
-            });
-        });
-
+        // Teclado
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowLeft') anteriorSlide();
             else if (e.key === 'ArrowRight') siguienteSlide();
@@ -508,11 +524,10 @@
             boton.addEventListener('wheel', expandirConRueda, { passive: false });
         });
 
-        // ========== FUNCIÓN SIMPLIFICADA PARA BOTONES (SIN RETRASOS) ==========
+        // ========== FUNCIÓN PARA BOTONES ==========
         function setupButtonAction(btn, action) {
             if (!btn) return;
             
-            // Variable para detectar si se movió el mouse
             let hasMoved = false;
             let startX = 0, startY = 0;
             
@@ -523,14 +538,12 @@
             });
             
             btn.addEventListener('mousemove', (e) => {
-                // Si el mouse se movió más de 5px, consideramos que es un arrastre
                 if (Math.abs(e.clientX - startX) > 5 || Math.abs(e.clientY - startY) > 5) {
                     hasMoved = true;
                 }
             });
             
             btn.addEventListener('click', (e) => {
-                // Solo prevenir si realmente se arrastró
                 if (hasMoved) {
                     e.preventDefault();
                     return;
@@ -539,28 +552,53 @@
             });
         }
 
-        // Botón REGRESO - Va a Infografía
+        // ✅ RUTAS RELATIVAS CORREGIDAS
         if (btnRegresoMov) {
             setupButtonAction(btnRegresoMov, () => {
-                window.location.href = 'http://127.0.0.1:5500/02-maquetacion-cv/portafolio/infografia.html';
+                window.location.href = 'infografia.html';
             });
         }
         
-        // Botón SIGUIENTE - Va a Logos
         if (btnSiguienteMov) {
             setupButtonAction(btnSiguienteMov, () => {
-                window.location.href = 'http://127.0.0.1:5500/02-maquetacion-cv/portafolio/logos.html';
+                window.location.href = 'logos.html';
             });
         }
         
-        // Botón INICIO - Va al inicio del CV
         if (btnInicioMov) {
             setupButtonAction(btnInicioMov, (e) => {
                 window.location.href = btnInicioMov.href;
             });
         }
 
+        // ========== VERIFICAR IMÁGENES ==========
+        function verificarImagenes() {
+            const imagenes = document.querySelectorAll('.carrusel-item img');
+            imagenes.forEach(img => {
+                img.addEventListener('error', () => {
+                    console.warn(`⚠️ Imagen no encontrada: ${img.src}`);
+                });
+                img.addEventListener('load', () => {
+                    console.log(`✅ Imagen cargada: ${img.src.split('/').pop()}`);
+                });
+            });
+        }
+
+        // ========== INICIALIZAR ==========
+        crearIndicadores();
+        actualizarCarrusel();
+        verificarImagenes();
+        
         if (btnInicioMov) btnInicioMov.focus();
+        
+        console.log("%c🎨 Pósters - Carrusel", "color: #FFD700; font-size: 14px; font-weight: bold");
+        console.log("✅ Correcciones aplicadas:");
+        console.log("   - Rutas relativas (funciona en GitHub Pages)");
+        console.log("   - background-size: cover (sin espacios negros)");
+        console.log("   - Meta etiquetas anti-caché");
+        console.log("   - Indicadores dinámicos");
+        console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        console.log(`📊 Total de pósters: ${totalItems}`);
     </script>
 </body>
 </html>

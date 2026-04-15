@@ -3,7 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portafolio - Carrusel</title>
+    <title>Portafolio - Infografías</title>
+    
+    <!-- ✅ ANTI-CACHÉ -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
     <style>
         * {
             margin: 0;
@@ -11,14 +17,15 @@
             box-sizing: border-box;
         }
 
+        /* ✅ Fondo corregido */
         body {
             background-image: url("../img/fondo-secciones.png");
             background-repeat: no-repeat;
-            background-size: 100% auto;
+            background-size: cover;
             background-position: center top;
             background-attachment: scroll;
             background-color: #000;
-            min-height: 170vh;
+            min-height: 100vh;
             width: 100%;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             position: relative;
@@ -28,13 +35,13 @@
         /* ===== 3 BOTONES DE NAVEGACIÓN ===== */
         .botones-navegacion {
             position: fixed;
-            bottom: 10px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
             gap: 25px;
             z-index: 10000;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.8);
             padding: 12px 30px;
             border-radius: 60px;
             backdrop-filter: blur(10px);
@@ -49,6 +56,7 @@
             border-radius: 40px;
             cursor: pointer;
             transition: all 0.2s ease;
+            font-family: inherit;
         }
 
         .boton-nav:hover {
@@ -76,7 +84,7 @@
         /* ===== CARRUSEL PRINCIPAL ===== */
         .carrusel-principal {
             position: fixed;
-            top: 45%;
+            top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 800px;
@@ -89,7 +97,7 @@
             width: 100%;
             overflow: hidden;
             border-radius: 25px;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(10px);
             padding: 30px;
             border: 2px solid rgba(255, 215, 0, 0.4);
@@ -190,11 +198,12 @@
             margin-bottom: 20px;
             letter-spacing: 2px;
             font-weight: bold;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
         }
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 900px) {
-            .carrusel-principal { width: 90%; }
+            .carrusel-principal { width: 90%; top: 50%; }
             .carrusel-container { padding: 20px; }
             .carrusel-btn { width: 40px; height: 40px; font-size: 22px; }
             .carrusel-prev { left: -15px; }
@@ -204,13 +213,13 @@
         }
 
         @media (max-width: 600px) {
-            .carrusel-principal { width: 95%; }
+            .carrusel-principal { width: 95%; top: 48%; }
             .carrusel-container { padding: 15px; }
             .carrusel-btn { width: 35px; height: 35px; font-size: 18px; }
             .carrusel-item img { max-height: 300px; }
             .carrusel-titulo { font-size: 18px; }
             .botones-navegacion {
-                bottom: 8px;
+                bottom: 10px;
                 padding: 8px 16px;
                 gap: 12px;
             }
@@ -252,12 +261,7 @@
             </div>
             <button class="carrusel-btn carrusel-next" id="btnNext">›</button>
         </div>
-        <div class="carrusel-indicadores" id="indicadores">
-            <div class="indicador activo"></div>
-            <div class="indicador"></div>
-            <div class="indicador"></div>
-            <div class="indicador"></div>
-        </div>
+        <div class="carrusel-indicadores" id="indicadores"></div>
     </div>
 
     <script>
@@ -266,14 +270,31 @@
         const items = document.querySelectorAll('.carrusel-item');
         const btnPrev = document.getElementById('btnPrev');
         const btnNext = document.getElementById('btnNext');
-        const indicadores = document.querySelectorAll('.indicador');
+        const contenedorIndicadores = document.getElementById('indicadores');
         
         let currentIndex = 0;
         const totalItems = items.length;
 
+        // ✅ Crear indicadores dinámicamente
+        function crearIndicadores() {
+            if (!contenedorIndicadores) return;
+            contenedorIndicadores.innerHTML = '';
+            for (let i = 0; i < totalItems; i++) {
+                const indicador = document.createElement('div');
+                indicador.classList.add('indicador');
+                if (i === 0) indicador.classList.add('activo');
+                indicador.addEventListener('click', () => {
+                    currentIndex = i;
+                    actualizarCarrusel();
+                });
+                contenedorIndicadores.appendChild(indicador);
+            }
+        }
+
         function actualizarCarrusel() {
             const desplazamiento = currentIndex * 100;
             track.style.transform = `translateX(-${desplazamiento}%)`;
+            const indicadores = document.querySelectorAll('.indicador');
             indicadores.forEach((ind, idx) => {
                 if (idx === currentIndex) ind.classList.add('activo');
                 else ind.classList.remove('activo');
@@ -290,44 +311,72 @@
             actualizarCarrusel();
         }
 
-        btnNext.addEventListener('click', siguienteSlide);
-        btnPrev.addEventListener('click', anteriorSlide);
+        if (btnNext) btnNext.addEventListener('click', siguienteSlide);
+        if (btnPrev) btnPrev.addEventListener('click', anteriorSlide);
 
-        indicadores.forEach((indicador, idx) => {
-            indicador.addEventListener('click', () => {
-                currentIndex = idx;
-                actualizarCarrusel();
-            });
-        });
-
+        // Teclado
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowLeft') anteriorSlide();
             else if (e.key === 'ArrowRight') siguienteSlide();
         });
 
-        // ========== 3 BOTONES PRINCIPALES ==========
+        // ========== 3 BOTONES PRINCIPALES (RUTAS RELATIVAS) ==========
         function setupButtonAction(btn, action) {
-            if (btn) btn.addEventListener('click', (e) => { e.preventDefault(); action(e); });
+            if (btn) btn.addEventListener('click', (e) => { 
+                e.preventDefault(); 
+                action(e); 
+            });
         }
 
         const btnInicio = document.getElementById('btnInicio');
         const btnRegreso = document.getElementById('btnRegreso');
         const btnSiguientePrincipal = document.getElementById('btnSiguientePrincipal');
 
-        // Botón REGRESO - Va a Ilustraciones
-        setupButtonAction(btnRegreso, () => {
-            window.location.href = 'http://127.0.0.1:5500/02-maquetacion-cv/portafolio/ilustraciones.html';
-        });
+        // ✅ RUTAS RELATIVAS CORREGIDAS
+        if (btnRegreso) {
+            setupButtonAction(btnRegreso, () => {
+                window.location.href = 'ilustraciones.html';
+            });
+        }
         
-        // Botón SIGUIENTE - Va a Posters
-        setupButtonAction(btnSiguientePrincipal, () => {
-            window.location.href = 'http://127.0.0.1:5500/02-maquetacion-cv/portafolio/posters.html';
-        });
+        if (btnSiguientePrincipal) {
+            setupButtonAction(btnSiguientePrincipal, () => {
+                window.location.href = 'posters.html';
+            });
+        }
         
-        // Botón INICIO - Va al inicio del CV
-        setupButtonAction(btnInicio, () => {
-            window.location.href = "http://127.0.0.1:5500/02-maquetacion-cv/index.html";
-        });
+        if (btnInicio) {
+            setupButtonAction(btnInicio, () => {
+                window.location.href = '../index.html';
+            });
+        }
+
+        // ========== VERIFICAR IMÁGENES ==========
+        function verificarImagenes() {
+            const imagenes = document.querySelectorAll('.carrusel-item img');
+            imagenes.forEach(img => {
+                img.addEventListener('error', () => {
+                    console.warn(`⚠️ Imagen no encontrada: ${img.src}`);
+                });
+                img.addEventListener('load', () => {
+                    console.log(`✅ Imagen cargada: ${img.src.split('/').pop()}`);
+                });
+            });
+        }
+
+        // ========== INICIALIZAR ==========
+        crearIndicadores();
+        actualizarCarrusel();
+        verificarImagenes();
+        
+        console.log("%c🎨 Infografías - Carrusel", "color: #FFD700; font-size: 14px; font-weight: bold");
+        console.log("✅ Correcciones aplicadas:");
+        console.log("   - Rutas relativas (funciona en GitHub Pages)");
+        console.log("   - background-size: cover (sin espacios negros)");
+        console.log("   - Meta etiquetas anti-caché");
+        console.log("   - Indicadores dinámicos");
+        console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        console.log(`📊 Total de infografías: ${totalItems}`);
     </script>
 </body>
 </html>

@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Portafolio - Branding con Canva</title>
 
+<!-- ✅ ANTI-CACHÉ -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
 <style>
 *{
     margin:0;
@@ -13,14 +18,15 @@
     user-select:none;
 }
 
+/* ✅ Fondo corregido */
 body{
     background-image:url("../img/fondo-secciones.png");
     background-repeat:no-repeat;
-    background-size:100% auto;
+    background-size:cover;
     background-position:center top;
     background-attachment:scroll;
     background-color:#000;
-    min-height:170vh;
+    min-height:100vh;
     width:100%;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     position:relative;
@@ -30,7 +36,7 @@ body{
 .contenedor-libre{
     position:relative;
     width:100%;
-    min-height:170vh;
+    min-height:100vh;
 }
 
 .contenedor-canva{
@@ -216,18 +222,20 @@ body{
             loading="lazy"
             src="https://www.canva.com/design/DAHBHf_eAPw/8muR5EXWnOXgJ9YuueN--w/watch?embed"
             allowfullscreen
-            allow="fullscreen">
+            allow="fullscreen"
+            title="Video de presentación - Branding Canva">
         </iframe>
     </div>
 
     <div class="contenedor-cuadros">
-        <div class="cuadro"><img src="" class="cuadro-imagen" id="img1"></div>
-        <div class="cuadro"><img src="" class="cuadro-imagen" id="img2"></div>
-        <div class="cuadro"><img src="" class="cuadro-imagen" id="img3"></div>
-        <div class="cuadro"><img src="" class="cuadro-imagen" id="img4"></div>
+        <div class="cuadro"><img src="../img/bote.png" class="cuadro-imagen" id="img1" alt="Ilustración bote"></div>
+        <div class="cuadro"><img src="../img/sofa.png" class="cuadro-imagen" id="img2" alt="Ilustración sofá"></div>
+        <div class="cuadro"><img src="../img/proyector.png" class="cuadro-imagen" id="img3" alt="Ilustración proyector"></div>
+        <div class="cuadro"><img src="../img/extintor.png" class="cuadro-imagen" id="img4" alt="Ilustración extintor"></div>
     </div>
 
-    <a href="http://127.0.0.1:5500/02-maquetacion-cv/index.html"
+    <!-- ✅ Ruta relativa corregida -->
+    <a href="../index.html"
        class="boton-movible btn-inicio"
        id="btnInicio"
        tabindex="0">🏠 Inicio</a>
@@ -383,11 +391,10 @@ document.querySelectorAll('.boton-movible').forEach(boton => {
     boton.addEventListener('wheel', expandirConRueda, { passive: false });
 });
 
-// ========== FUNCIÓN SIMPLIFICADA PARA BOTONES (SIN RETRASOS) ==========
+// ========== FUNCIÓN PARA BOTONES ==========
 function setupButtonAction(btn, action) {
     if (!btn) return;
     
-    // Variable para detectar si se movió el mouse
     let hasMoved = false;
     let startX = 0, startY = 0;
     
@@ -398,14 +405,12 @@ function setupButtonAction(btn, action) {
     });
     
     btn.addEventListener('mousemove', (e) => {
-        // Si el mouse se movió más de 5px, consideramos que es un arrastre
         if (Math.abs(e.clientX - startX) > 5 || Math.abs(e.clientY - startY) > 5) {
             hasMoved = true;
         }
     });
     
     btn.addEventListener('click', (e) => {
-        // Solo prevenir si realmente se arrastró
         if (hasMoved) {
             e.preventDefault();
             return;
@@ -414,21 +419,19 @@ function setupButtonAction(btn, action) {
     });
 }
 
-// Botón REGRESO - Va a Logos
+// ✅ RUTAS RELATIVAS CORREGIDAS
 if(btnRegreso){
     setupButtonAction(btnRegreso,()=>{
-        window.location.href = 'http://127.0.0.1:5500/02-maquetacion-cv/portafolio/logos.html';
+        window.location.href = 'logos.html';
     });
 }
 
-// Botón SIGUIENTE - Va a Portafolio principal
 if(btnSiguiente){
     setupButtonAction(btnSiguiente,()=>{
-        window.location.href = 'http://127.0.0.1:5500/02-maquetacion-cv/portafolio/portafolio.html';
+        window.location.href = 'portafolio.html';
     });
 }
 
-// Botón INICIO - Va al inicio del CV
 if(btnInicio){
     setupButtonAction(btnInicio,()=>{
         window.location.href = btnInicio.href;
@@ -437,10 +440,29 @@ if(btnInicio){
 
 if(btnInicio)btnInicio.focus();
 
-document.getElementById('img1').src="../img/bote.png";
-document.getElementById('img2').src="../img/sofa.png";
-document.getElementById('img3').src="../img/proyector.png";
-document.getElementById('img4').src="../img/extintor.png";
+// ✅ Verificar imágenes
+function verificarImagenes() {
+    const imagenes = document.querySelectorAll('.cuadro-imagen');
+    imagenes.forEach(img => {
+        img.addEventListener('error', () => {
+            console.warn(`⚠️ Imagen no encontrada: ${img.src}`);
+            img.style.outline = "2px solid #ff9800";
+        });
+        img.addEventListener('load', () => {
+            console.log(`✅ Imagen cargada: ${img.src.split('/').pop()}`);
+        });
+    });
+}
+
+verificarImagenes();
+
+console.log("%c🎨 Branding con Canva", "color: #a0005d; font-size: 14px; font-weight: bold");
+console.log("✅ Correcciones aplicadas:");
+console.log("   - Rutas relativas (funciona en GitHub Pages)");
+console.log("   - background-size: cover (sin espacios negros)");
+console.log("   - Meta etiquetas anti-caché");
+console.log("   - Imágenes con src desde HTML");
+console.log("   - Alt text para accesibilidad");
 </script>
 
 </body>
