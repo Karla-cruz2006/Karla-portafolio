@@ -57,6 +57,17 @@ body {
     pointer-events: none;
 }
 
+/* ===== ANIMACIÓN DE ROTACIÓN PARA ARÁNDANOS ===== */
+.rotate-animation {
+    animation: blueberryRotate 40s linear infinite;
+    transform-origin: center center;
+}
+
+@keyframes blueberryRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
 /* HANDLES DE EDICIÓN */
 .resize-handle {
     position: absolute;
@@ -191,8 +202,8 @@ body {
             <img src="img/Boton_portafolio.png" alt="Ver Portafolio">
         </div>
 
-        <!-- ARÁNDANO DECORATIVO -->
-        <div class="scrap-item" data-type="deco" style="top:50%; left:12%; width:22%; transform:rotate(4deg);">
+        <!-- ARÁNDANO DECORATIVO CON ROTACIÓN AUTOMÁTICA -->
+        <div class="scrap-item rotate-animation" data-type="deco" style="top:50%; left:12%; width:22%;">
             <img src="img/Arandanos.png" alt="Arándanos decorativos">
         </div>
     </div>
@@ -442,7 +453,7 @@ function bindDoubleClickActions() {
             } else if (src.includes('boton_portafolio')) {
                 irPortafolio();
             } else if (src.includes('arandanos')) {
-                console.log("🫐 Arándano decorativo (sin acción)");
+                console.log("🫐 Arándano decorativo - Rotación automática activa");
             }
         };
     });
@@ -493,6 +504,15 @@ function checkResources() {
         .catch(() => console.warn("⚠️ No se pudo verificar PDF"));
 }
 
+// ===== ASEGURAR ANIMACIÓN DEL ARÁNDANO =====
+function asegurarAnimacionArandano() {
+    const arandano = document.querySelector('.scrap-item[data-type="deco"]');
+    if (arandano && !arandano.classList.contains('rotate-animation')) {
+        arandano.classList.add('rotate-animation');
+        console.log("🫐 Animación del arándano activada");
+    }
+}
+
 // ============================================================
 // INICIALIZACIÓN
 // ============================================================
@@ -505,6 +525,9 @@ window.onload = () => {
     
     // Asignar acciones de doble clic
     bindDoubleClickActions();
+    
+    // Asegurar animación del arándano
+    asegurarAnimacionArandano();
     
     // Verificar recursos
     checkResources();
@@ -519,6 +542,7 @@ window.onload = () => {
     console.log("✅ DOBLE CLIC: Ejecutar acción del botón");
     console.log("✅ Las posiciones se guardan AUTOMÁTICAMENTE");
     console.log("✅ Al recargar, los elementos mantienen su lugar");
+    console.log("✅ ARÁNDANO: Rotación automática de 40 segundos");
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 };
 </script>
