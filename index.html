@@ -3,12 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Karla Sherlyn · Curriculum Vitae</title>
-
-<!-- ✅ ANTI-CACHÉ para que siempre veas los cambios -->
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
+<title>Karla Sherlyn · Curriculum Vitae · Editor Visual</title>
 
 <style>
 * {
@@ -20,24 +15,21 @@
 body {
     background: #000;
     overflow-x: hidden;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
-/* CONTENEDOR PRINCIPAL */
 .fullscreen-container {
     position: relative;
     min-height: 100vh;
     width: 100%;
 }
 
-/* FONDO */
 .fullscreen-img {
     width: 100%;
     display: block;
     pointer-events: none;
 }
 
-/* CAPA DE ELEMENTOS */
 .scrapbook-layer {
     position: absolute;
     top: 0;
@@ -46,27 +38,79 @@ body {
     height: 100%;
 }
 
-/* ============================================
-   ELEMENTOS - BLOQUEADOS (SIN MOVIMIENTO)
-   ============================================ */
+/* ELEMENTOS EDITABLES */
 .scrap-item {
     position: absolute;
-    cursor: pointer;      /* Manita para indicar que es clickeable */
+    cursor: grab;
     user-select: none;
     transform-origin: center center;
 }
 
-/* IMAGEN DENTRO DEL ELEMENTO */
-.scrap-item img {
-    width: 100%;
-    display: block;
-    pointer-events: none;
-    border-radius: 0;
+.scrap-item:active {
+    cursor: grabbing;
 }
 
-/* ============================================
-   ANIMACIÓN EXCLUSIVA PARA ARÁNDANOS
-   ============================================ */
+.scrap-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    pointer-events: none;
+}
+
+/* ELEMENTO SELECCIONADO */
+.scrap-item.selected {
+    outline: 3px solid #ff4d6d;
+    outline-offset: 5px;
+    filter: drop-shadow(0 0 8px rgba(255, 77, 109, 0.4));
+    z-index: 1000 !important;
+}
+
+/* ===== CÍRCULOS DE EDICIÓN ===== */
+.resize-handle {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background: #ff4d6d;
+    border-radius: 50%;
+    bottom: -12px;
+    right: -12px;
+    cursor: nwse-resize;
+    z-index: 1001;
+    border: 2px solid white;
+    box-shadow: 0 0 10px rgba(255, 77, 109, 0.8);
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.resize-handle:hover {
+    transform: scale(1.2);
+    background: #ff1e4d;
+}
+
+.rotate-handle {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background: #4d9eff;
+    border-radius: 50%;
+    top: -12px;
+    left: -12px;
+    cursor: grab;
+    z-index: 1001;
+    border: 2px solid white;
+    box-shadow: 0 0 10px rgba(77, 158, 255, 0.8);
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.rotate-handle:hover {
+    transform: scale(1.2);
+    background: #2b7be6;
+}
+
+.rotate-handle:active {
+    cursor: grabbing;
+}
+
+/* ANIMACIÓN ARÁNDANO */
 .rotate-animation {
     animation: blueberryRotate 40s linear infinite;
     transform-origin: center center;
@@ -77,133 +121,30 @@ body {
     to { transform: rotate(360deg); }
 }
 
-/* ============================================
-   EFECTOS VISUALES (SIN ALTERAR POSICIÓN)
-   ============================================ */
-
-/* Efecto hover suave - solo sombra, sin movimiento */
-.scrap-item:hover {
-    filter: drop-shadow(0 0 10px rgba(255, 235, 140, 0.5));
-    transition: filter 0.25s ease;
-}
-
-/* ============================================
-   TOOLTIPS INFORMATIVOS - SIN INDICACIONES DE EDICIÓN
-   ============================================ */
-
-/* Tooltip base para todos los elementos */
-.scrap-item {
-    position: relative;
-}
-
-.scrap-item::after {
-    content: "✨";
-    position: absolute;
-    top: -32px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 11px;
-    font-weight: normal;
-    background: rgba(0, 0, 0, 0.9);
-    color: white;
-    padding: 4px 12px;
-    border-radius: 25px;
-    opacity: 0;
-    transition: opacity 0.25s ease;
-    pointer-events: none;
-    white-space: nowrap;
-    font-family: 'Segoe UI', monospace;
-    z-index: 200;
-    letter-spacing: 0.5px;
-    backdrop-filter: blur(4px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-/* Tooltip al hacer hover - Mensaje simple */
-.scrap-item:hover::after {
-    opacity: 1;
-    content: "✨ Haz doble clic ✨";
-}
-
-/* Tooltip personalizado para el arándano */
-.scrap-item.rotate-animation:hover::after {
-    content: "🫐 Arándanos decorativos 🫐";
-    background: rgba(40, 20, 60, 0.95);
-}
-
-/* Tooltip específico para el botón de currículum */
-.scrap-item[data-type="cv"]:hover::after {
-    content: "📄 Descargar Currículum 📄";
-    background: rgba(0, 40, 60, 0.95);
-}
-
-/* Tooltip específico para el botón de contacto */
-.scrap-item[data-type="contacto"]:hover::after {
-    content: "📞 Ir a Contacto 📞";
-    background: rgba(0, 60, 40, 0.95);
-}
-
-/* Tooltip específico para el botón de portafolio */
-.scrap-item[data-type="portafolio"]:hover::after {
-    content: "🎨 Ver Portafolio 🎨";
-    background: rgba(60, 30, 0, 0.95);
-}
-
-/* ============================================
-   WATERMARK (CRÉDITOS)
-   ============================================ */
+/* WATERMARK */
 .watermark {
     position: absolute;
     bottom: 15px;
     left: 50%;
     transform: translateX(-50%);
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(255, 255, 255, 0.8);
     font-size: 12px;
-    font-family: 'Segoe UI', system-ui;
-    background: rgba(0, 0, 0, 0.55);
+    background: rgba(0, 0, 0, 0.5);
     padding: 5px 16px;
     border-radius: 40px;
     pointer-events: none;
     z-index: 20;
-    backdrop-filter: blur(4px);
     white-space: nowrap;
-    letter-spacing: 0.3px;
 }
 
-/* ============================================
-   RESPONSIVE PARA MÓVILES Y TABLETAS
-   ============================================ */
 @media (max-width: 768px) {
-    .scrap-item::after {
-        font-size: 9px;
-        top: -28px;
-        padding: 3px 8px;
-        white-space: nowrap;
+    .resize-handle, .rotate-handle {
+        width: 18px;
+        height: 18px;
     }
-    
-    .watermark {
-        font-size: 10px;
-        padding: 4px 12px;
-        bottom: 10px;
-    }
-    
-    .scrap-item:hover {
-        filter: drop-shadow(0 0 6px rgba(255, 235, 140, 0.4));
-    }
-}
-
-/* Para pantallas muy pequeñas (menos de 480px) */
-@media (max-width: 480px) {
-    .scrap-item::after {
-        font-size: 8px;
-        top: -24px;
-        padding: 2px 6px;
-    }
-    
-    .watermark {
-        font-size: 9px;
-        padding: 3px 10px;
-    }
+    .resize-handle { bottom: -9px; right: -9px; }
+    .rotate-handle { top: -9px; left: -9px; }
+    .watermark { font-size: 10px; padding: 4px 12px; }
 }
 </style>
 </head>
@@ -211,164 +152,305 @@ body {
 <body>
 
 <div class="fullscreen-container">
-    <!-- FONDO -->
-    <img src="img/fondo.png" class="fullscreen-img" alt="Fondo Karla Sherlyn">
+    <img src="img/fondo.png" class="fullscreen-img" alt="Fondo">
 
     <div class="scrapbook-layer">
         <div class="watermark">© 2026 Karla Cruz | YANG´S LAB</div>
 
-        <!-- BOTÓN CURRÍCULUM - POSICIÓN FIJA -->
         <div class="scrap-item" data-type="cv" style="top:75%; left:7%; width:18%; transform:rotate(-2deg);">
-            <img src="img/Boton_curriculum.png" alt="Descargar Currículum">
+            <img src="img/Boton_curriculum.png" alt="Currículum">
         </div>
 
-        <!-- BOTÓN CONTÁCTAME - POSICIÓN FIJA -->
         <div class="scrap-item" data-type="contacto" style="top:75%; left:31%; width:18%; transform:rotate(2deg);">
-            <img src="img/Boton_contactame.png" alt="Contáctame">
+            <img src="img/Boton_contactame.png" alt="Contacto">
         </div>
 
-        <!-- BOTÓN PORTAFOLIO - POSICIÓN FIJA -->
-        <div class="scrap-item" data-type="portafolio" style="top:45%; left:41%; width:22%; transform:rotate(1deg); z-index:5;">
-            <img src="img/Boton_portafolio.png" alt="Ver Portafolio">
+        <div class="scrap-item" data-type="portafolio" style="top:45%; left:41%; width:22%; transform:rotate(1deg);">
+            <img src="img/Boton_portafolio.png" alt="Portafolio">
         </div>
 
-        <!-- ARÁNDANO DECORATIVO CON ROTACIÓN AUTOMÁTICA -->
         <div class="scrap-item rotate-animation" data-type="deco" style="top:50%; left:12%; width:22%; transform:rotate(4deg);">
-            <img src="img/Arandanos.png" alt="Arándanos decorativos">
+            <img src="img/Arandanos.png" alt="Arándanos">
         </div>
     </div>
 </div>
 
 <script>
 // ============================================================
-// FUNCIONES DE NAVEGACIÓN (COMPATIBLES CON GITHUB PAGES)
+// FUNCIONES DE NAVEGACIÓN (BOTONES)
 // ============================================================
 
-// Descarga del archivo CV
 function descargarCV() {
     console.log("📄 Descargando CV...");
     const link = document.createElement('a');
     link.href = "docs/Karla_Cruz_CV.pdf";
     link.download = "Karla_Cruz_CV.pdf";
-    link.style.display = 'none';
     document.body.appendChild(link);
     link.click();
-    setTimeout(() => document.body.removeChild(link), 150);
-    console.log("✅ Descarga iniciada: docs/Karla_Cruz_CV.pdf");
+    setTimeout(() => document.body.removeChild(link), 100);
 }
 
-// Navegación a contacto.html
 function irContacto() {
+    console.log("📞 Navegando a contactame.html");
     window.location.href = "contactame.html";
 }
 
-// Navegación a portafolio
 function irPortafolio() {
+    console.log("🎨 Navegando a portafolio/portafolio.html");
     window.location.href = "portafolio/portafolio.html";
 }
 
 // ============================================================
-// ASIGNAR ACCIONES A LOS BOTONES (SOLO DOBLE CLIC)
+// EDITOR COMPLETO CON GUARDADO AUTOMÁTICO
 // ============================================================
-function asignarAcciones() {
-    const items = document.querySelectorAll('.scrap-item');
+
+let selected = null;
+let mode = null;
+let startX, startY, startLeft, startTop, startW, startRotAngle, currentRot;
+
+function getRotation(el) {
+    const transform = el.style.transform;
+    const match = transform.match(/rotate\(([-\d.]+)deg\)/);
+    return match ? parseFloat(match[1]) : 0;
+}
+
+function setRotation(el, deg) {
+    el.style.transform = `rotate(${deg}deg)`;
+}
+
+// Convertir posición de porcentaje a píxeles
+function convertToPixels(el) {
+    const parentRect = el.parentElement.getBoundingClientRect();
+    const rect = el.getBoundingClientRect();
     
-    items.forEach(item => {
-        const img = item.querySelector('img');
-        if (!img) return;
-        
-        const srcLower = img.src.toLowerCase();
-        
-        // Asignar evento de doble clic
-        item.addEventListener('dblclick', (e) => {
+    if (el.style.left && el.style.left.includes('px')) return;
+    
+    const leftPx = rect.left - parentRect.left;
+    const topPx = rect.top - parentRect.top;
+    
+    el.style.left = leftPx + 'px';
+    el.style.top = topPx + 'px';
+}
+
+function createHandles(el) {
+    el.querySelectorAll('.resize-handle, .rotate-handle').forEach(h => h.remove());
+    
+    const resizeHandle = document.createElement('div');
+    resizeHandle.className = 'resize-handle';
+    el.appendChild(resizeHandle);
+    
+    const rotateHandle = document.createElement('div');
+    rotateHandle.className = 'rotate-handle';
+    el.appendChild(rotateHandle);
+    
+    resizeHandle.onmousedown = (e) => {
+        e.stopPropagation();
+        mode = 'resize';
+        startX = e.clientX;
+        startW = el.offsetWidth;
+        e.preventDefault();
+    };
+    
+    rotateHandle.onmousedown = (e) => {
+        e.stopPropagation();
+        mode = 'rotate';
+        const rect = el.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        startRotAngle = Math.atan2(e.clientY - cy, e.clientX - cx);
+        currentRot = getRotation(el);
+        e.preventDefault();
+    };
+}
+
+function selectElement(el) {
+    if (selected === el) return;
+    if (selected) selected.classList.remove('selected');
+    
+    convertToPixels(el);
+    
+    selected = el;
+    selected.classList.add('selected');
+    createHandles(selected);
+}
+
+function startDrag(el, e) {
+    convertToPixels(el);
+    
+    mode = 'drag';
+    selected = el;
+    const rect = el.getBoundingClientRect();
+    const parentRect = el.parentElement.getBoundingClientRect();
+    startX = e.clientX;
+    startY = e.clientY;
+    startLeft = rect.left - parentRect.left;
+    startTop = rect.top - parentRect.top;
+    e.preventDefault();
+}
+
+// ===== GUARDAR POSICIONES EN LOCALSTORAGE =====
+function savePositions() {
+    const items = document.querySelectorAll('.scrap-item');
+    const data = [];
+    items.forEach(el => {
+        data.push({
+            top: el.style.top,
+            left: el.style.left,
+            width: el.style.width,
+            transform: el.style.transform
+        });
+    });
+    localStorage.setItem('karla_layout', JSON.stringify(data));
+    console.log("💾 Posiciones guardadas");
+}
+
+// ===== CARGAR POSICIONES GUARDADAS =====
+function loadPositions() {
+    const saved = localStorage.getItem('karla_layout');
+    if (!saved) {
+        console.log("📂 No hay posiciones guardadas");
+        return;
+    }
+    try {
+        const data = JSON.parse(saved);
+        const items = document.querySelectorAll('.scrap-item');
+        items.forEach((el, i) => {
+            if (data[i]) {
+                if (data[i].top) el.style.top = data[i].top;
+                if (data[i].left) el.style.left = data[i].left;
+                if (data[i].width) el.style.width = data[i].width;
+                if (data[i].transform) el.style.transform = data[i].transform;
+            }
+        });
+        console.log("📂 Posiciones cargadas");
+    } catch(e) {
+        console.warn("Error al cargar:", e);
+    }
+}
+
+// ===== EVENTOS GLOBALES =====
+document.onmousemove = (e) => {
+    if (!selected) return;
+    
+    if (mode === 'drag') {
+        selected.style.left = (startLeft + (e.clientX - startX)) + 'px';
+        selected.style.top = (startTop + (e.clientY - startY)) + 'px';
+    }
+    
+    if (mode === 'resize') {
+        let newW = Math.max(60, startW + (e.clientX - startX));
+        selected.style.width = newW + 'px';
+    }
+    
+    if (mode === 'rotate') {
+        const rect = selected.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const ang = Math.atan2(e.clientY - cy, e.clientX - cx);
+        let delta = (ang - startRotAngle) * 180 / Math.PI;
+        setRotation(selected, currentRot + delta);
+    }
+};
+
+document.onmouseup = () => {
+    if (mode && selected) {
+        savePositions();  // GUARDADO AUTOMÁTICO
+    }
+    mode = null;
+};
+
+// ===== ASIGNAR EVENTOS A CADA ELEMENTO =====
+function bindEvents() {
+    document.querySelectorAll('.scrap-item').forEach(el => {
+        el.onclick = (e) => {
             e.stopPropagation();
-            
-            if (srcLower.includes('boton_curriculum')) {
+            selectElement(el);
+        };
+        
+        el.onmousedown = (e) => {
+            if (e.target.classList.contains('resize-handle') || 
+                e.target.classList.contains('rotate-handle')) return;
+            startDrag(el, e);
+        };
+    });
+}
+
+// ===== DOBLE CLIC PARA ACCIONES DE BOTONES =====
+function bindActions() {
+    document.querySelectorAll('.scrap-item').forEach(el => {
+        el.ondblclick = (e) => {
+            e.stopPropagation();
+            const src = el.querySelector('img').src.toLowerCase();
+            if (src.includes('curriculum')) {
                 descargarCV();
-            } else if (srcLower.includes('boton_contactame')) {
+            } else if (src.includes('contactame')) {
                 irContacto();
-            } else if (srcLower.includes('boton_portafolio')) {
+            } else if (src.includes('portafolio')) {
                 irPortafolio();
-            } else if (srcLower.includes('arandanos')) {
+            } else if (src.includes('arandanos')) {
                 console.log("🫐 Arándano decorativo");
             }
-        });
-        
-        // Prevenir cualquier intento de arrastre
-        item.addEventListener('dragstart', (e) => {
-            e.preventDefault();
-            return false;
-        });
-        
-        // Prevenir eventos táctiles que puedan mover
-        item.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-        });
-        
-        // Cursor pointer para indicar que es clickeable
-        item.style.cursor = 'pointer';
+        };
     });
 }
 
-// ============================================================
-// VERIFICAR RECURSOS (IMÁGENES Y PDF)
-// ============================================================
-function verificarRecursos() {
-    const imagenes = document.querySelectorAll('img');
-    imagenes.forEach(img => {
-        img.onerror = () => {
-            console.warn(`⚠️ Imagen no encontrada: ${img.src}`);
-            img.style.border = "1px dashed rgba(255,80,80,0.6)";
-        };
-        img.onload = () => {
-            console.log(`✅ Imagen cargada: ${img.src.split('/').pop()}`);
-        };
+// ===== ROTACIÓN CON TECLADO Q/E =====
+document.addEventListener('keydown', (e) => {
+    if (!selected) return;
+    const key = e.key.toLowerCase();
+    let rot = getRotation(selected);
+    if (key === 'q') { 
+        setRotation(selected, rot - 5); 
+        savePositions();
+        console.log(`🔄 Rotación: ${rot - 5}°`);
+    }
+    if (key === 'e') { 
+        setRotation(selected, rot + 5); 
+        savePositions();
+        console.log(`🔄 Rotación: ${rot + 5}°`);
+    }
+});
+
+// ===== CLIC FUERA DESELECCIONA =====
+document.body.addEventListener('click', (e) => {
+    if (!e.target.closest('.scrap-item') && selected) {
+        selected.classList.remove('selected');
+        selected = null;
+    }
+});
+
+// ===== VERIFICAR RECURSOS =====
+function checkResources() {
+    const images = document.querySelectorAll('img');
+    images.forEach(img => {
+        img.onerror = () => console.warn(`⚠️ Imagen no encontrada: ${img.src}`);
+        img.onload = () => console.log(`✅ Imagen: ${img.src.split('/').pop()}`);
     });
     
-    // Verificar PDF
     fetch('docs/Karla_Cruz_CV.pdf', { method: 'HEAD' })
-        .then(resp => {
-            if (resp.ok) {
-                console.log("✅ PDF disponible en docs/Karla_Cruz_CV.pdf");
-            } else {
-                console.warn("⚠️ PDF no encontrado en docs/Karla_Cruz_CV.pdf");
-            }
-        })
-        .catch(() => console.warn("⚠️ No se pudo verificar el PDF"));
-}
-
-// ============================================================
-// ASEGURAR ANIMACIÓN DEL ARÁNDANO
-// ============================================================
-function asegurarAnimacionArandano() {
-    const arandano = document.querySelector('.scrap-item[data-type="deco"]');
-    if (arandano && !arandano.classList.contains('rotate-animation')) {
-        arandano.classList.add('rotate-animation');
-        console.log("🫐 Animación del arándano asegurada");
-    }
+        .then(res => res.ok ? console.log("✅ PDF disponible") : console.warn("⚠️ PDF no encontrado"))
+        .catch(() => console.warn("⚠️ No se pudo verificar PDF"));
 }
 
 // ============================================================
 // INICIALIZACIÓN
 // ============================================================
 window.onload = () => {
-    // Asignar acciones a los botones
-    asignarAcciones();
+    loadPositions();
+    bindEvents();
+    bindActions();
+    checkResources();
     
-    // Verificar imágenes y recursos
-    verificarRecursos();
-    
-    // Asegurar animación del arándano
-    asegurarAnimacionArandano();
-    
-    console.log("%c✨ CV INTERACTIVO - KARLA SHERLYN ✨", "color: #ff4d6d; font-size: 14px; font-weight: bold");
+    console.log("%c✨ EDITOR ACTIVADO - GUARDADO AUTOMÁTICO ✨", "color: #ff4d6d; font-size: 14px; font-weight: bold");
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-    console.log("🔒 Elementos fijos en su posición");
-    console.log("✅ Haz doble clic en los botones:");
-    console.log("   📄 Currículum → descarga PDF");
-    console.log("   📞 Contáctame → contactame.html");
-    console.log("   🎨 Portafolio → portafolio/portafolio.html");
-    console.log("🫐 Arándano → rotación automática");
+    console.log("✅ CLIC: Seleccionar elemento (aparecen círculos)");
+    console.log("✅ ARRASTRAR: Mover elemento");
+    console.log("✅ CÍRCULO ROSADO: Redimensionar");
+    console.log("✅ CÍRCULO AZUL: Rotar");
+    console.log("✅ TECLAS Q / E: Rotar elemento seleccionado");
+    console.log("✅ DOBLE CLIC: Ejecutar acción del botón");
+    console.log("✅ Las posiciones se guardan AUTOMÁTICAMENTE");
+    console.log("✅ Al recargar, los elementos mantienen su lugar");
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 };
 </script>

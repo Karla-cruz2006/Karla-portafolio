@@ -34,22 +34,95 @@ body {
 }
 
 /* ============================================
-   ELEMENTOS - COMPLETAMENTE BLOQUEADOS
+   ELEMENTOS EDITABLES
    ============================================ */
 .scrap-item {
     position: absolute;
-    cursor: pointer;      /* Manita para indicar que es clickeable */
+    cursor: grab;
     user-select: none;
     transform-origin: center center;
-    /* Sin transiciones que puedan interferir */
+    transition: outline 0.1s ease;
+}
+
+.scrap-item:active {
+    cursor: grabbing;
 }
 
 /* IMAGEN DENTRO DEL ELEMENTO */
 .scrap-item img {
     width: 100%;
+    height: auto;
     display: block;
     pointer-events: none;
     border-radius: 0;
+}
+
+/* ============================================
+   ELEMENTO SELECCIONADO
+   ============================================ */
+.scrap-item.selected {
+    outline: 3px solid #ff4d6d;
+    outline-offset: 5px;
+    filter: drop-shadow(0 0 8px rgba(255, 77, 109, 0.4));
+    z-index: 1000 !important;
+}
+
+/* ============================================
+   HANDLES (CÍRCULOS) DE EDICIÓN
+   ============================================ */
+
+/* Handle de redimension - CÍRCULO ROSADO (abajo derecha) */
+.resize-handle {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background: #ff4d6d;
+    border-radius: 50%;
+    bottom: -12px;
+    right: -12px;
+    cursor: nwse-resize;
+    z-index: 1001;
+    border: 2.5px solid white;
+    box-shadow: 0 0 10px rgba(255, 77, 109, 0.8);
+    transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.resize-handle:hover {
+    transform: scale(1.25);
+    background: #ff1e4d;
+    box-shadow: 0 0 15px rgba(255, 77, 109, 1);
+}
+
+.resize-handle:active {
+    cursor: nwse-resize;
+    transform: scale(1.1);
+}
+
+/* Handle de rotación - CÍRCULO AZUL (arriba izquierda) */
+.rotate-handle {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background: #4d9eff;
+    border-radius: 50%;
+    top: -12px;
+    left: -12px;
+    cursor: grab;
+    z-index: 1001;
+    border: 2.5px solid white;
+    box-shadow: 0 0 10px rgba(77, 158, 255, 0.8);
+    transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.rotate-handle:hover {
+    transform: scale(1.25);
+    background: #2b7be6;
+    box-shadow: 0 0 15px rgba(77, 158, 255, 1);
+}
+
+.rotate-handle:active {
+    cursor: grabbing;
+    transform: scale(1.1);
 }
 
 /* ============================================
@@ -66,91 +139,14 @@ body {
 }
 
 /* ============================================
-   EFECTOS VISUALES (SIN ALTERAR POSICIÓN)
-   ============================================ */
-
-/* Efecto hover suave - solo sombra, sin movimiento */
-.scrap-item:hover {
-    filter: drop-shadow(0 0 12px rgba(255, 235, 140, 0.5));
-    transition: filter 0.25s ease;
-}
-
-/* ============================================
-   TOOLTIPS INFORMATIVOS
-   ============================================ */
-
-/* Tooltip base para todos los elementos */
-.scrap-item {
-    position: relative;
-}
-
-.scrap-item::after {
-    content: "✨";
-    position: absolute;
-    top: -35px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 11px;
-    font-weight: normal;
-    background: rgba(0, 0, 0, 0.92);
-    color: white;
-    padding: 5px 14px;
-    border-radius: 25px;
-    opacity: 0;
-    transition: opacity 0.25s ease;
-    pointer-events: none;
-    white-space: nowrap;
-    font-family: 'Segoe UI', monospace;
-    z-index: 200;
-    letter-spacing: 0.5px;
-    backdrop-filter: blur(5px);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-/* Tooltip al hacer hover */
-.scrap-item:hover::after {
-    opacity: 1;
-    content: "✨ Doble clic para accionar ✨";
-}
-
-/* Tooltip personalizado para el arándano */
-.scrap-item.rotate-animation:hover::after {
-    content: "🫐 Arándanos decorativos · Rotación automática 🫐";
-    background: rgba(40, 20, 60, 0.96);
-    border-color: rgba(120, 80, 200, 0.3);
-}
-
-/* Tooltip específico para el botón de currículum */
-.scrap-item[data-type="cv"]:hover::after {
-    content: "📄 Doble clic · Descargar Currículum 📄";
-    background: rgba(0, 50, 70, 0.96);
-    border-color: rgba(0, 150, 200, 0.3);
-}
-
-/* Tooltip específico para el botón de contacto */
-.scrap-item[data-type="contacto"]:hover::after {
-    content: "📞 Doble clic · Ir a Contacto 📞";
-    background: rgba(0, 70, 50, 0.96);
-    border-color: rgba(0, 200, 150, 0.3);
-}
-
-/* Tooltip específico para el botón de portafolio */
-.scrap-item[data-type="portafolio"]:hover::after {
-    content: "🎨 Doble clic · Ver Portafolio 🎨";
-    background: rgba(70, 40, 0, 0.96);
-    border-color: rgba(200, 150, 0, 0.3);
-}
-
-/* ============================================
    WATERMARK (CRÉDITOS)
    ============================================ */
 .watermark {
     position: absolute;
-    bottom: 18px;
+    bottom: 15px;
     left: 50%;
     transform: translateX(-50%);
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.85);
     font-size: 12px;
     font-family: 'Segoe UI', system-ui;
     background: rgba(0, 0, 0, 0.55);
@@ -158,22 +154,29 @@ body {
     border-radius: 40px;
     pointer-events: none;
     z-index: 20;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(4px);
     white-space: nowrap;
     letter-spacing: 0.3px;
-    font-weight: 500;
-    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* ============================================
    RESPONSIVE PARA MÓVILES Y TABLETAS
    ============================================ */
 @media (max-width: 768px) {
-    .scrap-item::after {
-        font-size: 9px;
-        top: -30px;
-        padding: 4px 10px;
-        white-space: nowrap;
+    .resize-handle,
+    .rotate-handle {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .resize-handle {
+        bottom: -10px;
+        right: -10px;
+    }
+    
+    .rotate-handle {
+        top: -10px;
+        left: -10px;
     }
     
     .watermark {
@@ -182,18 +185,28 @@ body {
         bottom: 12px;
     }
     
-    .scrap-item:hover {
-        filter: drop-shadow(0 0 8px rgba(255, 235, 140, 0.4));
+    .scrap-item.selected {
+        outline: 2.5px solid #ff4d6d;
+        outline-offset: 4px;
     }
 }
 
 /* Para pantallas muy pequeñas (menos de 480px) */
 @media (max-width: 480px) {
-    .scrap-item::after {
-        font-size: 8px;
-        top: -26px;
-        padding: 3px 8px;
-        white-space: nowrap;
+    .resize-handle,
+    .rotate-handle {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .resize-handle {
+        bottom: -9px;
+        right: -9px;
+    }
+    
+    .rotate-handle {
+        top: -9px;
+        left: -9px;
     }
     
     .watermark {
@@ -207,13 +220,23 @@ body {
    DISPOSITIVOS TÁCTILES
    ============================================ */
 @media (hover: none) and (pointer: coarse) {
-    .scrap-item {
-        cursor: pointer;
+    .resize-handle,
+    .rotate-handle {
+        width: 30px;
+        height: 30px;
     }
     
-    .scrap-item::after {
-        font-size: 10px;
-        top: -38px;
-        padding: 6px 12px;
+    .resize-handle {
+        bottom: -15px;
+        right: -15px;
+    }
+    
+    .rotate-handle {
+        top: -15px;
+        left: -15px;
+    }
+    
+    .scrap-item {
+        cursor: default;
     }
 }
