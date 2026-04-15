@@ -1,80 +1,168 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+/* ===== RESET Y BASE ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none; /* Evita selección de texto mientras se arrastra, pero no afecta clics */
 }
 
-body{
-    background:#000;
-    overflow-x:hidden;
+body {
+    background: #000;
+    overflow-x: hidden;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
-/* CONTENEDOR */
-.fullscreen-container{
-    position:relative;
-    min-height:100vh;
+/* CONTENEDOR PRINCIPAL: respeta el flujo del fondo */
+.fullscreen-container {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
 }
 
-/* FONDO */
-.fullscreen-img{
-    width:100%;
-    display:block;
+/* FONDO: imagen a ancho completo, sin distorsión */
+.fullscreen-img {
+    width: 100%;
+    display: block;
+    pointer-events: none;  /* Para que el fondo no interfiera con clics en elementos */
 }
 
-/* CAPA */
-.scrapbook-layer{
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
+/* CAPA DE ELEMENTOS SUPERPUESTOS (scrapbook) */
+.scrapbook-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
-/* ELEMENTOS */
-.scrap-item{
-    position:absolute;
-    cursor:grab;
-    transition: transform 0.2s ease;
-    transform-origin:center center;
+/* CADA ELEMENTO: posicionamiento absoluto, cursor interactivo */
+.scrap-item {
+    position: absolute;
+    cursor: grab;
+    transition: box-shadow 0.1s ease, outline 0.05s linear;
+    will-change: transform, left, top, width;
 }
 
-.scrap-item:active{
-    cursor:grabbing;
+.scrap-item:active {
+    cursor: grabbing;
 }
 
-/* IMAGEN */
-.scrap-item img{
-    width:100%;
-    height:auto;
-    display:block;
+/* Las imágenes dentro de los elementos responden al tamaño del contenedor */
+.scrap-item img {
+    width: 100%;
+    display: block;
+    pointer-events: auto;    /* Para que reciban clics y arrastres */
+    border-radius: 0;       /* Sin redondeo para mantener diseño original */
 }
 
-/* HOVER (SIN ROMPER ROTACIÓN JS) */
-.scrap-item:hover{
-    transform: scale(1.05);
+/* ===== MANIJAS ===== */
+.resize-handle {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    background: #ff4d6d;
+    border-radius: 50%;
+    bottom: -11px;
+    right: -11px;
+    cursor: nwse-resize;
+    z-index: 999;
+    border: 2px solid white;
+    box-shadow: 0 0 8px rgba(255, 77, 109, 0.7);
+    transition: transform 0.1s ease, background 0.1s;
 }
 
-/* ARÁNDANO (FIX REAL) */
-.rotate-animation img{
+.resize-handle:hover {
+    transform: scale(1.15);
+    background: #ff1e4d;
+}
+
+.rotate-handle {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #4d9eff;
+    border-radius: 50%;
+    top: 6px;
+    left: 6px;
+    cursor: grab;
+    z-index: 999;
+    border: 2px solid white;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+}
+
+.rotate-handle:active {
+    cursor: grabbing;
+}
+
+/* ===== ESTADO SELECCIONADO ===== */
+.scrap-item.selected {
+    outline: 3px solid #ff4d6d;
+    outline-offset: 5px;
+    filter: drop-shadow(0 0 5px rgba(255, 77, 109, 0.4));
+    z-index: 200 !important;  /* Asegura que el elemento seleccionado quede por encima */
+}
+
+/* Tooltip interactivo (solo al hover) */
+.scrap-item::after {
+    content: "🔧";
+    position: absolute;
+    top: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 20px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+    white-space: nowrap;
+    font-family: monospace;
+    z-index: 300;
+}
+
+.scrap-item:hover::after {
+    opacity: 0.85;
+    content: "✨ Doble clic | ✋ Arrastrar | 🔄 Q/E rotar";
+}
+
+/* ===== ANIMACIÓN EXCLUSIVA DEL ARÁNDANO (40s rotación suave) ===== */
+.rotate-animation {
     animation: blueberryRotate 40s linear infinite;
-    transform-origin:center center;
 }
 
-@keyframes blueberryRotate{
-    from{ transform: rotate(0deg); }
-    to{ transform: rotate(360deg); }
+@keyframes blueberryRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
-/* WATERMARK */
-.watermark{
-    position:absolute;
-    bottom:10px;
-    left:50%;
-    transform:translateX(-50%);
-    color:white;
-    font-size:12px;
-    font-family:'Segoe UI',system-ui;
-    background:rgba(0,0,0,0.5);
-    padding:4px 12px;
-    border-radius:20px;
+/* Watermark (créditos) */
+.watermark {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 12px;
+    font-family: 'Segoe UI', system-ui;
+    background: rgba(0, 0, 0, 0.55);
+    padding: 5px 15px;
+    border-radius: 40px;
+    pointer-events: none;
+    z-index: 25;
+    backdrop-filter: blur(2px);
+    white-space: nowrap;
+}
+
+/* Ajuste responsivo básico: para que los elementos no se salgan en pantallas pequeñas */
+@media (max-width: 768px) {
+    .scrap-item::after {
+        font-size: 9px;
+        top: -24px;
+        white-space: nowrap;
+    }
+    .resize-handle, .rotate-handle {
+        transform: scale(0.9);
+    }
 }
