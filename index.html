@@ -2,21 +2,20 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Karla Sherlyn · Curriculum Vitae · Editor Visual</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Karla Sherlyn · Curriculum Vitae</title>
 
-<!-- ✅ ANTI-CACHÉ para ver siempre los cambios más recientes -->
+<!-- ✅ ANTI-CACHÉ para ver cambios -->
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 
 <style>
-/* ===== RESET Y BASE ===== */
+/* RESET Y BASE */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    user-select: none; /* Evita selección de texto mientras se arrastra, pero no afecta clics */
 }
 
 body {
@@ -25,124 +24,58 @@ body {
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
-/* CONTENEDOR PRINCIPAL: respeta el flujo del fondo */
+/* CONTENEDOR PRINCIPAL */
 .fullscreen-container {
     position: relative;
     min-height: 100vh;
     width: 100%;
 }
 
-/* FONDO: imagen a ancho completo, sin distorsión */
+/* FONDO: imagen a ancho completo */
 .fullscreen-img {
     width: 100%;
     display: block;
-    pointer-events: none;  /* Para que el fondo no interfiera con clics en elementos */
+    pointer-events: none; /* El fondo no interfiere con clics en botones */
 }
 
-/* CAPA DE ELEMENTOS SUPERPUESTOS (scrapbook) */
+/* CAPA DE ELEMENTOS SUPERPUESTOS */
 .scrapbook-layer {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    pointer-events: none; /* La capa no bloquea, pero los hijos la anulan */
 }
 
-/* CADA ELEMENTO: posicionamiento absoluto, cursor interactivo */
+/* CADA ELEMENTO: posiciones fijas, sin interacción de arrastre/redimensión */
 .scrap-item {
     position: absolute;
-    cursor: grab;
-    transition: box-shadow 0.1s ease, outline 0.05s linear;
-    will-change: transform, left, top, width;
+    cursor: pointer;      /* Cambia a mano para indicar que es clickeable */
+    transition: transform 0.2s ease;
+    transform-origin: center center;
+    pointer-events: auto; /* Para que los botones sean clickeables */
 }
 
-.scrap-item:active {
-    cursor: grabbing;
-}
-
-/* Las imágenes dentro de los elementos responden al tamaño del contenedor */
+/* Las imágenes dentro responden al contenedor */
 .scrap-item img {
     width: 100%;
+    height: auto;
     display: block;
-    pointer-events: auto;    /* Para que reciban clics y arrastres */
-    border-radius: 0;       /* Sin redondeo para mantener diseño original */
+    border-radius: 0;
 }
 
-/* ===== MANIJAS ===== */
-.resize-handle {
-    position: absolute;
-    width: 22px;
-    height: 22px;
-    background: #ff4d6d;
-    border-radius: 50%;
-    bottom: -11px;
-    right: -11px;
-    cursor: nwse-resize;
-    z-index: 999;
-    border: 2px solid white;
-    box-shadow: 0 0 8px rgba(255, 77, 109, 0.7);
-    transition: transform 0.1s ease, background 0.1s;
+/* Efecto hover sutil (solo visual, sin romper funcionalidad) */
+.scrap-item:hover {
+    transform: scale(1.03);
+    filter: drop-shadow(0 0 6px rgba(255,255,200,0.3));
+    transition: transform 0.2s ease, filter 0.2s;
 }
 
-.resize-handle:hover {
-    transform: scale(1.15);
-    background: #ff1e4d;
-}
-
-.rotate-handle {
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    background: #4d9eff;
-    border-radius: 50%;
-    top: 6px;
-    left: 6px;
-    cursor: grab;
-    z-index: 999;
-    border: 2px solid white;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
-}
-
-.rotate-handle:active {
-    cursor: grabbing;
-}
-
-/* ===== ESTADO SELECCIONADO ===== */
-.scrap-item.selected {
-    outline: 3px solid #ff4d6d;
-    outline-offset: 5px;
-    filter: drop-shadow(0 0 5px rgba(255, 77, 109, 0.4));
-    z-index: 200 !important;  /* Asegura que el elemento seleccionado quede por encima */
-}
-
-/* Tooltip interactivo (solo al hover) */
-.scrap-item::after {
-    content: "🔧";
-    position: absolute;
-    top: -28px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 11px;
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 3px 8px;
-    border-radius: 20px;
-    opacity: 0;
-    transition: opacity 0.2s;
-    pointer-events: none;
-    white-space: nowrap;
-    font-family: monospace;
-    z-index: 300;
-}
-
-.scrap-item:hover::after {
-    opacity: 0.85;
-    content: "✨ Doble clic | ✋ Arrastrar | 🔄 Q/E rotar";
-}
-
-/* ===== ANIMACIÓN EXCLUSIVA DEL ARÁNDANO (40s rotación suave) ===== */
+/* ARÁNDANO: rotación continua e independiente (sin afectar clicks) */
 .rotate-animation {
     animation: blueberryRotate 40s linear infinite;
+    transform-origin: center center;
 }
 
 @keyframes blueberryRotate {
@@ -150,33 +83,31 @@ body {
     to { transform: rotate(360deg); }
 }
 
-/* Watermark (créditos) */
+/* WATERMARK (créditos) */
 .watermark {
     position: absolute;
     bottom: 12px;
     left: 50%;
     transform: translateX(-50%);
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(255, 255, 255, 0.9);
     font-size: 12px;
-    font-family: 'Segoe UI', system-ui;
-    background: rgba(0, 0, 0, 0.55);
+    background: rgba(0, 0, 0, 0.6);
     padding: 5px 15px;
-    border-radius: 40px;
+    border-radius: 30px;
     pointer-events: none;
-    z-index: 25;
-    backdrop-filter: blur(2px);
+    z-index: 20;
     white-space: nowrap;
+    backdrop-filter: blur(3px);
 }
 
-/* Ajuste responsivo básico: para que los elementos no se salgan en pantallas pequeñas */
+/* Ajuste responsivo ligero: en móviles no se rompen las proporciones */
 @media (max-width: 768px) {
-    .scrap-item::after {
-        font-size: 9px;
-        top: -24px;
-        white-space: nowrap;
+    .scrap-item:hover {
+        transform: scale(1.02); /* Hover más sutil en móvil */
     }
-    .resize-handle, .rotate-handle {
-        transform: scale(0.9);
+    .watermark {
+        font-size: 9px;
+        padding: 3px 10px;
     }
 }
 </style>
@@ -186,30 +117,30 @@ body {
 
 <div class="fullscreen-container">
     <!-- FONDO principal (debe existir en carpeta img/) -->
-    <img src="img/fondo.png" class="fullscreen-img" alt="Fondo de página Karla Sherlyn">
+    <img src="img/fondo.png" class="fullscreen-img" alt="Fondo Karla Sherlyn">
 
     <div class="scrapbook-layer">
         <div class="watermark">
             © 2026 Karla Cruz | YANG´S LAB
         </div>
 
-        <!-- BOTÓN CURRÍCULUM - posiciones fijas relativas al viewport (porcentajes) -->
-        <div class="scrap-item" data-type="cv" style="top:75%; left:7%; width:18%; transform:rotate(-2deg);">
-            <img src="img/Boton_curriculum.png" alt="Botón currículum vitae">
+        <!-- BOTÓN CURRÍCULUM - posición fija exacta según tu CSS -->
+        <div class="scrap-item" data-action="cv" style="top:75%; left:7%; width:18%; transform:rotate(-2deg);">
+            <img src="img/Boton_curriculum.png" alt="Descargar currículum">
         </div>
 
-        <!-- BOTÓN CONTÁCTAME -->
-        <div class="scrap-item" data-type="contacto" style="top:75%; left:31%; width:18%; transform:rotate(2deg);">
-            <img src="img/Boton_contactame.png" alt="Botón contáctame">
+        <!-- BOTÓN CONTÁCTAME - posición fija -->
+        <div class="scrap-item" data-action="contacto" style="top:75%; left:31%; width:18%; transform:rotate(2deg);">
+            <img src="img/Boton_contactame.png" alt="Ir a contacto">
         </div>
 
-        <!-- BOTÓN PORTAFOLIO (con z-index ligeramente superior para resaltar) -->
-        <div class="scrap-item" data-type="portafolio" style="top:45%; left:41%; width:22%; transform:rotate(1deg); z-index:100;">
-            <img src="img/Boton_portafolio.png" alt="Botón portafolio">
+        <!-- BOTÓN PORTAFOLIO - posición fija (ligeramente más ancho) -->
+        <div class="scrap-item" data-action="portafolio" style="top:45%; left:41%; width:22%; transform:rotate(1deg); z-index:5;">
+            <img src="img/Boton_portafolio.png" alt="Ver portafolio">
         </div>
 
-        <!-- ARÁNDANO CON ROTACIÓN PERPETUA (sin perder funcionalidad de arrastre/rotación manual) -->
-        <div class="scrap-item rotate-animation" data-type="deco" style="top:50%; left:12%; width:22%; transform:rotate(4deg); cursor:pointer;">
+        <!-- ARÁNDANO DECORATIVO - rotación perpetua y posición fija -->
+        <div class="scrap-item rotate-animation" data-action="none" style="top:50%; left:12%; width:22%; transform:rotate(4deg); cursor:pointer;">
             <img src="img/Arandanos.png" alt="Arándanos decorativos">
         </div>
     </div>
@@ -217,406 +148,134 @@ body {
 
 <script>
 // ============================================================
-//  FUNCIONES DE NAVEGACIÓN Y ACCIONES (sin alterar movimientos)
+// FUNCIONES DE NAVEGACIÓN Y ACCIONES (TOTALMENTE OPERATIVAS)
 // ============================================================
 
-// Descarga del archivo CV (ruta relativa corregida)
+// Descarga del archivo CV (ruta relativa a docs/)
 function descargarCV() {
-    console.log("📄 Solicitando descarga de CV...");
+    console.log("📄 Descargando CV...");
     const link = document.createElement('a');
     link.href = "docs/Karla_Cruz_CV.pdf";
     link.download = "Karla_Cruz_CV.pdf";
-    link.style.display = 'none';
+    link.style.display = "none";
     document.body.appendChild(link);
     link.click();
     setTimeout(() => {
         document.body.removeChild(link);
     }, 150);
-    console.log("✅ Descarga iniciada (docs/Karla_Cruz_CV.pdf)");
+    console.log("✅ Descarga iniciada: docs/Karla_Cruz_CV.pdf");
 }
 
+// Redirección a contacto.html
 function irContacto() {
-    console.log("📞 Redirigiendo a contacto.html");
+    console.log("📞 Navegando a contacto.html");
     window.location.href = "contacto.html";
 }
 
+// Redirección a portafolio (carpeta portafolio)
 function irPortafolio() {
     console.log("🎨 Navegando a portafolio/portafolio.html");
     window.location.href = "portafolio/portafolio.html";
 }
 
 // ============================================================
-//  EDITOR: ARRASTRAR, REDIMENSIONAR, ROTAR (MANUAL)
-//  Posiciones guardadas automáticamente SIN perder funcionalidad
+// ASIGNACIÓN DE EVENTOS: CLICK SIMPLE EJECUTA ACCIÓN
+// (Sin arrastre, sin redimensión, sin rotación manual)
 // ============================================================
-
-let selectedElement = null;       // elemento actualmente seleccionado
-let isDraggingFlag = false;
-let isResizingFlag = false;
-let isRotatingFlag = false;
-
-// Variables para arrastre
-let dragStartX = 0, dragStartY = 0;
-let initialLeft = 0, initialTop = 0;
-
-// Variables para redimension
-let resizeStartX = 0;
-let initialWidth = 0;
-
-// Variables para rotación manual (arrastre con círculo azul)
-let rotateStartAngle = 0;
-let currentRotationDeg = 0;
-
-// Variable para saber si hubo movimiento real (para guardar solo cuando cambia)
-let hasMoved = false;
-
-// ===== GUARDAR TODAS LAS POSICIONES, TAMAÑOS Y ROTACIONES =====
-function saveAllPositions() {
+function asignarAccionesBotones() {
     const items = document.querySelectorAll('.scrap-item');
-    const layoutData = [];
-    items.forEach(el => {
-        // Guardamos estilos inline actualizados (top, left, width, transform)
-        layoutData.push({
-            top: el.style.top,
-            left: el.style.left,
-            width: el.style.width,
-            transform: el.style.transform,
-            // También guardamos si tiene la clase rotate-animation (para no perderla en recarga)
-            hasPermaRotate: el.classList.contains('rotate-animation')
-        });
-    });
-    localStorage.setItem('karla_layout_v2', JSON.stringify(layoutData));
-    console.log("💾 Posiciones, tamaños y rotaciones guardadas exitosamente.");
-}
-
-// ===== CARGAR POSICIONES GUARDADAS =====
-function loadSavedPositions() {
-    const saved = localStorage.getItem('karla_layout_v2');
-    if (!saved) {
-        console.log("📂 No hay datos previos. Usando posiciones del HTML original.");
-        return;
-    }
-    try {
-        const layoutData = JSON.parse(saved);
-        const items = document.querySelectorAll('.scrap-item');
-        items.forEach((el, idx) => {
-            if (layoutData[idx]) {
-                const data = layoutData[idx];
-                if (data.top) el.style.top = data.top;
-                if (data.left) el.style.left = data.left;
-                if (data.width) el.style.width = data.width;
-                if (data.transform) el.style.transform = data.transform;
-                // Conservar animación de arándano si era rotación perpetua, pero sin romper rotación manual
-                // Evitamos sobreescribir si ya tiene la clase (debe coexistir)
-                if (data.hasPermaRotate && !el.classList.contains('rotate-animation')) {
-                    // Solo si originalmente tenía y por alguna razón se perdió, la agregamos nuevamente
-                    if (el.querySelector('img') && el.querySelector('img').src.toLowerCase().includes('arandanos')) {
-                        el.classList.add('rotate-animation');
-                    }
-                }
-            }
-        });
-        console.log("📂 Layout restaurado correctamente desde localStorage.");
-    } catch(e) {
-        console.warn("Error al cargar layout previo:", e);
-    }
-}
-
-// ===== CREAR MANIJAS (RESIZE Y ROTATE) PARA EL ELEMENTO SELECCIONADO =====
-function attachHandles(element) {
-    // Remover handles existentes para evitar duplicados
-    const oldResize = element.querySelector('.resize-handle');
-    const oldRotate = element.querySelector('.rotate-handle');
-    if (oldResize) oldResize.remove();
-    if (oldRotate) oldRotate.remove();
-
-    // Handle de redimension (rosado)
-    const resizeHandle = document.createElement('div');
-    resizeHandle.className = 'resize-handle';
-    element.appendChild(resizeHandle);
     
-    // Handle de rotación (azul)
-    const rotateHandle = document.createElement('div');
-    rotateHandle.className = 'rotate-handle';
-    element.appendChild(rotateHandle);
-
-    // Eventos para redimensionar
-    resizeHandle.onmousedown = (e) => {
-        e.stopPropagation();
-        isResizingFlag = true;
-        resizeStartX = e.clientX;
-        initialWidth = element.offsetWidth;
-        document.onmousemove = onResizeMove;
-        document.onmouseup = onStopInteraction;
-    };
-
-    // Eventos para rotación manual vía handle azul
-    rotateHandle.onmousedown = (e) => {
-        e.stopPropagation();
-        isRotatingFlag = true;
-        const rect = element.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-        rotateStartAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX) * 180 / Math.PI;
-        // Obtener rotación actual desde transform
-        const transform = element.style.transform;
-        const match = transform.match(/rotate\(([-\d.]+)deg\)/);
-        currentRotationDeg = match ? parseFloat(match[1]) : 0;
-        document.onmousemove = onRotateMove;
-        document.onmouseup = onStopInteraction;
-    };
-}
-
-// Redimensionar
-function onResizeMove(e) {
-    if (!isResizingFlag || !selectedElement) return;
-    let newWidth = Math.max(55, initialWidth + (e.clientX - resizeStartX));
-    selectedElement.style.width = newWidth + "px";
-    hasMoved = true;
-}
-
-// Rotar mediante handle
-function onRotateMove(e) {
-    if (!isRotatingFlag || !selectedElement) return;
-    const rect = selectedElement.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    let currentAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX) * 180 / Math.PI;
-    let delta = currentAngle - rotateStartAngle;
-    let newRot = currentRotationDeg + delta;
-    selectedElement.style.transform = `rotate(${newRot}deg)`;
-    hasMoved = true;
-}
-
-// ===== ARRASTRAR CON MOUSE =====
-function startDragElement(e, element) {
-    if (e.target.classList.contains('resize-handle') || e.target.classList.contains('rotate-handle')) return;
-    e.preventDefault();
-    isDraggingFlag = true;
-    selectedElement = element;
-    dragStartX = e.clientX;
-    dragStartY = e.clientY;
-    // Obtener valores actuales (parseFloat para trabajar con px)
-    initialLeft = parseFloat(element.style.left);
-    initialTop = parseFloat(element.style.top);
-    hasMoved = false;
-    document.onmousemove = onDragMove;
-    document.onmouseup = onStopDrag;
-}
-
-function onDragMove(e) {
-    if (!isDraggingFlag || !selectedElement) return;
-    let dx = e.clientX - dragStartX;
-    let dy = e.clientY - dragStartY;
-    let newLeft = initialLeft + dx;
-    let newTop = initialTop + dy;
-    selectedElement.style.left = newLeft + "px";
-    selectedElement.style.top = newTop + "px";
-    hasMoved = true;
-}
-
-function onStopDrag() {
-    if (isDraggingFlag && hasMoved && selectedElement) {
-        saveAllPositions();
-    }
-    isDraggingFlag = false;
-    document.onmousemove = null;
-    document.onmouseup = null;
-    hasMoved = false;
-}
-
-// ===== INTERACCIÓN GENERAL DE FINALIZACIÓN (resize/rotate) =====
-function onStopInteraction() {
-    if ((isResizingFlag || isRotatingFlag) && hasMoved && selectedElement) {
-        saveAllPositions();
-    }
-    isResizingFlag = false;
-    isRotatingFlag = false;
-    document.onmousemove = null;
-    document.onmouseup = null;
-    hasMoved = false;
-}
-
-// ===== SELECCIÓN DE ELEMENTO (con doble click manteniendo acciones) =====
-function selectElement(element) {
-    if (selectedElement === element) return;
-    // Quitar selección previa
-    if (selectedElement) {
-        selectedElement.classList.remove('selected');
-        selectedElement.style.outline = 'none';
-    }
-    selectedElement = element;
-    selectedElement.classList.add('selected');
-    attachHandles(selectedElement);
-}
-
-// ===== ROTACIÓN CON TECLADO Q / E (sin alterar otras funciones) =====
-function rotateSelectedWithKeyboard(deltaDeg) {
-    if (!selectedElement) return;
-    let transform = selectedElement.style.transform || "rotate(0deg)";
-    let match = transform.match(/rotate\(([-\d.]+)deg\)/);
-    let currentRot = match ? parseFloat(match[1]) : 0;
-    let newRot = currentRot + deltaDeg;
-    selectedElement.style.transform = `rotate(${newRot}deg)`;
-    saveAllPositions();
-    console.log(`🔄 Rotación manual: ${newRot}deg`);
-}
-
-// ===== ASIGNAR FUNCIONES A LOS BOTONES (DOBLE CLIC EJECUTA ACCIÓN) =====
-// Además mantiene la posibilidad de clic simple para seleccionar
-function bindButtonsActions() {
-    const items = document.querySelectorAll('.scrap-item');
     items.forEach(item => {
+        // Obtenemos la acción según el atributo data-action o por nombre de imagen
         const img = item.querySelector('img');
         if (!img) return;
+        
         const srcLower = img.src.toLowerCase();
+        let accion = null;
         
-        // Eliminamos listeners anteriores si los hubiera (clonación virtual, pero seguro)
-        // Creamos un manejador de doble clic que no interfiere con arrastre
-        let clickTimer = null;
-        let doubleClickFlag = false;
+        if (srcLower.includes('boton_curriculum')) {
+            accion = descargarCV;
+        } else if (srcLower.includes('boton_contactame')) {
+            accion = irContacto;
+        } else if (srcLower.includes('boton_portafolio')) {
+            accion = irPortafolio;
+        } else if (srcLower.includes('arandanos')) {
+            // Arándano: solo decorativo, no hace nada al hacer clic (pero se puede dejar sin acción)
+            accion = () => console.log("🫐 Arándano decorativo (sin acción)");
+        }
         
-        // Limpiar cualquier listener previo (solución simple: reemplazar eventos)
-        // Removemos listeners antiguos clonando lógica (pero no es necesario si se inicializa una vez)
-        // Para garantizar que no se dupliquen, usamos nuevos eventos.
-        item.removeEventListener('dblclick', item._dblHandler);
-        item.removeEventListener('click', item._clickHandler);
-        item.removeEventListener('mousedown', item._mouseDownHandler);
+        // Asignar evento click
+        if (accion) {
+            // Eliminar listeners previos si existieran (por si se llama dos veces)
+            item.removeEventListener('click', accion);
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                accion();
+            });
+        }
         
-        // Manejador de doble click para acciones específicas
-        const dblClickHandler = (e) => {
-            e.stopPropagation();
-            doubleClickFlag = true;
-            if (clickTimer) {
-                clearTimeout(clickTimer);
-                clickTimer = null;
-            }
-            // Ejecutar acción según tipo de botón
-            if (srcLower.includes('boton_curriculum')) {
-                descargarCV();
-            } else if (srcLower.includes('boton_contactame')) {
-                irContacto();
-            } else if (srcLower.includes('boton_portafolio')) {
-                irPortafolio();
-            } else if (srcLower.includes('arandanos')) {
-                // Arándano: doble clic puede resetear rotación? o simplemente no acción extra
-                console.log("🫐 Arándano decorativo (doble clic sin acción)");
-            }
-            // Pequeño timeout para resetear flag
-            setTimeout(() => { doubleClickFlag = false; }, 100);
-        };
-        
-        // Manejador de click simple (seleccionar)
-        const clickHandler = (e) => {
-            e.stopPropagation();
-            if (doubleClickFlag) {
-                doubleClickFlag = false;
-                return;
-            }
-            if (clickTimer) clearTimeout(clickTimer);
-            clickTimer = setTimeout(() => {
-                selectElement(item);
-                clickTimer = null;
-            }, 150);
-        };
-        
-        // Manejador de inicio de arrastre
-        const mouseDownHandler = (e) => {
-            // Evitar que arrastre si se hizo clic en los handles (ya están controlados aparte)
-            if (e.target.classList.contains('resize-handle') || e.target.classList.contains('rotate-handle')) return;
-            startDragElement(e, item);
-        };
-        
-        item.addEventListener('dblclick', dblClickHandler);
-        item.addEventListener('click', clickHandler);
-        item.addEventListener('mousedown', mouseDownHandler);
-        
-        // Guardar referencias para posible limpieza
-        item._dblHandler = dblClickHandler;
-        item._clickHandler = clickHandler;
-        item._mouseDownHandler = mouseDownHandler;
+        // Opcional: mantener tooltip nativo o un pequeño feedback visual
+        item.style.cursor = 'pointer';
     });
 }
 
-// ===== VERIFICAR EXISTENCIA DE IMÁGENES Y RECURSOS (útil para depuración) =====
-function checkResources() {
-    const allImages = document.querySelectorAll('img');
-    allImages.forEach(img => {
+// ============================================================
+// VERIFICACIÓN DE RECURSOS (IMÁGENES Y PDF) PARA DIAGNÓSTICO
+// ============================================================
+function verificarRecursos() {
+    const imagenes = document.querySelectorAll('img');
+    imagenes.forEach(img => {
         img.onerror = () => {
             console.warn(`⚠️ Imagen no encontrada: ${img.src}`);
-            img.style.border = "1px dashed rgba(255,80,80,0.7)";
+            img.style.border = "1px dashed rgba(255,80,80,0.6)";
         };
         img.onload = () => {
             console.log(`✅ Imagen cargada: ${img.src.split('/').pop()}`);
         };
     });
-    // Verificar PDF
+    
+    // Verificar existencia del PDF
     fetch('docs/Karla_Cruz_CV.pdf', { method: 'HEAD' })
-        .then(resp => resp.ok ? console.log("✅ PDF disponible en docs/Karla_Cruz_CV.pdf") : console.warn("⚠️ PDF no encontrado"))
-        .catch(() => console.warn("⚠️ No se pudo verificar el PDF"));
+        .then(resp => {
+            if (resp.ok) {
+                console.log("✅ PDF encontrado en docs/Karla_Cruz_CV.pdf");
+            } else {
+                console.warn("⚠️ No se encontró el PDF en la ruta docs/Karla_Cruz_CV.pdf");
+            }
+        })
+        .catch(() => console.warn("⚠️ No se pudo verificar el PDF (posible problema de red o ruta)"));
 }
 
-// ===== ELIMINAR SELECCIÓN AL HACER CLIC FUERA =====
-document.body.addEventListener('click', (e) => {
-    if (!e.target.closest('.scrap-item')) {
-        if (selectedElement) {
-            selectedElement.classList.remove('selected');
-            selectedElement.style.outline = 'none';
-            selectedElement = null;
-        }
-    }
-});
-
-// ===== TECLADO Q / E para rotar elemento seleccionado =====
-window.addEventListener('keydown', (e) => {
-    if (!selectedElement) return;
-    const key = e.key.toLowerCase();
-    if (key === 'q') {
-        e.preventDefault();
-        rotateSelectedWithKeyboard(-5);
-    } else if (key === 'e') {
-        e.preventDefault();
-        rotateSelectedWithKeyboard(5);
-    }
-});
-
-// ===== INICIALIZACIÓN COMPLETA =====
+// ============================================================
+// INICIALIZACIÓN COMPLETA (posiciones fijas, sin modificación)
+// ============================================================
 window.onload = () => {
-    // Cargar posiciones previamente guardadas (si existen)
-    loadSavedPositions();
+    // Asignar eventos de click a los botones
+    asignarAccionesBotones();
     
-    // Asignar comportamientos de botones, doble click, arrastre y selección
-    bindButtonsActions();
+    // Verificar imágenes y recursos
+    verificarRecursos();
     
-    // Verificar recursos visuales
-    checkResources();
+    // Mensaje en consola para confirmar estado
+    console.log("%c✨ POSICIONES FIJAS · FUNCIONES ACTIVAS ✨", "color: #ff4d6d; font-size: 14px; font-weight: bold");
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    console.log("✅ Los elementos NO se pueden arrastrar, redimensionar ni rotar manualmente.");
+    console.log("✅ Sus posiciones están FIJAS según el diseño original.");
+    console.log("✅ Los botones conservan TODAS sus funciones:");
+    console.log("   • Currículum → descarga PDF");
+    console.log("   • Contáctame → redirige a contacto.html");
+    console.log("   • Portafolio → redirige a portafolio/portafolio.html");
+    console.log("✅ El arándano mantiene su animación de rotación (40s).");
+    console.log("✅ Efecto hover: leve escala visual, sin alterar funciones.");
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
     
-    // Asegurar que los elementos mantengan su clase de rotación perpetua (Arándano)
-    const arandanoItem = document.querySelector('.scrap-item.rotate-animation');
-    if (arandanoItem && !arandanoItem.classList.contains('rotate-animation')) {
-        arandanoItem.classList.add('rotate-animation');
+    // Aseguramos que el arándano tenga la clase de animación (por si acaso)
+    const arandano = document.querySelector('.scrap-item.rotate-animation');
+    if (arandano && !arandano.classList.contains('rotate-animation')) {
+        arandano.classList.add('rotate-animation');
     }
-    
-    // Pequeña corrección: si algún elemento no tiene transform inline por defecto, asegurar que coincida con HTML
-    document.querySelectorAll('.scrap-item').forEach(el => {
-        if (!el.style.transform) {
-            const computedRot = getComputedStyle(el).transform;
-            if (computedRot === 'none') el.style.transform = 'rotate(0deg)';
-        }
-    });
-    
-    console.log("%c✨ EDITOR COMPLETO - POSICIONES FIJAS Y FUNCIONES ACTIVAS ✨", "color:#ff4d6d; font-size:15px; font-weight:bold");
-    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-    console.log("✅ CLIC SIMPLE: selecciona elemento (aparecen asas rosa/azul)");
-    console.log("✅ DOBLE CLIC: ejecuta la acción del botón (CV, contacto, portafolio)");
-    console.log("✅ ARRASTRAR sobre la imagen: mueve el elemento libremente");
-    console.log("✅ CÍRCULO ROSADO: redimensiona ancho");
-    console.log("✅ CÍRCULO AZUL: rotación manual");
-    console.log("✅ TECLAS Q / E: rotan elemento seleccionado (5° grados)");
-    console.log("✅ TODAS las posiciones, tamaños y rotaciones se guardan automáticamente");
-    console.log("✅ ARÁNDANO conserva su animación de rotación lenta y además se puede rotar manualmente");
-    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 };
 </script>
+
 </body>
 </html>
