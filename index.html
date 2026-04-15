@@ -57,34 +57,35 @@ body{
     pointer-events:auto;
 }
 
-/* HANDLE DE REDIMENSIÓN */
+/* HANDLE DE REDIMENSIÓN (más grande hacia afuera) */
 .resize-handle{
     position:absolute;
-    width:16px;
-    height:16px;
+    width:22px;
+    height:22px;
     background:#ff4d6d;
     border-radius:50%;
-    bottom:-8px;
-    right:-8px;
+    bottom:-11px;
+    right:-11px;
     cursor:nwse-resize;
     z-index:999;
     border:2px solid white;
-    box-shadow:0 0 4px rgba(0,0,0,0.5);
+    box-shadow:0 0 8px rgba(255,77,109,0.6);
+    transform:scale(1.1);
 }
 
-/* HANDLE PARA ROTACIÓN */
+/* HANDLE DE ROTACIÓN (más pequeño hacia adentro) */
 .rotate-handle{
     position:absolute;
-    width:16px;
-    height:16px;
+    width:10px;
+    height:10px;
     background:#4d9eff;
     border-radius:50%;
-    top:-8px;
-    left:-8px;
+    top:6px;
+    left:6px;
     cursor:grab;
     z-index:999;
     border:2px solid white;
-    box-shadow:0 0 4px rgba(0,0,0,0.5);
+    box-shadow:0 0 4px rgba(0,0,0,0.4);
 }
 
 .rotate-handle:active{
