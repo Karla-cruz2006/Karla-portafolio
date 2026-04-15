@@ -56,7 +56,7 @@ body{
 
 /* ARÁNDANO (FIX REAL) */
 .rotate-animation img{
-    animation: blueberryRotate 10s linear infinite;
+    animation: blueberryRotate 5s linear infinite;
     transform-origin:center center;
 }
 
