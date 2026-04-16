@@ -1,282 +1,485 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portafolio - Logos</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio - Logos</title>
+    
+    <!-- ✅ ANTI-CACHÉ -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
+        /* ✅ Fondo corregido */
+        body {
+            background-image: url("../img/fondo-secciones.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center top;
+            background-attachment: scroll;
+            background-color: #000;
+            min-height: 100vh;
+            width: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+            overflow-x: hidden;
+        }
 
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    user-select: none;
-}
+        /* ========== BOTONES EN COLUMNA (LADO IZQUIERDO) ========== */
+        .botones-columna {
+            position: fixed;
+            left: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            z-index: 1000;
+        }
 
-/* ===== FONDO ===== */
-body {
-    background-image: url("../img/fondo-secciones.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center top;
-    background-attachment: scroll;
-    background-color: #000;
-    min-height: 100vh;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    overflow-x: hidden;
-}
+        /* ✅ TODOS LOS BOTONES CON EL MISMO TAMAÑO */
+        .boton-nav {
+            width: 180px;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: all 0.3s ease;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        }
 
-/* ===== CONTENEDOR ===== */
-.contenedor-libre {
-    position: relative;
-    width: 100%;
-    min-height: 100vh;
-}
+        .boton-nav:hover {
+            transform: translateX(5px) scale(1.05);
+        }
 
-/* ===== BARRA DE BOTONES (ACOMODADA) ===== */
-.barra-botones {
-    position: fixed;
-    bottom: 25px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 15px;
-    padding: 10px 15px;
-    border-radius: 50px;
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(10px);
-    z-index: 1000;
-}
+        .boton-nav:active {
+            transform: translateX(2px) scale(0.98);
+        }
 
-/* BOTONES */
-.boton-movible {
-    padding: 12px 22px;
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    border-radius: 30px;
-    cursor: grab;
-    transition: .3s;
-    white-space: nowrap;
-}
+        /* ✅ MISMO TAMAÑO Y ESTILO PARA LOS TRES BOTONES */
+        .btn-inicio {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+            border: 1px solid rgba(76, 175, 80, 0.5);
+        }
 
-.boton-movible:active {
-    cursor: grabbing;
-}
+        .btn-inicio:hover {
+            background: linear-gradient(135deg, #45a049, #1B5E20);
+        }
 
-/* COLORES */
-.btn-inicio { background:#4CAF50; color:white; }
-.btn-regreso { background:#ff9800; color:white; }
-.btn-siguiente { background:#2196F3; color:white; }
+        .btn-regreso {
+            background: linear-gradient(135deg, #ff9800, #E65100);
+            color: white;
+            border: 1px solid rgba(255, 152, 0, 0.5);
+        }
 
-/* HOVER */
-.boton-movible:hover {
-    transform: scale(1.08);
-}
+        .btn-regreso:hover {
+            background: linear-gradient(135deg, #e68900, #BF360C);
+        }
 
-/* ===== GALERÍA ===== */
-.galeria-logos {
-    position: fixed;
-    top: 50%;
-    left: 62%;
-    transform: translate(-50%, -50%);
-    z-index: 9999;
-    display: flex;
-    gap: 60px;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(10px);
-    padding: 50px 80px;
-    border-radius: 30px;
-    border: 1px solid rgba(184, 33, 28, 0.3);
-}
+        .btn-siguiente {
+            background: linear-gradient(135deg, #2196F3, #0D47A1);
+            color: white;
+            border: 1px solid rgba(33, 150, 243, 0.5);
+        }
 
-.logo-item {
-    text-align: center;
-    transition: .3s;
-}
+        .btn-siguiente:hover {
+            background: linear-gradient(135deg, #0b7dda, #1565C0);
+        }
 
-.logo-item:hover {
-    transform: translateY(-8px);
-}
+        /* ========== CARRUSEL CENTRAL (MOVIDO A LA DERECHA) ========== */
+        .carrusel-container {
+            position: fixed;
+            top: 50%;
+            left: 55%;
+            transform: translate(-50%, -50%);
+            width: 550px;
+            max-width: 50vw;
+            z-index: 999;
+        }
 
-.logo-item img {
-    width: 400px;
-    max-width: 35vw;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: .2s;
-}
+        .carrusel {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
 
-.logo-item img:hover {
-    transform: scale(1.05);
-}
+        .carrusel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            gap: 20px;
+        }
 
-.logo-item p {
-    color: white;
-    margin-top: 20px;
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: 2px;
-}
+        .carrusel-item {
+            min-width: 100%;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 650px) {
-    .galeria-logos {
-        flex-direction: column;
-        left: 50%;
-        gap: 40px;
-        padding: 40px;
-    }
+        .carrusel-item img {
+            width: auto;
+            max-width: 90%;
+            max-height: 450px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
 
-    .logo-item img {
-        width: 280px;
-    }
+        .carrusel-item img:hover {
+            transform: scale(1.02);
+        }
 
-    .barra-botones {
-        flex-direction: row;
-        gap: 10px;
-        padding: 8px 10px;
-    }
+        /* Botones del carrusel */
+        .carrusel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: #FFD700;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    .boton-movible {
-        font-size: 14px;
-        padding: 10px 16px;
-    }
-}
-</style>
+        .carrusel-btn:hover {
+            background: rgba(255, 215, 0, 0.9);
+            color: black;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carrusel-prev {
+            left: 5px;
+        }
+
+        .carrusel-next {
+            right: 5px;
+        }
+
+        /* Indicadores */
+        .carrusel-indicadores {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .indicador {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .indicador.activo {
+            background: #FFD700;
+            width: 25px;
+            border-radius: 5px;
+        }
+
+        .indicador:hover {
+            background: rgba(255, 215, 0, 0.8);
+            transform: scale(1.2);
+        }
+
+        /* Título */
+        .carrusel-titulo {
+            text-align: center;
+            color: #FFD700;
+            font-size: 24px;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            font-weight: bold;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1200px) {
+            .carrusel-container {
+                left: 58%;
+                width: 500px;
+            }
+            .botones-columna {
+                left: 25px;
+                gap: 20px;
+            }
+            .boton-nav {
+                width: 160px;
+                padding: 12px 18px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 1000px) {
+            .carrusel-container {
+                left: 60%;
+                width: 450px;
+            }
+            .boton-nav {
+                width: 140px;
+                padding: 10px 15px;
+                font-size: 13px;
+            }
+            .carrusel-item img {
+                max-height: 350px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .botones-columna {
+                position: fixed;
+                bottom: 20px;
+                top: auto;
+                left: 50%;
+                transform: translateX(-50%);
+                flex-direction: row;
+                gap: 15px;
+                background: rgba(0, 0, 0, 0.8);
+                padding: 12px 20px;
+                border-radius: 50px;
+                backdrop-filter: blur(10px);
+                z-index: 1001;
+            }
+            
+            .boton-nav {
+                width: auto;
+                min-width: 120px;
+                padding: 10px 18px;
+                font-size: 13px;
+            }
+            
+            .boton-nav:hover {
+                transform: translateY(3px) scale(1.05);
+            }
+            
+            .carrusel-container {
+                position: fixed;
+                left: 50%;
+                top: 45%;
+                transform: translate(-50%, -50%);
+                width: 90%;
+                max-width: 500px;
+            }
+            
+            .carrusel-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 18px;
+            }
+            
+            .carrusel-titulo {
+                font-size: 20px;
+            }
+            
+            .carrusel-item img {
+                max-height: 350px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .botones-columna {
+                gap: 10px;
+                padding: 10px 15px;
+            }
+            
+            .boton-nav {
+                min-width: 100px;
+                padding: 8px 14px;
+                font-size: 11px;
+            }
+            
+            .carrusel-container {
+                top: 42%;
+                width: 95%;
+            }
+            
+            .carrusel-item img {
+                max-height: 280px;
+            }
+            
+            .carrusel-titulo {
+                font-size: 18px;
+            }
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="contenedor-libre">
-
-    <!-- ===== BOTONES ===== -->
-    <div class="barra-botones">
-
-        <a href="../index.html"
-           class="boton-movible btn-inicio"
-           id="btnInicio">
-            🏠 Inicio
+    <!-- ========== BOTONES EN COLUMNA (LADO IZQUIERDO) ========== -->
+    <div class="botones-columna">
+        <a href="../index.html" class="boton-nav btn-inicio" id="btnInicio">
+            🏠 INICIO
         </a>
 
-        <button class="boton-movible btn-regreso" id="btnRegreso">
-            ◀ Regreso
+        <button class="boton-nav btn-regreso" id="btnRegreso">
+            ◀ REGRESO
         </button>
 
-        <button class="boton-movible btn-siguiente" id="btnSiguiente">
-            Siguiente ▶
+        <button class="boton-nav btn-siguiente" id="btnSiguiente">
+            SIGUIENTE ▶
         </button>
-
     </div>
 
-</div>
-
-<!-- ===== GALERÍA ===== -->
-<div class="galeria-logos">
-
-    <div class="logo-item">
-        <img src="../img/Logo-queseria.png" alt="Logo Quesería">
-        <p>QUESERÍA</p>
+    <!-- ========== CARRUSEL (MOVIDO A LA DERECHA) ========== -->
+    <div class="carrusel-container">
+        <div class="carrusel-titulo">
+            ✨ LOGOS ✨
+        </div>
+        <div class="carrusel">
+            <button class="carrusel-btn carrusel-prev" id="btnPrev">‹</button>
+            <div class="carrusel-track" id="carruselTrack">
+                <!-- Elemento 1 -->
+                <div class="carrusel-item">
+                    <img src="../img/Logo-queseria.png" alt="Logo Quesería" onerror="this.src='https://via.placeholder.com/500x400?text=Logo+Quesería'">
+                </div>
+                <!-- Elemento 2 -->
+                <div class="carrusel-item">
+                    <img src="../img/Logo-reposteria.png" alt="Logo Repostería" onerror="this.src='https://via.placeholder.com/500x400?text=Logo+Repostería'">
+                </div>
+            </div>
+            <button class="carrusel-btn carrusel-next" id="btnNext">›</button>
+        </div>
+        <div class="carrusel-indicadores" id="indicadores"></div>
     </div>
 
-    <div class="logo-item">
-        <img src="../img/Logo-reposteria.png" alt="Logo Repostería">
-        <p>REPOSTERÍA</p>
-    </div>
+    <script>
+        // ========== CARRUSEL ==========
+        const track = document.getElementById('carruselTrack');
+        const items = document.querySelectorAll('.carrusel-item');
+        const btnPrev = document.getElementById('btnPrev');
+        const btnNext = document.getElementById('btnNext');
+        const contenedorIndicadores = document.getElementById('indicadores');
+        
+        let currentIndex = 0;
+        const totalItems = items.length;
 
-</div>
-
-<script>
-let botonSeleccionado = null;
-
-/* ===== DRAG / ROTATE ===== */
-function makeFullyDraggableAndRotatable(elemento) {
-
-    let startX = 0, startY = 0;
-    let startLeft = 0, startTop = 0;
-    let startRotate = 0;
-    let isDragging = false;
-    let isRotating = false;
-
-    const id = elemento.id;
-
-    const savedLeft = localStorage.getItem(`${id}_left`);
-    const savedTop = localStorage.getItem(`${id}_top`);
-    const savedRotate = localStorage.getItem(`${id}_rotate`);
-    const savedScale = localStorage.getItem(`${id}_scale`);
-
-    if (savedLeft && savedTop) {
-        elemento.style.left = savedLeft + 'px';
-        elemento.style.top = savedTop + 'px';
-    }
-
-    if (savedRotate) {
-        elemento.style.transform = `rotate(${savedRotate}deg) scale(${savedScale || 1})`;
-    }
-
-    function getCurrentRotation() {
-        const match = elemento.style.transform.match(/rotate\(([-\d.]+)deg\)/);
-        return match ? parseFloat(match[1]) : 0;
-    }
-
-    function getCurrentScale() {
-        const match = elemento.style.transform.match(/scale\(([\d.]+)\)/);
-        return match ? parseFloat(match[1]) : 1;
-    }
-
-    elemento.addEventListener('mousedown', (e) => {
-
-        const usarRotacion = e.ctrlKey;
-
-        startX = e.clientX;
-        startY = e.clientY;
-
-        if (usarRotacion) {
-            isRotating = true;
-            startRotate = getCurrentRotation();
-        } else {
-            isDragging = true;
-            startLeft = elemento.offsetLeft;
-            startTop = elemento.offsetTop;
+        // ✅ Crear indicadores dinámicamente
+        function crearIndicadores() {
+            if (!contenedorIndicadores) return;
+            contenedorIndicadores.innerHTML = '';
+            for (let i = 0; i < totalItems; i++) {
+                const indicador = document.createElement('div');
+                indicador.classList.add('indicador');
+                if (i === 0) indicador.classList.add('activo');
+                indicador.addEventListener('click', () => {
+                    currentIndex = i;
+                    actualizarCarrusel();
+                });
+                contenedorIndicadores.appendChild(indicador);
+            }
         }
 
-        e.preventDefault();
-    });
-
-    window.addEventListener('mousemove', (e) => {
-
-        if (isDragging) {
-            elemento.style.left = startLeft + (e.clientX - startX) + 'px';
-            elemento.style.top = startTop + (e.clientY - startY) + 'px';
+        function actualizarCarrusel() {
+            const desplazamiento = currentIndex * 100;
+            track.style.transform = `translateX(-${desplazamiento}%)`;
+            const indicadores = document.querySelectorAll('.indicador');
+            indicadores.forEach((ind, idx) => {
+                if (idx === currentIndex) ind.classList.add('activo');
+                else ind.classList.remove('activo');
+            });
         }
 
-        if (isRotating) {
-            const rotate = startRotate + (e.clientY - startY) * 0.5;
-            elemento.style.transform = `rotate(${rotate}deg)`;
+        function siguienteSlide() {
+            currentIndex = (currentIndex + 1) % totalItems;
+            actualizarCarrusel();
         }
-    });
 
-    window.addEventListener('mouseup', () => {
-        isDragging = false;
-        isRotating = false;
-    });
-}
+        function anteriorSlide() {
+            currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+            actualizarCarrusel();
+        }
 
-/* ===== BOTONES ===== */
-const btnInicio = document.getElementById('btnInicio');
-const btnRegreso = document.getElementById('btnRegreso');
-const btnSiguiente = document.getElementById('btnSiguiente');
+        if (btnNext) btnNext.addEventListener('click', siguienteSlide);
+        if (btnPrev) btnPrev.addEventListener('click', anteriorSlide);
 
-if (btnRegreso) btnRegreso.onclick = () => location.href = 'posters.html';
-if (btnSiguiente) btnSiguiente.onclick = () => location.href = 'modelado.html';
+        // Teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') anteriorSlide();
+            else if (e.key === 'ArrowRight') siguienteSlide();
+        });
 
-</script>
+        // ========== FUNCIONES DE NAVEGACIÓN ==========
+        const btnInicio = document.getElementById('btnInicio');
+        const btnRegreso = document.getElementById('btnRegreso');
+        const btnSiguienteNav = document.getElementById('btnSiguiente');
 
+        // ✅ RUTAS RELATIVAS CORREGIDAS
+        if (btnRegreso) {
+            btnRegreso.addEventListener('click', () => {
+                window.location.href = 'posters.html';
+            });
+        }
+        
+        // ✅ BOTÓN SIGUIENTE ENLAZADO A modelado.html
+        if (btnSiguienteNav) {
+            btnSiguienteNav.addEventListener('click', () => {
+                window.location.href = 'modelado.html';
+            });
+        }
+        
+        if (btnInicio) {
+            btnInicio.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.location.href = '../index.html';
+            });
+        }
+
+        // ========== VERIFICAR IMÁGENES ==========
+        function verificarImagenes() {
+            const imagenes = document.querySelectorAll('.carrusel-item img');
+            imagenes.forEach(img => {
+                img.addEventListener('error', () => {
+                    console.warn(`⚠️ Imagen no encontrada: ${img.src}`);
+                });
+                img.addEventListener('load', () => {
+                    console.log(`✅ Imagen cargada: ${img.src.split('/').pop()}`);
+                });
+            });
+        }
+
+        // ========== INICIALIZAR ==========
+        crearIndicadores();
+        actualizarCarrusel();
+        verificarImagenes();
+        
+        console.log("%c🎨 Logos - Carrusel con Botones en Columna", "color: #FFD700; font-size: 14px; font-weight: bold");
+        console.log("✅ Botones en COLUMNA a la izquierda (todos del mismo tamaño: 180px)");
+        console.log("✅ Carrusel movido a la DERECHA (left: 55%)");
+        console.log("✅ Botón SIGUIENTE enlazado a modelado.html");
+        console.log("✅ En móviles se convierten en fila en la parte inferior");
+        console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        console.log(`📊 Total de logos: ${totalItems}`);
+    </script>
 </body>
 </html>

@@ -30,43 +30,43 @@
             overflow-x: hidden;
         }
 
-        /* Contenedor para elementos arrastrables */
+        /* Contenedor para elementos */
         .drag-container {
             position: relative;
             width: 100%;
             min-height: 100vh;
         }
 
-        /* Botones de navegación */
+        /* ========== BOTONES FIJOS (YA NO SE MUEVEN) ========== */
         .nav-btn {
-            position: absolute;
+            position: fixed;      /* Cambiado de absolute a fixed para que estén fijos */
             padding: 12px 24px;
             font-size: 16px;
             font-weight: bold;
             border: none;
             border-radius: 25px;
-            cursor: grab;
+            cursor: pointer;      /* Cambiado de grab a pointer */
             font-family: inherit;
             z-index: 1000;
             white-space: nowrap;
             text-decoration: none;
             display: inline-block;
             text-align: center;
-            transition: transform 0.2s ease;
+            transition: transform 0.2s ease, background 0.2s ease;
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
 
+        .nav-btn:hover {
+            transform: scale(1.05);
+        }
+
         .nav-btn:active {
-            cursor: grabbing;
+            transform: scale(0.98);
         }
 
         .nav-btn:focus {
             outline: 3px solid yellow;
             outline-offset: 3px;
-        }
-
-        .nav-btn:hover {
-            transform: scale(1.05);
         }
 
         .btn-inicio {
@@ -90,7 +90,7 @@
             left: 500px;
         }
 
-        /* ========== IMAGEN FLOTANTE INTERACTIVA ========== */
+        /* ========== IMAGEN FLOTANTE INTERACTIVA (SÍ SE PUEDE MOVER) ========== */
         .interactive-image {
             position: absolute;
             z-index: 9999;
@@ -171,15 +171,25 @@
                 padding: 2px 5px;
                 font-size: 9px;
             }
+            .btn-inicio, .btn-regreso, .btn-siguiente {
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+            .btn-inicio { top: 80px; left: 20px; }
+            .btn-regreso { top: 80px; left: 120px; }
+            .btn-siguiente { top: 80px; left: 220px; }
         }
 
         @media (max-width: 480px) {
             .instructions {
                 display: none;
             }
+            .btn-inicio { top: 70px; left: 10px; }
+            .btn-regreso { top: 70px; left: 100px; }
+            .btn-siguiente { top: 70px; left: 190px; }
         }
 
-        /* Efecto de selección */
+        /* Efecto de selección para la imagen */
         .selected {
             outline: 3px solid #ff9800;
             outline-offset: 8px;
@@ -189,7 +199,7 @@
 </head>
 <body>
     <div class="drag-container">
-        <!-- Botones de navegación -->
+        <!-- ========== BOTONES FIJOS (YA NO SE ARRASTRAN) ========== -->
         <a href="../index.html" class="nav-btn btn-inicio" id="btnInicio" tabindex="0">
             🏠 Inicio
         </a>
@@ -202,15 +212,15 @@
             Siguiente ▶
         </button>
 
-        <!-- IMAGEN INTERACTIVA (los usuarios pueden moverla, rotarla, redimensionarla) -->
+        <!-- ========== IMAGEN INTERACTIVA (SÍ SE PUEDE MOVER, ROTAR, REDIMENSIONAR) ========== -->
         <div class="interactive-image" id="brandingImage">
             <img src="../img/branding.png" alt="Branding - Proyectos de diseño">
         </div>
     </div>
 
-    <!-- Panel de instrucciones -->
+    <!-- Panel de instrucciones (solo para la imagen) -->
     <div class="instructions">
-        <span class="title">🎨 INTERACTIVO</span>
+        <span class="title">🎨 INTERACTIVO (IMAGEN)</span>
         <kbd>🖱️ Arrastrar</kbd> mover ·
         <kbd>Ctrl</kbd>+<kbd>arrastrar</kbd> rotar ·
         <kbd>🐭 Rueda</kbd> tamaño ·
@@ -218,8 +228,8 @@
     </div>
 
     <script>
-        // ========== CLASE PARA ELEMENTOS ARRASTRABLES ==========
-        class DraggableElement {
+        // ========== CLASE SOLO PARA LA IMAGEN (BOTONES QUEDAN FIJOS) ==========
+        class DraggableImage {
             constructor(elemento) {
                 this.el = elemento;
                 this.id = elemento.id;
@@ -396,51 +406,35 @@
             }
         }
         
-        // ========== INICIALIZAR TODOS LOS ELEMENTOS ==========
+        // ========== INICIALIZAR SOLO LA IMAGEN (BOTONES QUEDAN FIJOS) ==========
+        const brandingImage = document.getElementById('brandingImage');
+        
+        // Solo la imagen es interactiva (arrastrable, rotable, redimensionable)
+        if (brandingImage) new DraggableImage(brandingImage);
+        
+        // ========== FUNCIONES DE NAVEGACIÓN PARA BOTONES FIJOS ==========
         const btnInicio = document.getElementById('btnInicio');
         const btnRegreso = document.getElementById('btnRegreso');
         const btnSiguiente = document.getElementById('btnSiguiente');
-        const brandingImage = document.getElementById('brandingImage');
         
-        // Hacer todos los elementos arrastrables
-        if (btnInicio) new DraggableElement(btnInicio);
-        if (btnRegreso) new DraggableElement(btnRegreso);
-        if (btnSiguiente) new DraggableElement(btnSiguiente);
-        if (brandingImage) new DraggableElement(brandingImage);
-        
-        // ========== FUNCIONES DE NAVEGACIÓN (evita navegar si se arrastró) ==========
-        function setupNavigation(btn, url) {
-            if (!btn) return;
-            
-            let hasMoved = false;
-            let startX = 0, startY = 0;
-            
-            btn.addEventListener('mousedown', (e) => {
-                hasMoved = false;
-                startX = e.clientX;
-                startY = e.clientY;
-            });
-            
-            btn.addEventListener('mousemove', (e) => {
-                if (Math.abs(e.clientX - startX) > 5 || Math.abs(e.clientY - startY) > 5) {
-                    hasMoved = true;
-                }
-            });
-            
-            btn.addEventListener('click', (e) => {
-                if (hasMoved) {
-                    e.preventDefault();
-                    return;
-                }
-                window.location.href = url;
+        // Configurar navegación simple (sin detección de arrastre porque ya no se mueven)
+        if (btnRegreso) {
+            btnRegreso.addEventListener('click', () => {
+                window.location.href = 'portafolio.html#branding';
             });
         }
         
-        // Configurar navegación (rutas relativas para GitHub Pages)
-        setupNavigation(btnRegreso, 'portafolio.html#branding');
-        setupNavigation(btnSiguiente, 'flyers.html');
+        if (btnSiguiente) {
+            btnSiguiente.addEventListener('click', () => {
+                window.location.href = 'flyers.html';
+            });
+        }
+        
         if (btnInicio) {
-            setupNavigation(btnInicio, '../index.html');
+            btnInicio.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.location.href = '../index.html';
+            });
         }
         
         // Verificar que la imagen existe
@@ -457,8 +451,9 @@
         }
         
         console.log("%c🎨 Portafolio Interactivo - Branding", "color: #ff9800; font-size: 14px; font-weight: bold");
-        console.log("✅ Los usuarios pueden: ARRASTRAR | ROTAR (Ctrl+arrastrar) | REDIMENSIONAR (rueda/teclas)");
-        console.log("✅ Las posiciones se guardan en su navegador");
+        console.log("✅ BOTONES FIJOS (no se mueven)");
+        console.log("✅ IMAGEN interactiva: ARRASTRAR | ROTAR (Ctrl+arrastrar) | REDIMENSIONAR (rueda/teclas)");
+        console.log("✅ Las posiciones de la imagen se guardan en su navegador");
         console.log("✅ 100% compatible con GitHub Pages");
     </script>
 </body>

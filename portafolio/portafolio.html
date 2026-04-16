@@ -1,229 +1,441 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portafolio - Carrusel</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio - Carrusel de Secciones</title>
+    
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #000;
+            /* ✅ Centrado vertical con flex */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
 
-/* 🔥 FONDO ARREGLADO */
-body{
-    background:url("../img/fondo-portafolio.png") no-repeat center top;
-    background-size:cover;
-    background-color:#000;
-    min-height:100vh;
-    font-family:'Segoe UI',sans-serif;
-}
+        /* Contenedor con fondo */
+        .fondo-expandido {
+            background-image: url("../img/fondo-portafolio.png");
+            background-repeat: no-repeat;        /* ✅ UNA SOLA VEZ */
+            background-size: 100% auto;          /* Ancho completo, alto automático */
+            background-position: center top;
+            background-attachment: scroll;
+            width: 100%;
+            min-height: 100vh;
+            padding-bottom: 4rem;
+            /* ✅ Para que el contenido interno también se centre */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-/* CONTENEDOR */
-.carrusel-container{
-    width:100%;
-    max-width:1200px;
-    margin:0 auto;
-    padding:2rem;
-    position:relative;
+        /* Contenedor del carrusel - CENTRADO y UN POQUITO MÁS ARRIBA */
+        .carrusel-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            border-radius: 2rem;
+            position: relative;
+            /* ✅ UN POQUITO MÁS ARRIBA: reducido de 15rem a 12rem */
+            margin-top: 12rem;
+            z-index: 10;
+        }
 
-    /* 🔥 POSICIÓN CORREGIDA */
-    top:35vh;
-}
+        .carrusel {
+            width: 100%;
+            overflow: hidden;
+            border-radius: 1.5rem;
+        }
 
-.carrusel{
-    overflow:hidden;
-    border-radius:1.5rem;
-}
+        .carrusel-pista {
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-.carrusel-pista{
-    display:flex;
-    transition:transform .6s ease;
-}
+        .carrusel-item {
+            min-width: 25%;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
 
-.carrusel-item{
-    min-width:25%;
-    padding:1rem;
-}
+        .tarjeta {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            border-radius: 1.5rem;
+            padding: 2rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(138, 6, 105, 0.685);
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+        }
 
-/* TARJETAS */
-.tarjeta{
-    background:rgba(0,0,0,.7);
-    border-radius:1.5rem;
-    padding:2rem 1rem;
-    text-align:center;
-    cursor:pointer;
-    transition:.3s;
-    border:1px solid rgba(138,6,105,.6);
-    text-decoration:none;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-}
+        .tarjeta:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: rgba(0, 0, 0, 0.85);
+            border-color: #860b7caf;
+        }
 
-.tarjeta:hover{
-    transform:translateY(-10px) scale(1.03);
-}
+        .tarjeta-contenido {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
 
-/* IMÁGENES */
-.tarjeta-imagen{
-    width:80px;
-    height:80px;
-    object-fit:contain;
-    margin-bottom:1rem;
-}
+        .tarjeta-imagen {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 1rem;
+        }
 
-.tarjeta h3{
-    color:white;
-}
+        .tarjeta h3 {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
 
-/* BOTONES */
-.controles{
-    display:flex;
-    justify-content:center;
-    gap:1rem;
-    margin-top:2rem;
-}
+        .controles {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
 
-button{
-    background:rgba(99,5,70,.4);
-    color:white;
-    border:none;
-    padding:.8rem 1.5rem;
-    border-radius:40px;
-    cursor:pointer;
-}
+        button {
+            background: rgba(99, 5, 70, 0.432);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: 0.3s;
+        }
 
-button:hover{
-    background:#7a0260;
-}
+        button:hover {
+            background: #7a0260d2;
+            transform: scale(1.05);
+        }
 
-/* INDICADORES */
-.indicadores{
-    display:flex;
-    justify-content:center;
-    gap:.5rem;
-    margin-top:1rem;
-}
+        .indicadores {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+        }
 
-.punto{
-    width:10px;
-    height:10px;
-    background:#fff5;
-    border-radius:50%;
-}
+        .punto {
+            width: 10px;
+            height: 10px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-.punto.activo{
-    background:#ff2ca0;
-    width:25px;
-    border-radius:10px;
-}
+        .punto.activo {
+            background: #880250b4;
+            width: 25px;
+            border-radius: 10px;
+        }
 
-/* RESPONSIVE */
-@media(max-width:900px){
-    .carrusel-item{min-width:33%;}
-}
+        .auto-status {
+            text-align: center;
+            margin-top: 1rem;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.8rem;
+        }
 
-@media(max-width:600px){
-    .carrusel-item{min-width:50%;}
-}
+        /* Responsive - CENTRADO y UN POQUITO MÁS ARRIBA en todas las pantallas */
+        @media (max-width: 1200px) {
+            .carrusel-container {
+                margin-top: 10rem;
+            }
+        }
 
-@media(max-width:400px){
-    .carrusel-item{min-width:100%;}
-}
-</style>
+        @media (max-width: 900px) {
+            .carrusel-item {
+                min-width: 33.33%;
+            }
+            .carrusel-container {
+                margin-top: 9rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .carrusel-item {
+                min-width: 50%;
+            }
+            .carrusel-container {
+                margin-top: 6rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .carrusel-item {
+                min-width: 100%;
+            }
+            .carrusel-container {
+                margin-top: 4rem;
+            }
+        }
+        
+        .tarjeta-imagen.error {
+            outline: 2px solid red;
+            opacity: 0.5;
+        }
+    </style>
 </head>
-
 <body>
+    <div class="fondo-expandido">
+        <div class="carrusel-container">
+            <div class="carrusel">
+                <div class="carrusel-pista" id="pista">
+                    <div class="carrusel-item">
+                        <a href="branding.html" class="tarjeta">
+                            <div class="tarjeta-contenido">
+                                <img src="../img/c-branding.png" alt="Branding" class="tarjeta-imagen">
+                                <h3>Branding</h3>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="carrusel-item">
+                        <a href="flyers.html" class="tarjeta">
+                            <div class="tarjeta-contenido">
+                                <img src="../img/c-flyers.png" alt="Flyers" class="tarjeta-imagen">
+                                <h3>Flyers</h3>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="carrusel-item">
+                        <a href="ilustraciones.html" class="tarjeta">
+                            <div class="tarjeta-contenido">
+                                <img src="../img/c-ilustraciones.png" alt="Ilustraciones" class="tarjeta-imagen">
+                                <h3>Ilustraciones</h3>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="carrusel-item">
+                        <a href="infografia.html" class="tarjeta">
+                            <div class="tarjeta-contenido">
+                                <img src="../img/c-infografias.png" alt="Infografías" class="tarjeta-imagen">
+                                <h3>Infografías</h3>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="carrusel-item">
+                        <a href="posters.html" class="tarjeta">
+                            <div class="tarjeta-contenido">
+                                <img src="../img/c-posters.png" alt="Posters" class="tarjeta-imagen">
+                                <h3>Pósters</h3>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="carrusel-item">
+                        <a href="logos.html" class="tarjeta">
+                            <div class="tarjeta-contenido">
+                                <img src="../img/c-logos.png" alt="Logos" class="tarjeta-imagen">
+                                <h3>Logos</h3>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="carrusel-item">
+                        <a href="modelado.html" class="tarjeta">
+                            <div class="tarjeta-contenido">
+                                <img src="../img/c-modelados.png" alt="Modelado" class="tarjeta-imagen">
+                                <h3>Modelados</h3>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
 
-<div class="carrusel-container">
+            <div class="controles">
+                <button id="btnAnterior">◀ ANTERIOR</button>
+                <button id="btnPausaReanudar"> PAUSA</button>
+                <button id="btnSiguiente">SIGUIENTE ▶</button>
+            </div>
 
-<div class="carrusel">
-<div class="carrusel-pista" id="pista">
+            <div class="indicadores" id="indicadores"></div>
+            <div class="auto-status" id="autoStatus">🟢 Movimiento automático activado</div>
+        </div>
+    </div>
 
-<!-- ITEMS -->
-<div class="carrusel-item">
-<a href="branding.html" class="tarjeta">
-<img src="../img/c-branding.png" class="tarjeta-imagen" loading="lazy">
-<h3>Branding</h3>
-</a>
-</div>
-
-<div class="carrusel-item">
-<a href="flyers.html" class="tarjeta">
-<img src="../img/c-flyers.png" class="tarjeta-imagen" loading="lazy">
-<h3>Flyers</h3>
-</a>
-</div>
-
-<div class="carrusel-item">
-<a href="ilustraciones.html" class="tarjeta">
-<img src="../img/c-ilustraciones.png" class="tarjeta-imagen" loading="lazy">
-<h3>Ilustraciones</h3>
-</a>
-</div>
-
-<div class="carrusel-item">
-<a href="infografia.html" class="tarjeta">
-<img src="../img/c-infografias.png" class="tarjeta-imagen" loading="lazy">
-<h3>Infografías</h3>
-</a>
-</div>
-
-<div class="carrusel-item">
-<a href="posters.html" class="tarjeta">
-<img src="../img/c-posters.png" class="tarjeta-imagen" loading="lazy">
-<h3>Pósters</h3>
-</a>
-</div>
-
-<div class="carrusel-item">
-<a href="logos.html" class="tarjeta">
-<img src="../img/c-logos.png" class="tarjeta-imagen" loading="lazy">
-<h3>Logos</h3>
-</a>
-</div>
-
-<div class="carrusel-item">
-<a href="modelado.html" class="tarjeta">
-<img src="../img/c-modelados.png" class="tarjeta-imagen" loading="lazy">
-<h3>Modelado</h3>
-</a>
-</div>
-
-</div>
-</div>
-
-<div class="controles">
-<button onclick="anterior()">◀</button>
-<button onclick="siguiente()">▶</button>
-</div>
-
-<div class="indicadores" id="indicadores"></div>
-
-</div>
-
-<script>
-const pista=document.getElementById('pista');
-const items=document.querySelectorAll('.carrusel-item');
-let index=0;
-
-function actualizar(){
-    pista.style.transform=`translateX(-${index*25}%)`;
-}
-
-function siguiente(){
-    index=(index+1)%items.length;
-    actualizar();
-}
-
-function anterior(){
-    index=(index-1+items.length)%items.length;
-    actualizar();
-}
-</script>
-
+    <script>
+        const pista = document.getElementById('pista');
+        const items = document.querySelectorAll('.carrusel-item');
+        const btnAnterior = document.getElementById('btnAnterior');
+        const btnSiguiente = document.getElementById('btnSiguiente');
+        const btnPausaReanudar = document.getElementById('btnPausaReanudar');
+        const contenedorIndicadores = document.getElementById('indicadores');
+        const autoStatus = document.getElementById('autoStatus');
+        
+        let index = 0;
+        let autoInterval;
+        let isAutoPlaying = true;
+        let itemsPorVista = 4;
+        
+        function calcularItemsPorVista() {
+            const width = window.innerWidth;
+            if (width <= 400) return 1;
+            if (width <= 600) return 2;
+            if (width <= 900) return 3;
+            return 4;
+        }
+        
+        const totalItems = items.length;
+        
+        function calcularTotalGrupos() {
+            itemsPorVista = calcularItemsPorVista();
+            return Math.ceil(totalItems / itemsPorVista);
+        }
+        
+        function crearIndicadores() {
+            contenedorIndicadores.innerHTML = '';
+            const totalGrupos = calcularTotalGrupos();
+            for (let i = 0; i < totalGrupos; i++) {
+                const punto = document.createElement('div');
+                punto.classList.add('punto');
+                if (i === 0) punto.classList.add('activo');
+                punto.addEventListener('click', () => {
+                    index = i;
+                    actualizarCarrusel();
+                    resetearAuto();
+                });
+                contenedorIndicadores.appendChild(punto);
+            }
+        }
+        
+        function actualizarCarrusel() {
+            itemsPorVista = calcularItemsPorVista();
+            const maxIndex = Math.ceil(totalItems / itemsPorVista) - 1;
+            if (index > maxIndex) index = maxIndex;
+            if (index < 0) index = 0;
+            
+            const desplazamiento = index * (100 / (totalItems / itemsPorVista));
+            pista.style.transform = `translateX(-${desplazamiento}%)`;
+            
+            const puntos = document.querySelectorAll('.punto');
+            puntos.forEach((punto, i) => {
+                if (i === index) {
+                    punto.classList.add('activo');
+                } else {
+                    punto.classList.remove('activo');
+                }
+            });
+        }
+        
+        function siguiente() {
+            const totalGrupos = calcularTotalGrupos();
+            index = (index + 1) % totalGrupos;
+            actualizarCarrusel();
+        }
+        
+        function anterior() {
+            const totalGrupos = calcularTotalGrupos();
+            index = (index - 1 + totalGrupos) % totalGrupos;
+            actualizarCarrusel();
+        }
+        
+        function iniciarAuto() {
+            if (autoInterval) clearInterval(autoInterval);
+            autoInterval = setInterval(() => {
+                if (isAutoPlaying) {
+                    siguiente();
+                }
+            }, 4000);
+        }
+        
+        function pausarAuto() {
+            isAutoPlaying = false;
+            btnPausaReanudar.innerHTML = '▶️ REANUDAR';
+            autoStatus.innerHTML = '🔴 Movimiento automático pausado';
+            autoStatus.style.color = '#ff6666';
+        }
+        
+        function reanudarAuto() {
+            isAutoPlaying = true;
+            btnPausaReanudar.innerHTML = ' PAUSA';
+            autoStatus.innerHTML = '🟢 Movimiento automático activado';
+            autoStatus.style.color = 'rgba(255,255,255,0.7)';
+        }
+        
+        function toggleAuto() {
+            if (isAutoPlaying) {
+                pausarAuto();
+            } else {
+                reanudarAuto();
+            }
+        }
+        
+        function resetearAuto() {
+            if (isAutoPlaying) {
+                iniciarAuto();
+            }
+        }
+        
+        function verificarImagenes() {
+            const imagenes = document.querySelectorAll('.tarjeta-imagen');
+            imagenes.forEach(img => {
+                img.addEventListener('error', function() {
+                    console.warn(`⚠️ Imagen no encontrada: ${this.src}`);
+                    this.classList.add('error');
+                    this.src = 'https://via.placeholder.com/80x80?text=No+Image';
+                });
+            });
+        }
+        
+        btnSiguiente.addEventListener('click', () => {
+            siguiente();
+            resetearAuto();
+        });
+        
+        btnAnterior.addEventListener('click', () => {
+            anterior();
+            resetearAuto();
+        });
+        
+        btnPausaReanudar.addEventListener('click', toggleAuto);
+        
+        window.addEventListener('resize', () => {
+            crearIndicadores();
+            actualizarCarrusel();
+        });
+        
+        crearIndicadores();
+        actualizarCarrusel();
+        iniciarAuto();
+        verificarImagenes();
+        
+        console.log("✅ CARRUSEL CENTRADO Y UN POQUITO MÁS ARRIBA:");
+        console.log("   - margin-top reducido de 15rem a 12rem");
+        console.log("   - body con display: flex y align-items: center → centrado vertical");
+        console.log("   - background-repeat: no-repeat → imagen UNA SOLA VEZ");
+    </script>
 </body>
 </html>

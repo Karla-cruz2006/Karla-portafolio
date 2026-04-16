@@ -1,221 +1,551 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portafolio - Ilustraciones</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio - Ilustraciones | Flipbooks Interactivos</title>
+    
+    <!-- ✅ ANTI-CACHÉ -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <style>
+        /* ===== RESET Y ESTILOS BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+        /* ✅ Fondo corregido - sin espacios */
+        body {
+            background-image: url("../img/fondo-secciones.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center top;
+            background-attachment: scroll;
+            background-color: #000;
+            min-height: 100vh;
+            width: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+            overflow-x: hidden;
+        }
 
-/* ===== FONDO ===== */
-body{
-    background:url("../img/fondo-secciones.png") no-repeat center top;
-    background-size:cover;
-    min-height:100vh;
-    font-family:'Segoe UI',sans-serif;
-    overflow-x:hidden;
-}
+        /* ===== 3 BOTONES DE NAVEGACIÓN ===== */
+        .botones-navegacion {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 25px;
+            z-index: 10000;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 12px 30px;
+            border-radius: 60px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
 
-/* ===== BOTONES ===== */
-.botones-navegacion{
-    position:fixed;
-    bottom:20px;
-    left:50%;
-    transform:translateX(-50%);
-    display:flex;
-    gap:20px;
-    padding:10px 20px;
-    border-radius:50px;
-    background:rgba(0,0,0,0.7);
-    backdrop-filter:blur(10px);
-    z-index:1000;
-}
+        .boton-nav {
+            padding: 10px 24px;
+            font-size: 15px;
+            font-weight: bold;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
 
-.boton-nav{
-    padding:10px 18px;
-    border:none;
-    border-radius:30px;
-    font-size:14px;
-    font-weight:bold;
-    cursor:pointer;
-    transition:.2s;
-}
+        .boton-nav:hover {
+            transform: scale(1.05);
+        }
 
-.boton-nav:hover{
-    transform:scale(1.08);
-}
+        .btn-regreso {
+            background-color: #ff9800;
+            color: white;
+        }
+        .btn-regreso:hover { background-color: #e68900; }
 
-.btn-regreso{background:#ff9800;color:#fff;}
-.btn-inicio{background:#4CAF50;color:#fff;}
-.btn-siguiente{background:#2196F3;color:#fff;}
+        .btn-inicio {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .btn-inicio:hover { background-color: #45a049; }
 
-/* ===== CARRUSEL ===== */
-.carrusel-principal{
-    position:absolute;
-    top:58%; /* 👈 aquí lo bajé un poco */
-    left:50%;
-    transform:translate(-50%,-50%);
-    width:90%;
-    max-width:800px;
-}
+        .btn-siguiente {
+            background-color: #2196F3;
+            color: white;
+        }
+        .btn-siguiente:hover { background-color: #0b7dda; }
 
-.carrusel-container{
-    background:rgba(0,0,0,0.7);
-    border-radius:20px;
-    padding:20px;
-    overflow:hidden;
-    position:relative;
-}
+        /* ===== CARRUSEL PRINCIPAL ===== */
+        .carrusel-principal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            max-width: 85vw;
+            z-index: 9999;
+        }
 
-.carrusel-track{
-    display:flex;
-    transition:transform .5s ease;
-}
+        .carrusel-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 25px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border: 2px solid rgba(255, 215, 0, 0.4);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
 
-.carrusel-item{
-    min-width:100%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
+        .carrusel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            gap: 20px;
+        }
 
-.carrusel-item img{
-    max-width:90%;
-    max-height:450px;
-    border-radius:15px;
-    cursor:pointer;
-    transition:.3s;
-}
+        .carrusel-item {
+            min-width: 100%;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-.carrusel-item img:hover{
-    transform:scale(1.03);
-}
+        .carrusel-item img {
+            width: auto;
+            max-width: 90%;
+            max-height: 500px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
 
-/* ===== FLECHAS ===== */
-.carrusel-btn{
-    position:absolute;
-    top:50%;
-    transform:translateY(-50%);
-    width:45px;
-    height:45px;
-    border-radius:50%;
-    border:none;
-    background:rgba(0,0,0,0.8);
-    color:#FFD700;
-    font-size:25px;
-    cursor:pointer;
-    z-index:10;
-}
+        .carrusel-item img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.3);
+        }
 
-.carrusel-prev{left:-15px;}
-.carrusel-next{right:-15px;}
+        /* Botones del carrusel */
+        .carrusel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: #FFD700;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 28px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-/* ===== INDICADORES ===== */
-.carrusel-indicadores{
-    display:flex;
-    justify-content:center;
-    margin-top:15px;
-    gap:10px;
-}
+        .carrusel-btn:hover {
+            background: rgba(255, 215, 0, 0.9);
+            color: black;
+            transform: translateY(-50%) scale(1.1);
+        }
 
-.indicador{
-    width:10px;
-    height:10px;
-    border-radius:50%;
-    background:#aaa;
-    cursor:pointer;
-}
+        .carrusel-prev { left: -20px; }
+        .carrusel-next { right: -20px; }
 
-.indicador.activo{
-    width:25px;
-    background:#FFD700;
-    border-radius:10px;
-}
+        /* Indicadores */
+        .carrusel-indicadores {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 25px;
+        }
 
-/* ===== RESPONSIVE ===== */
-@media(max-width:600px){
-    .botones-navegacion{
-        gap:10px;
-        padding:6px 12px;
-    }
+        .indicador {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
 
-    .boton-nav{
-        font-size:12px;
-        padding:6px 10px;
-    }
+        .indicador.activo {
+            background: #FFD700;
+            width: 30px;
+            border-radius: 6px;
+        }
 
-    .carrusel-principal{
-        top:62%;
-    }
-}
-</style>
+        .indicador:hover {
+            background: rgba(255, 215, 0, 0.8);
+            transform: scale(1.2);
+        }
+
+        /* ✅ TÍTULO DEL CARRUSEL - BAJADO UN POQUITO MÁS */
+        .carrusel-titulo {
+            text-align: center;
+            color: #FFD700;
+            font-size: 24px;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            font-weight: bold;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            /* ✅ BAJADO: aumentado de 0 a 15px de margen superior */
+            margin-top: 15px;
+        }
+
+        /* ===== MODAL PARA FLIPBOOK (VENTANA EMERGENTE) ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 20000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-contenido {
+            position: relative;
+            width: 90%;
+            height: 90%;
+            margin: 2% auto;
+            background: transparent;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        .modal-contenido iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 15px;
+        }
+
+        .cerrar-modal {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            color: #FFD700;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 20001;
+            background: rgba(0, 0, 0, 0.6);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .cerrar-modal:hover {
+            color: white;
+            background: rgba(255, 0, 0, 0.7);
+            transform: scale(1.1);
+        }
+
+        /* Tooltip para indicar que las imágenes son clickeables */
+        .flipbook-hint {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: #FFD700;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 15;
+            white-space: nowrap;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .carrusel-principal { width: 90%; top: 50%; }
+            .carrusel-container { padding: 20px; }
+            .carrusel-btn { width: 40px; height: 40px; font-size: 22px; }
+            .carrusel-prev { left: -15px; }
+            .carrusel-next { right: -15px; }
+            .carrusel-titulo { font-size: 20px; margin-top: 10px; margin-bottom: 15px; }
+            .carrusel-item img { max-height: 400px; }
+            .flipbook-hint { font-size: 10px; padding: 4px 10px; }
+        }
+
+        @media (max-width: 600px) {
+            .carrusel-principal { width: 95%; top: 48%;}
+            .carrusel-container { padding: 15px; }
+            .carrusel-btn { width: 35px; height: 35px; font-size: 18px; }
+            .carrusel-item img { max-height: 300px; }
+            .carrusel-titulo { font-size: 18px; margin-top: 8px; margin-bottom: 12px; }
+            .botones-navegacion {
+                bottom: 10px;
+                padding: 8px 16px;
+                gap: 12px;
+            }
+            .boton-nav { padding: 6px 14px; font-size: 12px; }
+            .cerrar-modal { width: 40px; height: 40px; font-size: 30px; top: 10px; right: 15px; }
+            .flipbook-hint { display: none; }
+        }
+    </style>
 </head>
-
 <body>
 
-<!-- BOTONES -->
-<div class="botones-navegacion">
-    <button class="boton-nav btn-regreso" onclick="location.href='flyers.html'">◀</button>
-    <button class="boton-nav btn-inicio" onclick="location.href='../index.html'">🏠</button>
-    <button class="boton-nav btn-siguiente" onclick="location.href='infografia.html'">▶</button>
-</div>
+    <!-- ===== 3 BOTONES DE NAVEGACIÓN ===== -->
+    <div class="botones-navegacion">
+        <button class="boton-nav btn-regreso" id="btnRegreso">◀ Regreso</button>
+        <button class="boton-nav btn-inicio" id="btnInicio">🏠 Inicio</button>
+        <button class="boton-nav btn-siguiente" id="btnSiguientePrincipal">Siguiente ▶</button>
+    </div>
 
-<!-- CARRUSEL -->
-<div class="carrusel-principal">
-
-    <div class="carrusel-container">
-
-        <button class="carrusel-btn carrusel-prev" onclick="anterior()">‹</button>
-
-        <div class="carrusel-track">
-            <div class="carrusel-item">
-                <img src="../img/ilustracion1.png" alt="Ilustración 1">
+    <!-- ===== CARRUSEL PRINCIPAL ===== -->
+    <div class="carrusel-principal">
+        <div class="carrusel-titulo">✨ MIS ILUSTRACIONES ✨</div>
+        <div class="carrusel-container">
+            <button class="carrusel-btn carrusel-prev" id="btnPrev" aria-label="Anterior">‹</button>
+            <div class="carrusel-track" id="carruselTrack">
+                <!-- 1. Tortuga (CON FLIPBOOK) -->
+                <div class="carrusel-item" id="itemTortugaFlipbook">
+                    <div style="position: relative; display: inline-block;">
+                        <img src="../img/Ilustracion-tortuga.png" alt="Ilustración Tortuga - Click para ver revista interactiva" id="imgTortugaFlipbook" style="cursor: pointer;" onerror="this.src='https://via.placeholder.com/500x400?text=Tortuga'">
+                        <div class="flipbook-hint">📖 Click para ver revista</div>
+                    </div>
+                </div>
+                <!-- 2. Kalxi 1 -->
+                <div class="carrusel-item">
+                    <img src="../img/Kalxi.png" alt="Ilustración Kalxi - Serie 1" onerror="this.src='https://via.placeholder.com/500x400?text=Kalxi+1'">
+                </div>
+                <!-- 3. Kalxi 2 -->
+                <div class="carrusel-item">
+                    <img src="../img/Kalxi2.png" alt="Ilustración Kalxi - Serie 2" onerror="this.src='https://via.placeholder.com/500x400?text=Kalxi+2'">
+                </div>
+                <!-- 4. Kalxi 3 -->
+                <div class="carrusel-item">
+                    <img src="../img/Kalxi3.png" alt="Ilustración Kalxi - Serie 3" onerror="this.src='https://via.placeholder.com/500x400?text=Kalxi+3'">
+                </div>
+                <!-- 5. Ilustración Kalxi (CON SU PROPIO FLIPBOOK) -->
+                <div class="carrusel-item" id="itemKalxiFlipbook">
+                    <div style="position: relative; display: inline-block;">
+                        <img src="../img/Ilustracion-kalxi.png" alt="Ilustración Kalxi Especial - Click para ver revista interactiva" id="imgKalxiFlipbook" style="cursor: pointer;" onerror="this.src='https://via.placeholder.com/500x400?text=Ilustracion+Kalxi'">
+                        <div class="flipbook-hint">📖 Click para ver revista</div>
+                    </div>
+                </div>
             </div>
-            <div class="carrusel-item">
-                <img src="../img/ilustracion2.png" alt="Ilustración 2">
-            </div>
-            <div class="carrusel-item">
-                <img src="../img/ilustracion3.png" alt="Ilustración 3">
-            </div>
+            <button class="carrusel-btn carrusel-next" id="btnNext" aria-label="Siguiente">›</button>
         </div>
-
-        <button class="carrusel-btn carrusel-next" onclick="siguiente()">›</button>
+        <div class="carrusel-indicadores" id="indicadores"></div>
     </div>
 
-    <!-- INDICADORES -->
-    <div class="carrusel-indicadores">
-        <div class="indicador activo"></div>
-        <div class="indicador"></div>
-        <div class="indicador"></div>
+    <!-- ===== MODAL PARA FLIPBOOK (VENTANA EMERGENTE REUTILIZABLE) ===== -->
+    <div id="modalFlipbook" class="modal">
+        <div class="modal-contenido">
+            <span class="cerrar-modal" id="cerrarModalBtn">&times;</span>
+            <iframe id="flipbookIframe" src="" title="Revista Interactiva - Flipbook" allowfullscreen></iframe>
+        </div>
     </div>
 
-</div>
+    <script>
+        // ========== 1. CONFIGURACIÓN DE LOS FLIPBOOKS ==========
+        const FLIPBOOK_TORTUGA_URL = "https://heyzine.com/flip-book/f88afc1dc3.html";
+        const FLIPBOOK_KALXI_URL = "https://heyzine.com/flip-book/7fd74e88c7.html";
+        
+        // ========== 2. LÓGICA DEL CARRUSEL ==========
+        const track = document.getElementById('carruselTrack');
+        const items = document.querySelectorAll('.carrusel-item');
+        const btnPrev = document.getElementById('btnPrev');
+        const btnNext = document.getElementById('btnNext');
+        const contenedorIndicadores = document.getElementById('indicadores');
+        
+        let currentIndex = 0;
+        const totalItems = items.length;
 
-<!-- JS BÁSICO (si ya tienes el tuyo, puedes borrar esto) -->
-<script>
-let index = 0;
-const track = document.querySelector('.carrusel-track');
-const items = document.querySelectorAll('.carrusel-item');
+        // Crear indicadores dinámicamente
+        function crearIndicadores() {
+            if (!contenedorIndicadores) return;
+            contenedorIndicadores.innerHTML = '';
+            for (let i = 0; i < totalItems; i++) {
+                const indicador = document.createElement('div');
+                indicador.classList.add('indicador');
+                if (i === 0) indicador.classList.add('activo');
+                indicador.addEventListener('click', () => {
+                    currentIndex = i;
+                    actualizarCarrusel();
+                });
+                contenedorIndicadores.appendChild(indicador);
+            }
+        }
 
-function actualizar(){
-    track.style.transform = `translateX(-${index * 100}%)`;
-}
+        function actualizarCarrusel() {
+            const desplazamiento = currentIndex * 100;
+            track.style.transform = `translateX(-${desplazamiento}%)`;
+            const indicadores = document.querySelectorAll('.indicador');
+            indicadores.forEach((ind, idx) => {
+                if (idx === currentIndex) {
+                    ind.classList.add('activo');
+                } else {
+                    ind.classList.remove('activo');
+                }
+            });
+        }
 
-function siguiente(){
-    index = (index + 1) % items.length;
-    actualizar();
-}
+        function siguienteSlide() {
+            currentIndex = (currentIndex + 1) % totalItems;
+            actualizarCarrusel();
+        }
 
-function anterior(){
-    index = (index - 1 + items.length) % items.length;
-    actualizar();
-}
-</script>
+        function anteriorSlide() {
+            currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+            actualizarCarrusel();
+        }
 
+        if (btnNext) btnNext.addEventListener('click', siguienteSlide);
+        if (btnPrev) btnPrev.addEventListener('click', anteriorSlide);
+
+        // Teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                anteriorSlide();
+            } else if (e.key === 'ArrowRight') {
+                siguienteSlide();
+            } else if (e.key === 'Escape') {
+                if (modal.style.display === 'block') cerrarFlipbook();
+            }
+        });
+
+        // ========== 3. MODAL REUTILIZABLE PARA LOS FLIPBOOKS ==========
+        const modal = document.getElementById('modalFlipbook');
+        const iframe = document.getElementById('flipbookIframe');
+        const cerrarModal = document.getElementById('cerrarModalBtn');
+
+        function abrirFlipbook(url, titulo) {
+            if (!url) {
+                console.error("No se proporcionó una URL para el flipbook");
+                return;
+            }
+            iframe.src = url;
+            modal.style.display = "block";
+            document.body.style.overflow = "hidden";
+            
+            // Actualizar título del modal si se desea
+            if (titulo) {
+                document.title = `Flipbook - ${titulo}`;
+            }
+        }
+
+        function cerrarFlipbook() {
+            modal.style.display = "none";
+            iframe.src = "";
+            document.body.style.overflow = "auto";
+            document.title = "Portafolio - Ilustraciones | Flipbooks Interactivos";
+        }
+
+        if (cerrarModal) cerrarModal.addEventListener('click', cerrarFlipbook);
+        
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) cerrarFlipbook();
+        });
+
+        // ========== 4. ASIGNAR CADA FLIPBOOK A SU IMAGEN ==========
+        const imgTortuga = document.getElementById('imgTortugaFlipbook');
+        const imgKalxi = document.getElementById('imgKalxiFlipbook');
+
+        if (imgTortuga) {
+            imgTortuga.addEventListener('click', (e) => {
+                e.stopPropagation();
+                abrirFlipbook(FLIPBOOK_TORTUGA_URL, "Tortuga Ilustración");
+            });
+        }
+        
+        if (imgKalxi) {
+            imgKalxi.addEventListener('click', (e) => {
+                e.stopPropagation();
+                abrirFlipbook(FLIPBOOK_KALXI_URL, "Kalxi Ilustración");
+            });
+        }
+
+        // ========== 5. BOTONES PRINCIPALES DE NAVEGACIÓN (RUTAS RELATIVAS) ==========
+        function setupButtonAction(btn, action) {
+            if (btn) {
+                btn.addEventListener('click', (e) => { 
+                    e.preventDefault(); 
+                    action(e); 
+                });
+            }
+        }
+
+        const btnInicio = document.getElementById('btnInicio');
+        const btnRegreso = document.getElementById('btnRegreso');
+        const btnSiguientePrincipal = document.getElementById('btnSiguientePrincipal');
+
+        // ✅ RUTAS RELATIVAS CORREGIDAS
+        if (btnRegreso) {
+            setupButtonAction(btnRegreso, () => {
+                window.location.href = 'flyers.html';
+            });
+        }
+        
+        if (btnSiguientePrincipal) {
+            setupButtonAction(btnSiguientePrincipal, () => {
+                window.location.href = 'infografia.html';
+            });
+        }
+        
+        if (btnInicio) {
+            setupButtonAction(btnInicio, () => {
+                window.location.href = '../index.html';
+            });
+        }
+
+        // ========== 6. VERIFICAR IMÁGENES ==========
+        function verificarImagenes() {
+            const imagenes = document.querySelectorAll('.carrusel-item img');
+            imagenes.forEach(img => {
+                img.addEventListener('error', () => {
+                    console.warn(`⚠️ Imagen no encontrada: ${img.src}`);
+                    img.style.outline = "2px solid #ff9800";
+                    img.style.outlineOffset = "3px";
+                });
+                img.addEventListener('load', () => {
+                    console.log(`✅ Imagen cargada: ${img.src.split('/').pop()}`);
+                });
+            });
+        }
+
+        // ========== 7. INICIALIZACIÓN FINAL ==========
+        crearIndicadores();
+        actualizarCarrusel();
+        verificarImagenes();
+        
+        console.log("%c🎨 Ilustraciones - Flipbooks Interactivos", "color: #FFD700; font-size: 14px; font-weight: bold");
+        console.log("✅ Correcciones aplicadas:");
+        console.log("   - TÍTULO BAJADO: margin-top: 15px (antes 0)");
+        console.log("   - Rutas relativas (funciona en GitHub Pages)");
+        console.log("   - background-size: cover (sin espacios negros)");
+        console.log("   - Meta etiquetas anti-caché");
+        console.log("   - Tooltip de ayuda en imágenes clickeables");
+        console.log("   - Alt text mejorado para accesibilidad");
+        console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        console.log(`📘 Flipbook Tortuga: ${FLIPBOOK_TORTUGA_URL}`);
+        console.log(`📘 Flipbook Kalxi: ${FLIPBOOK_KALXI_URL}`);
+        console.log(`📊 Total de ilustraciones: ${totalItems}`);
+    </script>
 </body>
 </html>

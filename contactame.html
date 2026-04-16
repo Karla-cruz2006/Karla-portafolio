@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contacto - Karla Sherlyn</title>
     
-    <!-- ✅ ANTI-CACHÉ -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -23,13 +22,11 @@
             font-family: 'Arial', sans-serif;
         }
 
-        /* CONTENEDOR PRINCIPAL */
         .fullscreen-container {
             position: relative;
             min-height: 100vh;
         }
 
-        /* IMAGEN DE FONDO */
         .fullscreen-img {
             width: 100%;
             display: block;
@@ -90,7 +87,7 @@
             cursor: grabbing;
         }
 
-        /* ===== ESTILOS DE LOS CUADROS DEL FORMULARIO ===== */
+        /* ESTILOS DE LOS CUADROS DEL FORMULARIO */
         .form-cuadro {
             background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(10px);
@@ -154,7 +151,6 @@
             box-shadow: 0 0 8px rgba(255,0,0,0.5);
         }
 
-        /* Estilo para botones */
         .btn-enviar {
             background: linear-gradient(135deg, #ff0000, #990000);
             color: white;
@@ -200,7 +196,6 @@
             transform: translateY(0);
         }
 
-        /* Contenedor para botones juntos */
         .botones-container {
             display: flex;
             gap: 15px;
@@ -212,7 +207,6 @@
             flex: 1;
         }
 
-        /* Estilo para la marca de agua */
         .watermark {
             position: absolute;
             bottom: 20px;
@@ -235,7 +229,6 @@
             backdrop-filter: blur(4px);
         }
 
-        /* Mensaje flotante de confirmación */
         .toast-message {
             position: fixed;
             bottom: 80px;
@@ -259,40 +252,47 @@
             85% { opacity: 1; transform: translateX(-50%) translateY(0); }
             100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
         }
+
+        /* RESPONSIVE */
+        @media (max-width: 700px) {
+            .form-cuadro { width: 70% !important; left: 15% !important; }
+        }
+        @media (max-width: 500px) {
+            .botones-container { flex-direction: column; gap: 10px; }
+        }
     </style>
 </head>
 <body>
     <div class="fullscreen-container">
-        <!-- ✅ Verificar que esta imagen existe: img/Contactame.png -->
-        <img src="img/Contactame.png" class="fullscreen-img" alt="Fondo página de contacto" onerror="this.style.display='none'; console.warn('⚠️ Imagen de fondo no encontrada: img/Contactame.png')">
+        <img src="img/Contactame.png" class="fullscreen-img" alt="Fondo página de contacto" onerror="this.style.display='none'; console.warn('⚠️ Imagen de fondo no encontrada')">
 
         <div class="scrapbook-layer">
             
-            <!-- ===== CUADRO 1: NOMBRE ===== -->
+            <!-- ===== CUADRO 1: NOMBRE (MOVIBLE) ===== -->
             <div class="scrap-item form-cuadro" style="top:8%; left:8%; width:28%;">
                 <div class="form-cuadro-interno">
                     <label class="form-label">NOMBRE</label>
-                    <input type="text" id="nombre" class="form-input" placeholder="Tu nombre completo">
+                    <input type="text" id="nombre" class="form-input" placeholder="Tu nombre completo" required>
                 </div>
             </div>
             
-            <!-- ===== CUADRO 2: CORREO ===== -->
+            <!-- ===== CUADRO 2: CORREO (MOVIBLE) ===== -->
             <div class="scrap-item form-cuadro" style="top:28%; left:8%; width:28%;">
                 <div class="form-cuadro-interno">
                     <label class="form-label">CORREO</label>
-                    <input type="email" id="correo" class="form-input" placeholder="tu@email.com">
+                    <input type="email" id="correo" class="form-input" placeholder="tu@email.com" required>
                 </div>
             </div>
             
-            <!-- ===== CUADRO 3: MENSAJE ===== -->
+            <!-- ===== CUADRO 3: MENSAJE (MOVIBLE) ===== -->
             <div class="scrap-item form-cuadro" style="top:48%; left:8%; width:28%;">
                 <div class="form-cuadro-interno">
                     <label class="form-label">MENSAJE</label>
-                    <textarea id="mensaje" class="form-textarea" placeholder="Escribe tu mensaje..."></textarea>
+                    <textarea id="mensaje" class="form-textarea" placeholder="Escribe tu mensaje..." required></textarea>
                 </div>
             </div>
 
-            <!-- ===== CUADRO 4: BOTONES ENVIAR Y LIMPIAR JUNTOS ===== -->
+            <!-- ===== CUADRO 4: BOTONES (MOVIBLE) ===== -->
             <div class="scrap-item form-cuadro" style="top:72%; left:8%; width:28%;">
                 <div class="form-cuadro-interno">
                     <div class="botones-container">
@@ -304,24 +304,19 @@
             
         </div>
         
-        <!-- ===== MARCA DE AGUA ===== -->
         <div class="watermark">
             © 2026 Karla Cruz | YANG'S LAB
         </div>
-        
     </div>
 
     <script>
-        // ===== VARIABLES GLOBALES =====
-        let selected = null;
-        let isDragging = false;
-        let isResizing = false;
-        let isRotating = false;
-        let startX, startY, startLeft, startTop, startWidth;
-        let startAngle = 0;
-        let currentAngle = 0;
+        // ===== CONFIGURACIÓN DE FORMSPREE =====
+        // ⚠️ IMPORTANTE: Reemplaza "TU_ID_DE_FORMSPREE" con tu ID real
+        const FORMSPREE_ID = 'TU_ID_DE_FORMSPREE';  // 👈 CAMBIA ESTO
+        
+        const FORMSPREE_URL = `https://formspree.io/f/${FORMSPREE_ID}`;
 
-        // ===== FUNCIÓN MOSTRAR MENSAJE FLOTANTE =====
+        // ===== MOSTRAR MENSAJE FLOTANTE =====
         function showToast(message, isError = false) {
             const toast = document.createElement('div');
             toast.className = 'toast-message';
@@ -330,22 +325,21 @@
                 toast.style.color = '#ff6666';
                 toast.style.borderColor = '#ff0000';
             } else {
-                toast.style.color = '#ff3333';
-                toast.style.borderColor = '#ff0000';
+                toast.style.color = '#4CAF50';
+                toast.style.borderColor = '#4CAF50';
             }
             document.body.appendChild(toast);
             setTimeout(() => {
                 toast.remove();
-            }, 2500);
+            }, 3000);
         }
 
-        // ===== FUNCIÓN ENVIAR FORMULARIO =====
-        function enviarFormulario() {
+        // ===== ENVIAR FORMULARIO A FORMSPREE =====
+        async function enviarFormulario() {
             const nombre = document.getElementById('nombre').value.trim();
             const correo = document.getElementById('correo').value.trim();
             const mensaje = document.getElementById('mensaje').value.trim();
 
-            // Validación
             if (!nombre) {
                 showToast('❌ Por favor, ingresa tu nombre', true);
                 return;
@@ -359,28 +353,67 @@
                 return;
             }
 
-            // Validar formato de correo
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(correo)) {
-                showToast('❌ Por favor, ingresa un correo válido (ejemplo@dominio.com)', true);
+                showToast('❌ Correo electrónico no válido', true);
                 return;
             }
 
-            // Simular envío
-            console.log('📨 Datos enviados:', { nombre, correo, mensaje });
-            showToast('✅ ¡Mensaje enviado con éxito!', false);
+            if (FORMSPREE_ID === 'TU_ID_DE_FORMSPREE') {
+                showToast('⚠️ Configura primero tu ID de Formspree en el código', true);
+                console.error('❌ Debes configurar FORMSPREE_ID con tu ID real');
+                return;
+            }
+
+            showToast('📤 Enviando mensaje...', false);
+
+            try {
+                const response = await fetch(FORMSPREE_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        nombre: nombre,
+                        email: correo,
+                        mensaje: mensaje,
+                        _subject: `Nuevo mensaje de ${nombre}`
+                    })
+                });
+
+                if (response.ok) {
+                    showToast('✅ ¡Mensaje enviado con éxito! Te responderé pronto.', false);
+                    document.getElementById('nombre').value = '';
+                    document.getElementById('correo').value = '';
+                    document.getElementById('mensaje').value = '';
+                    console.log('📨 Mensaje enviado a Formspree');
+                } else {
+                    showToast('❌ Error al enviar. Intenta de nuevo.', true);
+                }
+            } catch (error) {
+                console.error('Error de conexión:', error);
+                showToast('❌ Error de conexión. Verifica tu internet.', true);
+            }
         }
 
-        // ===== FUNCIÓN LIMPIAR FORMULARIO =====
+        // ===== LIMPIAR FORMULARIO =====
         function limpiarFormulario() {
             document.getElementById('nombre').value = '';
             document.getElementById('correo').value = '';
             document.getElementById('mensaje').value = '';
             showToast('🧹 Todos los campos han sido limpiados', false);
-            console.log('🧹 Formulario limpiado');
         }
 
-        // ===== GUARDAR POSICIONES =====
+        // ===== FUNCIONES PARA MOVER, REDIMENSIONAR Y ROTAR =====
+        let selected = null;
+        let isDragging = false;
+        let isResizing = false;
+        let isRotating = false;
+        let startX, startY, startLeft, startTop, startWidth;
+        let startAngle = 0;
+        let currentAngle = 0;
+
         function savePositions() {
             const data = [];
             document.querySelectorAll('.scrap-item').forEach(el => {
@@ -395,13 +428,9 @@
             console.log("💾 Posiciones guardadas");
         }
 
-        // ===== CARGAR POSICIONES =====
         function loadPositions() {
             const data = JSON.parse(localStorage.getItem("layoutContacto"));
-            if (!data) {
-                console.log("📂 No hay posiciones guardadas, usando las del HTML");
-                return;
-            }
+            if (!data) return;
 
             document.querySelectorAll('.scrap-item').forEach((el, i) => {
                 if (data[i]) {
@@ -411,10 +440,9 @@
                     if (data[i].transform) el.style.transform = data[i].transform;
                 }
             });
-            console.log("📂 Posiciones cargadas desde localStorage");
+            console.log("📂 Posiciones cargadas");
         }
 
-        // ===== CREAR MANIJAS =====
         function createHandles(el) {
             const oldResize = el.querySelector('.resize-handle');
             const oldRotate = el.querySelector('.rotate-handle');
@@ -441,47 +469,36 @@
             rotateHandle.onmousedown = (e) => {
                 e.stopPropagation();
                 isRotating = true;
-                
                 const rect = el.getBoundingClientRect();
                 const centerX = rect.left + rect.width / 2;
                 const centerY = rect.top + rect.height / 2;
-                
                 startAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX) * 180 / Math.PI;
-                
                 const transform = el.style.transform;
                 const match = transform.match(/rotate\(([-\d.]+)deg\)/);
                 currentAngle = match ? parseFloat(match[1]) : 0;
-                
                 document.onmousemove = rotate;
                 document.onmouseup = stop;
             };
         }
 
-        // ===== ROTAR =====
         function rotate(e) {
             if (!isRotating || !selected) return;
-            
             const rect = selected.getBoundingClientRect();
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
-            
             let newAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX) * 180 / Math.PI;
             let angleDiff = newAngle - startAngle;
             let finalAngle = currentAngle + angleDiff;
-            
             selected.style.transform = `rotate(${finalAngle}deg)`;
         }
 
-        // ===== REDIMENSIONAR =====
         function resize(e) {
             if (!isResizing || !selected) return;
             let newWidth = Math.max(80, startWidth + (e.clientX - startX));
             selected.style.width = newWidth + "px";
         }
 
-        // ===== ARRASTRAR =====
         function startDrag(e, el) {
-            // Evitar arrastrar si se hizo clic en botones dentro del cuadro
             if (e.target.classList.contains("resize-handle")) return;
             if (e.target.classList.contains("rotate-handle")) return;
             if (e.target.tagName === 'BUTTON') return;
@@ -493,7 +510,6 @@
             startY = e.clientY;
             startLeft = parseFloat(el.style.left || 0);
             startTop = parseFloat(el.style.top || 0);
-            
             document.onmousemove = drag;
             document.onmouseup = stop;
         }
@@ -504,22 +520,6 @@
             selected.style.top = (startTop + (e.clientY - startY)) + "px";
         }
 
-        // ===== ROTAR CON TECLADO =====
-        document.addEventListener('keydown', (e) => {
-            if (!selected) return;
-            if (e.key === "q") rotateKeyboard(-5);
-            if (e.key === "e") rotateKeyboard(5);
-        });
-
-        function rotateKeyboard(d) {
-            let transform = selected.style.transform || "rotate(0deg)";
-            let match = transform.match(/rotate\(([-\d.]+)deg\)/);
-            let currentRot = match ? parseFloat(match[1]) : 0;
-            let newRot = currentRot + d;
-            selected.style.transform = `rotate(${newRot}deg)`;
-        }
-
-        // ===== DETENER =====
         function stop() {
             isDragging = false;
             isResizing = false;
@@ -529,38 +529,30 @@
             savePositions();
         }
 
-        // ===== SELECCIONAR ELEMENTO =====
         function selectElement(el) {
             if (selected && selected !== el) {
                 selected.style.outline = "none";
             }
-            
             selected = el;
             selected.style.outline = "3px dashed #ff0000";
             createHandles(selected);
         }
 
-        // ===== ASIGNAR EVENTOS A LOS CUADROS =====
         function asignarEventos() {
             document.querySelectorAll('.scrap-item').forEach(el => {
-                // CLICK: seleccionar
                 el.addEventListener('click', (e) => {
-                    // No seleccionar si se hizo clic en un botón o input
                     if (e.target.tagName === 'BUTTON') return;
                     if (e.target.type === 'text' || e.target.type === 'email' || e.target.tagName === 'TEXTAREA') return;
-                    
                     e.stopPropagation();
                     selectElement(el);
                 });
                 
-                // Arrastrar
                 el.addEventListener('mousedown', (e) => {
                     startDrag(e, el);
                 });
             });
         }
 
-        // ===== CLICK FUERA =====
         document.body.addEventListener('click', (e) => {
             if (!e.target.closest('.scrap-item')) {
                 if (selected) {
@@ -570,52 +562,36 @@
             }
         });
 
-        // ===== ASIGNAR EVENTOS A LOS BOTONES =====
-        function asignarBotones() {
-            const btnEnviar = document.getElementById('btnEnviar');
-            const btnLimpiar = document.getElementById('btnLimpiar');
-            
-            if (btnEnviar) {
-                btnEnviar.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    enviarFormulario();
-                });
+        document.addEventListener('keydown', (e) => {
+            if (!selected) return;
+            if (e.key === "q") {
+                let transform = selected.style.transform || "rotate(0deg)";
+                let match = transform.match(/rotate\(([-\d.]+)deg\)/);
+                let currentRot = match ? parseFloat(match[1]) : 0;
+                selected.style.transform = `rotate(${currentRot - 5}deg)`;
             }
-            
-            if (btnLimpiar) {
-                btnLimpiar.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    limpiarFormulario();
-                });
+            if (e.key === "e") {
+                let transform = selected.style.transform || "rotate(0deg)";
+                let match = transform.match(/rotate\(([-\d.]+)deg\)/);
+                let currentRot = match ? parseFloat(match[1]) : 0;
+                selected.style.transform = `rotate(${currentRot + 5}deg)`;
             }
-        }
+        });
 
-        // ===== VERIFICAR IMAGEN DE FONDO =====
-        function verificarImagenFondo() {
-            const imgFondo = document.querySelector('.fullscreen-img');
-            if (imgFondo) {
-                imgFondo.addEventListener('error', () => {
-                    console.warn('⚠️ La imagen de fondo no se encuentra en: img/Contactame.png');
-                    document.body.style.background = '#000';
-                });
-                imgFondo.addEventListener('load', () => {
-                    console.log('✅ Imagen de fondo cargada correctamente');
-                });
-            }
-        }
+        // ===== ASIGNAR BOTONES =====
+        document.getElementById('btnEnviar').addEventListener('click', enviarFormulario);
+        document.getElementById('btnLimpiar').addEventListener('click', limpiarFormulario);
 
         // ===== INICIALIZAR =====
         window.onload = () => {
             loadPositions();
             asignarEventos();
-            asignarBotones();
-            verificarImagenFondo();
-            
             console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-            console.log("✅ EDITOR ACTIVADO - LAS POSICIONES SE GUARDAN");
-            console.log("📌 Mueve, redimensiona o rota cualquier cuadro");
-            console.log("📌 Las posiciones se guardan AUTOMÁTICAMENTE");
-            console.log("📌 Al recargar la página, TODO se mantiene");
+            console.log("✅ CUADROS MOVIBLES - Puedes arrastrarlos");
+            console.log("✅ Círculo ROJO → Redimensionar");
+            console.log("✅ Círculo ROJO OSCURO → Rotar");
+            console.log("✅ Teclas Q/E → Rotar elemento seleccionado");
+            console.log("✅ FORMULARIO CONECTADO A FORMSPREE");
             console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
         };
     </script>

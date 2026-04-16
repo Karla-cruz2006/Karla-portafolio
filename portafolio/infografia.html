@@ -190,7 +190,7 @@
             transform: scale(1.2);
         }
 
-        /* Título del carrusel */
+        /* ✅ TÍTULO DEL CARRUSEL - BAJADO UN POQUITO MÁS */
         .carrusel-titulo {
             text-align: center;
             color: #FFD700;
@@ -199,6 +199,8 @@
             letter-spacing: 2px;
             font-weight: bold;
             text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            /* ✅ BAJADO: igual que en ilustraciones */
+            margin-top: 15px;
         }
 
         /* ===== RESPONSIVE ===== */
@@ -208,7 +210,7 @@
             .carrusel-btn { width: 40px; height: 40px; font-size: 22px; }
             .carrusel-prev { left: -15px; }
             .carrusel-next { right: -15px; }
-            .carrusel-titulo { font-size: 20px; }
+            .carrusel-titulo { font-size: 20px; margin-top: 10px; margin-bottom: 15px; }
             .carrusel-item img { max-height: 400px; }
         }
 
@@ -217,7 +219,7 @@
             .carrusel-container { padding: 15px; }
             .carrusel-btn { width: 35px; height: 35px; font-size: 18px; }
             .carrusel-item img { max-height: 300px; }
-            .carrusel-titulo { font-size: 18px; }
+            .carrusel-titulo { font-size: 18px; margin-top: 8px; margin-bottom: 12px; }
             .botones-navegacion {
                 bottom: 10px;
                 padding: 8px 16px;
@@ -371,6 +373,7 @@
         
         console.log("%c🎨 Infografías - Carrusel", "color: #FFD700; font-size: 14px; font-weight: bold");
         console.log("✅ Correcciones aplicadas:");
+        console.log("   - TÍTULO BAJADO: margin-top: 15px (igual que ilustraciones)");
         console.log("   - Rutas relativas (funciona en GitHub Pages)");
         console.log("   - background-size: cover (sin espacios negros)");
         console.log("   - Meta etiquetas anti-caché");

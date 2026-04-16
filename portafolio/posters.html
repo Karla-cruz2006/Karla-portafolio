@@ -1,114 +1,454 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portafolio - Pósters</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio - Pósters</title>
+    
+    <!-- ✅ ANTI-CACHÉ -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
+        /* ✅ Fondo corregido */
+        body {
+            background-image: url("../img/fondo-secciones.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center top;
+            background-attachment: scroll;
+            background-color: #000;
+            min-height: 100vh;
+            width: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+            overflow-x: hidden;
+        }
 
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    user-select: none;
-}
+        /* ========== CONTENEDOR PRINCIPAL FLEX ========== */
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            gap: 40px;
+            padding: 20px;
+            flex-wrap: wrap;
+        }
 
-/* ===== FONDO ===== */
-body {
-    background-image: url("../img/fondo-secciones.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center top;
-    background-color: #000;
-    min-height: 100vh;
-    font-family: 'Segoe UI', sans-serif;
-    overflow-x: hidden;
-}
+        /* ========== BOTONES EN COLUMNA (LADO IZQUIERDO) ========== */
+        .botones-columna {
+            position: fixed;
+            left: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 1000;
+        }
 
-/* ===== CONTENEDOR ===== */
-.contenedor-libre {
-    position: relative;
-    width: 100%;
-    min-height: 100vh;
-}
+        .boton-nav {
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: all 0.3s ease;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
 
-/* ===== BARRA BOTONES (NUEVO) ===== */
-.barra-botones {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 15px;
-    padding: 10px 15px;
-    border-radius: 50px;
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(10px);
-    z-index: 10000;
-}
+        .boton-nav:hover {
+            transform: translateX(5px) scale(1.05);
+        }
 
-/* BOTONES */
-.boton-movible {
-    padding: 12px 22px;
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    border-radius: 30px;
-    cursor: grab;
-    transition: .3s;
-    white-space: nowrap;
-}
+        .boton-nav:active {
+            transform: translateX(2px) scale(0.98);
+        }
 
-.boton-movible:active {
-    cursor: grabbing;
-}
+        .btn-inicio {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+            border: 1px solid rgba(76, 175, 80, 0.5);
+        }
 
-/* COLORES */
-.btn-inicio { background:#4CAF50; color:white; }
-.btn-regreso { background:#ff9800; color:white; }
-.btn-siguiente { background:#2196F3; color:white; }
+        .btn-inicio:hover {
+            background: linear-gradient(135deg, #45a049, #1B5E20);
+        }
 
-/* HOVER */
-.boton-movible:hover {
-    transform: scale(1.08);
-}
+        .btn-regreso {
+            background: linear-gradient(135deg, #ff9800, #E65100);
+            color: white;
+            border: 1px solid rgba(255, 152, 0, 0.5);
+        }
 
-/* ===== CARRUSEL (NO TOCADO) ===== */
-.carrusel-container {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 600px;
-    max-width: 85vw;
-    z-index: 9999;
-}
-</style>
+        .btn-regreso:hover {
+            background: linear-gradient(135deg, #e68900, #BF360C);
+        }
+
+        .btn-siguiente {
+            background: linear-gradient(135deg, #2196F3, #0D47A1);
+            color: white;
+            border: 1px solid rgba(33, 150, 243, 0.5);
+        }
+
+        .btn-siguiente:hover {
+            background: linear-gradient(135deg, #0b7dda, #1565C0);
+        }
+
+        /* ========== CARRUSEL CENTRAL ========== */
+        .carrusel-container {
+            position: relative;
+            width: 600px;
+            max-width: 85vw;
+            margin: 0 auto;
+            z-index: 999;
+        }
+
+        .carrusel {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .carrusel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            gap: 20px;
+        }
+
+        .carrusel-item {
+            min-width: 100%;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .carrusel-item img {
+            width: auto;
+            max-width: 90%;
+            max-height: 450px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .carrusel-item img:hover {
+            transform: scale(1.02);
+        }
+
+        /* Botones del carrusel */
+        .carrusel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: #FFD700;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carrusel-btn:hover {
+            background: rgba(255, 215, 0, 0.9);
+            color: black;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carrusel-prev {
+            left: 5px;
+        }
+
+        .carrusel-next {
+            right: 5px;
+        }
+
+        /* Indicadores */
+        .carrusel-indicadores {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .indicador {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .indicador.activo {
+            background: #FFD700;
+            width: 25px;
+            border-radius: 5px;
+        }
+
+        .indicador:hover {
+            background: rgba(255, 215, 0, 0.8);
+            transform: scale(1.2);
+        }
+
+        /* Título */
+        .carrusel-titulo {
+            text-align: center;
+            color: #FFD700;
+            font-size: 24px;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            font-weight: bold;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 900px) {
+            .botones-columna {
+                position: fixed;
+                bottom: 20px;
+                top: auto;
+                left: 50%;
+                transform: translateX(-50%);
+                flex-direction: row;
+                gap: 15px;
+                background: rgba(0, 0, 0, 0.8);
+                padding: 12px 20px;
+                border-radius: 50px;
+                backdrop-filter: blur(10px);
+                z-index: 1001;
+            }
+            
+            .boton-nav {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            
+            .boton-nav:hover {
+                transform: translateY(3px) scale(1.05);
+            }
+            
+            .carrusel-container {
+                width: 90%;
+                margin-top: 20px;
+            }
+            
+            .carrusel-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 18px;
+            }
+            
+            .carrusel-titulo {
+                font-size: 20px;
+            }
+            
+            .carrusel-item img {
+                max-height: 350px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .botones-columna {
+                gap: 10px;
+                padding: 10px 15px;
+            }
+            
+            .boton-nav {
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+            
+            .carrusel-container {
+                width: 95%;
+            }
+            
+            .carrusel-item img {
+                max-height: 300px;
+            }
+            
+            .carrusel-titulo {
+                font-size: 18px;
+            }
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="contenedor-libre">
-
-    <!-- ===== BOTONES ===== -->
-    <div class="barra-botones">
-
-        <a href="../index.html" class="boton-movible btn-inicio" id="btnInicio">
-            🏠 Inicio
+    <!-- ========== BOTONES EN COLUMNA (LADO IZQUIERDO) ========== -->
+    <div class="botones-columna">
+        <a href="../index.html" class="boton-nav btn-inicio" id="btnInicio">
+            🏠 INICIO
         </a>
 
-        <button class="boton-movible btn-regreso" id="btnRegreso">
-            ◀ Regreso
+        <button class="boton-nav btn-regreso" id="btnRegreso">
+            ◀ REGRESO
         </button>
 
-        <button class="boton-movible btn-siguiente" id="btnSiguiente">
-            Siguiente ▶
+        <button class="boton-nav btn-siguiente" id="btnSiguiente">
+            SIGUIENTE ▶
         </button>
-
     </div>
 
-</div>
+    <!-- ========== CARRUSEL CENTRAL ========== -->
+    <div class="carrusel-container">
+        <div class="carrusel-titulo">
+            ✨ PÓSTERS ✨
+        </div>
+        <div class="carrusel">
+            <button class="carrusel-btn carrusel-prev" id="btnPrev">‹</button>
+            <div class="carrusel-track" id="carruselTrack">
+                <!-- Elemento 1 -->
+                <div class="carrusel-item">
+                    <img src="../img/Póster-Moto.png" alt="Póster Moto" onerror="this.src='https://via.placeholder.com/500x400?text=Póster+Moto'">
+                </div>
+                <!-- Elemento 2 -->
+                <div class="carrusel-item">
+                    <img src="../img/Póster-Primavera.png" alt="Póster Primavera" onerror="this.src='https://via.placeholder.com/500x400?text=Póster+Primavera'">
+                </div>
+                <!-- Elemento 3 -->
+                <div class="carrusel-item">
+                    <img src="../img/Póster-TDD.png" alt="Póster TDD" onerror="this.src='https://via.placeholder.com/500x400?text=Póster+TDD'">
+                </div>
+            </div>
+            <button class="carrusel-btn carrusel-next" id="btnNext">›</button>
+        </div>
+        <div class="carrusel-indicadores" id="indicadores"></div>
+    </div>
+
+    <script>
+        // ========== CARRUSEL ==========
+        const track = document.getElementById('carruselTrack');
+        const items = document.querySelectorAll('.carrusel-item');
+        const btnPrev = document.getElementById('btnPrev');
+        const btnNext = document.getElementById('btnNext');
+        const contenedorIndicadores = document.getElementById('indicadores');
+        
+        let currentIndex = 0;
+        const totalItems = items.length;
+
+        // ✅ Crear indicadores dinámicamente
+        function crearIndicadores() {
+            if (!contenedorIndicadores) return;
+            contenedorIndicadores.innerHTML = '';
+            for (let i = 0; i < totalItems; i++) {
+                const indicador = document.createElement('div');
+                indicador.classList.add('indicador');
+                if (i === 0) indicador.classList.add('activo');
+                indicador.addEventListener('click', () => {
+                    currentIndex = i;
+                    actualizarCarrusel();
+                });
+                contenedorIndicadores.appendChild(indicador);
+            }
+        }
+
+        function actualizarCarrusel() {
+            const desplazamiento = currentIndex * 100;
+            track.style.transform = `translateX(-${desplazamiento}%)`;
+            const indicadores = document.querySelectorAll('.indicador');
+            indicadores.forEach((ind, idx) => {
+                if (idx === currentIndex) ind.classList.add('activo');
+                else ind.classList.remove('activo');
+            });
+        }
+
+        function siguienteSlide() {
+            currentIndex = (currentIndex + 1) % totalItems;
+            actualizarCarrusel();
+        }
+
+        function anteriorSlide() {
+            currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+            actualizarCarrusel();
+        }
+
+        if (btnNext) btnNext.addEventListener('click', siguienteSlide);
+        if (btnPrev) btnPrev.addEventListener('click', anteriorSlide);
+
+        // Teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') anteriorSlide();
+            else if (e.key === 'ArrowRight') siguienteSlide();
+        });
+
+        // ========== FUNCIONES DE NAVEGACIÓN ==========
+        const btnInicio = document.getElementById('btnInicio');
+        const btnRegreso = document.getElementById('btnRegreso');
+        const btnSiguienteNav = document.getElementById('btnSiguiente');
+
+        // ✅ RUTAS RELATIVAS CORREGIDAS
+        if (btnRegreso) {
+            btnRegreso.addEventListener('click', () => {
+                window.location.href = 'infografia.html';
+            });
+        }
+        
+        if (btnSiguienteNav) {
+            btnSiguienteNav.addEventListener('click', () => {
+                window.location.href = 'logos.html';
+            });
+        }
+        
+        if (btnInicio) {
+            btnInicio.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.location.href = '../index.html';
+            });
+        }
+
+        // ========== VERIFICAR IMÁGENES ==========
+        function verificarImagenes() {
+            const imagenes = document.querySelectorAll('.carrusel-item img');
+            imagenes.forEach(img => {
+                img.addEventListener('error', () => {
+                    console.warn(`⚠️ Imagen no encontrada: ${img.src}`);
+                });
+                img.addEventListener('load', () => {
+                    console.log(`✅ Imagen cargada: ${img.src.split('/').pop()}`);
+                });
+            });
+        }
+
+        // ========== INICIALIZAR ==========
+        crearIndicadores();
+        actualizarCarrusel();
+        verificarImagenes();
+        
+        console.log("%c🎨 Pósters - Carrusel con Botones en Columna", "color: #FFD700; font-size: 14px; font-weight: bold");
+        console.log("✅ Botones en COLUMNA a la izquierda del carrusel");
+        console.log("✅ En móviles se convierten en fila en la parte inferior");
+        console.log("✅ Gradientes profesionales en botones");
+        console.log("✅ Rutas relativas (funciona en GitHub Pages)");
+        console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        console.log(`📊 Total de pósters: ${totalItems}`);
+    </script>
+</body>
+</html>
