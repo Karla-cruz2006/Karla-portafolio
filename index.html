@@ -5,11 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Karla Sherlyn · Curriculum Vitae</title>
 
-<!-- FAVICON - Agregado -->
-<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<!-- Si no tienes favicon, usa un emoji o ícono por defecto -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
+<link rel="shortcut icon" href="./favicon.png?v=3">
+
+<!-- ✅ CSS EXTERNO (si no existe, no rompe la página) -->
+<link rel="stylesheet" href="styles.css">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -128,7 +127,7 @@ body{
 
 .scrap-item:hover::after {
     opacity: 0.7;
-    content: "✨ Doble clic para acción | Arrastra para mover";
+    content: " Doble clic para acción |  Arrastra para mover";
 }
 
 /* ROTACIÓN DEL ARÁNDANO (40 SEGUNDOS) */
@@ -153,26 +152,27 @@ body{
         <div class="watermark">
             © 2026 Karla Cruz | YANG´S LAB
         </div>
+
+        <!-- ARÁNDANO CON ROTACIÓN (40 SEGUNDOS) -->
+        <div class="scrap-item rotate-animation" style="top:50%; left:12%; width:22%; transform:rotate(4deg); cursor:pointer;">
+            <img src="img/Arandanos.png" alt="Arándanos">
+        </div>
         
         <!-- Botón curriculum -->
         <div class="scrap-item" style="top:75%; left:7%; width:18%; transform:rotate(-2deg);">
             <img src="img/Boton_curriculum.png" alt="Currículum">
         </div>
 
-        <!-- Botón portafolio -->
-        <div class="scrap-item" style="top:45%; left:41%; width:22%; transform:rotate(1deg); z-index:100;">
-            <img src="img/Boton_portafolio.png" alt="Portafolio">
-        </div>
-        
-        <!-- ARÁNDANO CON ROTACIÓN (40 SEGUNDOS) -->
-        <div class="scrap-item rotate-animation" style="top:50%; left:12%; width:22%; transform:rotate(4deg); cursor:pointer;">
-            <img src="img/Arandanos.png" alt="Arándanos">
-        </div>
-        
         <!-- Botón contactame -->
         <div class="scrap-item" style="top:75%; left:31%; width:18%; transform:rotate(2deg);">
             <img src="img/Boton_contactame.png" alt="Contacto">
         </div>
+
+        <!-- Botón portafolio -->
+        <div class="scrap-item" style="top:45%; left:41%; width:22%; transform:rotate(1deg); z-index:100;">
+            <img src="img/Boton_portafolio.png" alt="Portafolio">
+        </div>
+
     </div>
 </div>
 
@@ -180,33 +180,26 @@ body{
 // ===== FUNCIONES PRINCIPALES =====
 function descargarCV() {
     console.log("📄 Descargando CV...");
-    
     const link = document.createElement('a');
     link.href = "docs/Karla_Cruz_CV.pdf";
     link.download = "Karla_Cruz_CV.pdf";
     link.style.display = 'none';
-    
     document.body.appendChild(link);
     link.click();
-    
-    setTimeout(() => {
-        document.body.removeChild(link);
-    }, 100);
+    setTimeout(() => document.body.removeChild(link), 100);
 }
 
 function irContacto() {
-    console.log("📞 Navegando a contactame.html");
-    // Ruta relativa - CORREGIDO para GitHub Pages
+    console.log("📞 Navegando a contacto.html");
     window.location.href = "contactame.html";
 }
 
 function irPortafolio() {
     console.log("🎨 Navegando a portafolio.html");
-    // Ruta relativa - CORREGIDO para GitHub Pages
     window.location.href = "portafolio.html";
 }
 
-// ===== VARIABLES GLOBALES =====
+// ===== VARIABLES =====
 let selected = null;
 let isDragging = false;
 let isResizing = false;
@@ -214,7 +207,6 @@ let isRotating = false;
 let startX, startY, startLeft, startTop, startWidth;
 let startAngle = 0;
 let currentAngle = 0;
-let isDraggingElement = false;
 
 // ===== GUARDAR POSICIONES =====
 function savePositions(){
@@ -274,17 +266,15 @@ function createHandles(el){
     rotateHandle.onmousedown = (e) => {
         e.stopPropagation();
         isRotating = true;
-        
         const rect = el.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
-        
         startAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX) * 180 / Math.PI;
-        
+
         const transform = el.style.transform;
         const match = transform.match(/rotate\(([-\d.]+)deg\)/);
         currentAngle = match ? parseFloat(match[1]) : 0;
-        
+
         document.onmousemove = rotate;
         document.onmouseup = stopRotate;
     };
@@ -305,7 +295,7 @@ function rotate(e){
     selected.style.transform = `rotate(${finalAngle}deg)`;
 }
 
-function stopRotate() {
+function stopRotate(){
     isRotating = false;
     document.onmousemove = null;
     document.onmouseup = null;
@@ -319,7 +309,7 @@ function resize(e){
     selected.style.width = newWidth + "px";
 }
 
-function stopResize() {
+function stopResize(){
     isResizing = false;
     document.onmousemove = null;
     document.onmouseup = null;
@@ -355,27 +345,10 @@ function stopDrag(){
     savePositions();
 }
 
-// ===== ROTAR CON TECLADO =====
-document.addEventListener('keydown', (e) => {
-    if(!selected) return;
-    if(e.key === "q") rotateKeyboard(-5);
-    if(e.key === "e") rotateKeyboard(5);
-});
-
-function rotateKeyboard(d){
-    let transform = selected.style.transform || "rotate(0deg)";
-    let match = transform.match(/rotate\(([-\d.]+)deg\)/);
-    let currentRot = match ? parseFloat(match[1]) : 0;
-    let newRot = currentRot + d;
-    selected.style.transform = `rotate(${newRot}deg)`;
-    savePositions();
-}
-
 // ===== SELECCIONAR ELEMENTO =====
 function selectElement(el) {
     if(selected && selected !== el){
         selected.style.outline = "none";
-        // Remover handles del elemento anterior
         const oldHandles = selected.querySelectorAll('.resize-handle, .rotate-handle');
         oldHandles.forEach(h => h.remove());
     }
@@ -394,7 +367,7 @@ function asignarFuncionesBotones() {
         const imgSrc = img.src.toLowerCase();
         let clickTimer = null;
         
-        // CLICK SIMPLE: seleccionar el elemento
+        // Click simple: seleccionar
         el.addEventListener('click', (e) => {
             e.stopPropagation();
             
@@ -405,11 +378,10 @@ function asignarFuncionesBotones() {
             
             clickTimer = setTimeout(() => {
                 selectElement(el);
-                clickTimer = null;
             }, 200);
         });
         
-        // DOBLE CLICK: ejecutar la acción
+        // Doble click: acción
         el.addEventListener('dblclick', (e) => {
             e.stopPropagation();
             
@@ -446,21 +418,60 @@ document.body.addEventListener('click', (e) => {
     }
 });
 
+// ===== ROTAR CON TECLADO =====
+document.addEventListener('keydown', (e) => {
+    if(!selected) return;
+    if(e.key === "q") {
+        let transform = selected.style.transform || "rotate(0deg)";
+        let match = transform.match(/rotate\(([-\d.]+)deg\)/);
+        let currentRot = match ? parseFloat(match[1]) : 0;
+        selected.style.transform = `rotate(${currentRot - 5}deg)`;
+        savePositions();
+    }
+    if(e.key === "e") {
+        let transform = selected.style.transform || "rotate(0deg)";
+        let match = transform.match(/rotate\(([-\d.]+)deg\)/);
+        let currentRot = match ? parseFloat(match[1]) : 0;
+        selected.style.transform = `rotate(${currentRot + 5}deg)`;
+        savePositions();
+    }
+});
+
 // ===== INICIALIZAR =====
 window.onload = () => {
     loadPositions();
     asignarFuncionesBotones();
     
-    console.log("✅ EDITOR COMPLETO ACTIVADO");
-    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-    console.log("✨ CLIC SIMPLE: Selecciona el elemento");
-    console.log("⚡ DOBLE CLIC: Ejecuta la acción");
-    console.log("🖱️ ARRASTRAR: Mueve el elemento");
+    console.log("%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", "color: #ff6b9d");
+    console.log("%c🚀 KARLA SHERLYN - CV INTERACTIVO", "color: #ff6b9d; font-size: 14px; font-weight: bold");
+    console.log("%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", "color: #ff6b9d");
+    console.log("📌 CLIC SIMPLE: Selecciona el elemento");
+    console.log("🔧 DOBLE CLIC: Ejecuta la acción (descarga/navegación)");
+    console.log("🖱️ ARRASTRAR: Mueve el elemento seleccionado");
     console.log("🔴 CÍRCULO ROSADO: Redimensiona");
     console.log("🔵 CÍRCULO AZUL: Rota");
-    console.log("⌨️ TECLAS Q/E: Rotan elemento seleccionado");
-    console.log("🫐 Arándano gira 360° cada 40 segundos");
-    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    console.log("⌨️ TECLAS Q/E: Rotan el elemento seleccionado");
+    console.log("🫐 ARÁNDANO: Gira 360° cada 40 segundos");
+    console.log("%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", "color: #ff6b9d");
+    console.log("🖼️ FAVICON: Si no ves el ícono en la pestaña,");
+    console.log("   asegúrate de que el archivo 'favicon.png' esté en la misma carpeta que este HTML");
+    console.log("   o reemplaza la ruta con la ubicación correcta de tu imagen.");
+    
+    // Verificar si el favicon se cargó
+    const favicon = document.querySelector('link[rel="icon"]');
+    if(favicon) {
+        console.log(`✅ Favicon configurado: ${favicon.href}`);
+    } else {
+        console.warn("⚠️ No se encontró configuración de favicon");
+    }
+    
+    // Verificar PDF
+    fetch('docs/Karla_Cruz_CV.pdf', { method: 'HEAD' })
+        .then(response => {
+            if(response.ok) console.log("✅ PDF encontrado en docs/Karla_Cruz_CV.pdf");
+            else console.warn("⚠️ PDF no encontrado en docs/");
+        })
+        .catch(() => console.warn("⚠️ No se pudo verificar el PDF"));
 };
 </script>
 
