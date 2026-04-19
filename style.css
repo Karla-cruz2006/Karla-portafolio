@@ -6,27 +6,22 @@
 
 body{
     background:#000;
-    overflow:hidden; /* 🔥 evita scroll raro */
+    overflow-x:hidden; /* ✅ solo bloquea horizontal */
 }
 
 /* CONTENEDOR */
 .fullscreen-container{
     position:relative;
-    width:100vw;
-    height:100vh; /* 🔥 CLAVE */
-    overflow:hidden;
+    width:100%;
+    min-height:100vh; /* ✅ permite crecer */
 }
 
 /* FONDO */
 .fullscreen-img{
-    position:absolute;
-    top:0;
-    left:0;
     width:100%;
-    height:100%;
-    object-fit:cover; /* 🔥 hace que cubra toda la pantalla */
+    height:auto; /* ✅ ya NO recorta */
+    display:block;
     pointer-events:none;
-    z-index:0;
 }
 
 /* CAPA */
@@ -36,7 +31,6 @@ body{
     left:0;
     width:100%;
     height:100%;
-    z-index:10; /* 🔥 encima del fondo */
 }
 
 /* ELEMENTOS */
@@ -44,6 +38,7 @@ body{
     position:absolute;
     cursor:grab;
     transform-origin:center;
+    user-select:none;
 }
 
 .scrap-item:active{
@@ -57,7 +52,7 @@ body{
     pointer-events:auto;
 }
 
-/* ❌ quitamos transform en hover (rompía todo) */
+/* HOVER limpio (no rompe transform) */
 .scrap-item:hover{
     outline:2px dashed rgba(255,255,255,0.3);
 }
@@ -76,7 +71,7 @@ body{
     border:2px solid white;
 }
 
-/* HANDLE PARA ROTACIÓN */
+/* HANDLE ROTACIÓN */
 .rotate-handle{
     position:absolute;
     width:16px;
@@ -125,15 +120,3 @@ body{
     opacity:0.8;
     content:"✨ Doble clic | Arrastra";
 }
-
-/* ROTACIÓN */
-.rotate-animation{
-    animation: blueberryRotate 40s linear infinite;
-}
-
-@keyframes blueberryRotate{
-    from{ transform: rotate(0deg); }
-    to{ transform: rotate(360deg); }
-}
-
-/* ❌ eliminamos responsive con transform (rompía posiciones) */
