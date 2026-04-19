@@ -2,144 +2,288 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Karla Sherlyn · Curriculum Vitae</title>
 
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml, 
 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'> 
 <text y='.9em' font-size='90'>🦖</text> </svg>">
 
-<!-- ✅ CSS EXTERNO (si no existe, no rompe la página) -->
-<link rel="stylesheet" href="styles.css">
-
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent; /* Elimina el gris al tocar en móviles */
+}
 
-body{
-    background:#000;
-    overflow-x:hidden;
+body {
+    background: #000;
+    overflow-x: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* CONTENEDOR */
-.fullscreen-container{
-    position:relative;
-    min-height:100vh;
+.fullscreen-container {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
 }
 
-/* FONDO */
-.fullscreen-img{
-    width:100%;
-    display:block;
-    pointer-events:none;
+/* FONDO - RESPONSIVE */
+.fullscreen-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    pointer-events: none;
+    object-fit: cover;
 }
 
 /* CAPA */
-.scrapbook-layer{
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
+.scrapbook-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
-/* ELEMENTOS */
-.scrap-item{
-    position:absolute;
-    cursor:grab;
+/* ELEMENTOS - CON UNIDADES RELATIVAS */
+.scrap-item {
+    position: absolute;
+    cursor: grab;
     transition: outline 0.1s ease;
+    /* Usar porcentajes en lugar de píxeles */
 }
 
-.scrap-item:active{
-    cursor:grabbing;
+.scrap-item:active {
+    cursor: grabbing;
 }
 
-.scrap-item img{
-    width:100%;
-    display:block;
-    pointer-events:auto;
+.scrap-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    pointer-events: auto;
 }
 
-/* HANDLE DE REDIMENSIÓN */
-.resize-handle{
-    position:absolute;
-    width:16px;
-    height:16px;
-    background:#ff4d6d;
-    border-radius:50%;
-    bottom:-8px;
-    right:-8px;
-    cursor:nwse-resize;
-    z-index:999;
-    border:2px solid white;
-    box-shadow:0 0 4px rgba(0,0,0,0.5);
+/* HANDLE DE REDIMENSIÓN - TAMAÑO RESPONSIVE */
+.resize-handle {
+    position: absolute;
+    width: clamp(12px, 4vw, 16px);
+    height: clamp(12px, 4vw, 16px);
+    background: #ff4d6d;
+    border-radius: 50%;
+    bottom: -8px;
+    right: -8px;
+    cursor: nwse-resize;
+    z-index: 999;
+    border: 2px solid white;
+    box-shadow: 0 0 4px rgba(0,0,0,0.5);
 }
 
 /* HANDLE PARA ROTACIÓN */
-.rotate-handle{
-    position:absolute;
-    width:16px;
-    height:16px;
-    background:#4d9eff;
-    border-radius:50%;
-    top:-8px;
-    left:-8px;
-    cursor:grab;
-    z-index:999;
-    border:2px solid white;
-    box-shadow:0 0 4px rgba(0,0,0,0.5);
+.rotate-handle {
+    position: absolute;
+    width: clamp(12px, 4vw, 16px);
+    height: clamp(12px, 4vw, 16px);
+    background: #4d9eff;
+    border-radius: 50%;
+    top: -8px;
+    left: -8px;
+    cursor: grab;
+    z-index: 999;
+    border: 2px solid white;
+    box-shadow: 0 0 4px rgba(0,0,0,0.5);
 }
 
-.rotate-handle:active{
-    cursor:grabbing;
+.rotate-handle:active {
+    cursor: grabbing;
 }
 
-/* WATERMARK */
-.watermark{
-    position:absolute;
-    bottom:10px;
-    left:50%;
-    transform:translateX(-50%);
-    color:white;
-    font-size:12px;
-    font-family:'Segoe UI',system-ui;
-    background:rgba(0,0,0,0.5);
-    padding:4px 12px;
-    border-radius:20px;
-    pointer-events:none;
-    z-index:20;
+/* WATERMARK RESPONSIVE */
+.watermark {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: clamp(10px, 3vw, 12px);
+    font-family: 'Segoe UI', system-ui;
+    background: rgba(0,0,0,0.6);
+    padding: 4px 12px;
+    border-radius: 20px;
+    pointer-events: none;
+    z-index: 20;
+    white-space: nowrap;
 }
 
-/* Tooltip para indicar doble clic */
+/* Tooltip responsive */
 .scrap-item::after {
     content: "🔧";
     position: absolute;
-    top: -20px;
+    top: -25px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 12px;
-    background: rgba(0,0,0,0.7);
+    font-size: clamp(10px, 3vw, 12px);
+    background: rgba(0,0,0,0.85);
     color: white;
-    padding: 2px 6px;
+    padding: 4px 8px;
     border-radius: 10px;
     opacity: 0;
     transition: opacity 0.2s;
     pointer-events: none;
     white-space: nowrap;
+    z-index: 1000;
 }
 
 .scrap-item:hover::after {
-    opacity: 0.7;
-    content: " Doble clic para acción |  Arrastra para mover";
+    opacity: 0.8;
+    content: "✨ Doble clic | 🖱️ Arrastrar";
 }
 
-/* ROTACIÓN DEL ARÁNDANO (40 SEGUNDOS) */
-.rotate-animation{
+/* ROTACIÓN DEL ARÁNDANO */
+.rotate-animation {
     animation: blueberryRotate 40s linear infinite;
 }
 
-@keyframes blueberryRotate{
-    from{ transform: rotate(0deg); }
-    to{ transform: rotate(360deg); }
+@keyframes blueberryRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* ========== MEDIA QUERIES RESPONSIVE ========== */
+
+/* Tablets y móviles grandes */
+@media (max-width: 1024px) {
+    .scrap-item {
+        cursor: pointer; /* Mejor para touch */
+    }
+    
+    .resize-handle, .rotate-handle {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .scrap-item::after {
+        font-size: 11px;
+        top: -30px;
+    }
+}
+
+/* Móviles (768px) */
+@media (max-width: 768px) {
+    .scrap-item {
+        cursor: pointer;
+    }
+    
+    /* Ajustar posiciones iniciales para móvil */
+    .scrap-item[style*="top:75%; left:31%"] {
+        top: 70% !important;
+        left: 25% !important;
+        width: 35% !important;
+    }
+    
+    .scrap-item[style*="top:50%; left:12%"] {
+        top: 40% !important;
+        left: 5% !important;
+        width: 30% !important;
+    }
+    
+    .scrap-item[style*="top:45%; left:41%"] {
+        top: 35% !important;
+        left: 35% !important;
+        width: 35% !important;
+    }
+    
+    .scrap-item[style*="top:75%; left:7%"] {
+        top: 70% !important;
+        left: 5% !important;
+        width: 30% !important;
+    }
+    
+    .resize-handle, .rotate-handle {
+        width: 24px;
+        height: 24px;
+        border: 3px solid white;
+    }
+    
+    .watermark {
+        font-size: 9px;
+        padding: 3px 8px;
+        bottom: 5px;
+    }
+    
+    .scrap-item::after {
+        display: none; /* Ocultar tooltip en móviles */
+    }
+}
+
+/* Móviles pequeños (480px) */
+@media (max-width: 480px) {
+    .scrap-item[style*="top:75%; left:31%"] {
+        top: 75% !important;
+        left: 20% !important;
+        width: 40% !important;
+    }
+    
+    .scrap-item[style*="top:50%; left:12%"] {
+        top: 45% !important;
+        left: 2% !important;
+        width: 35% !important;
+    }
+    
+    .scrap-item[style*="top:45%; left:41%"] {
+        top: 40% !important;
+        left: 30% !important;
+        width: 40% !important;
+    }
+    
+    .scrap-item[style*="top:75%; left:7%"] {
+        top: 75% !important;
+        left: 2% !important;
+        width: 35% !important;
+    }
+    
+    .resize-handle, .rotate-handle {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* Landscape (horizontal) en móviles */
+@media (max-width: 900px) and (orientation: landscape) {
+    .scrap-item {
+        transform: scale(0.8); /* Escalar ligeramente */
+    }
+    
+    .watermark {
+        font-size: 8px;
+        bottom: 2px;
+    }
+}
+
+/* Pantallas muy grandes (4K) */
+@media (min-width: 1920px) {
+    .resize-handle, .rotate-handle {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .watermark {
+        font-size: 16px;
+        padding: 8px 20px;
+    }
+}
+
+/* Prevenir selección en móviles */
+@media (max-width: 768px) {
+    .scrap-item {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+    }
 }
 </style>
 </head>
@@ -147,38 +291,35 @@ body{
 <body>
 
 <div class="fullscreen-container">
-    <img src="img/fondo.png" class="fullscreen-img" alt="Fondo">
+    <img src="img/fondo.png" class="fullscreen-img" alt="Fondo" onerror="this.src='https://via.placeholder.com/1920x1080?text=Fondo+no+encontrado'">
 
     <div class="scrapbook-layer">
-
-        <div class="fullscreen-container">
-    <img src="img/fondo.png" class="fullscreen-img" alt="Fondo">
-
-    <div class="scrapbook-layer">
-
         <div class="watermark">
             © 2026 Karla Cruz | YANG´S LAB
         </div>
 
         <!-- Botón contactame -->
         <div class="scrap-item" style="top:75%; left:31%; width:18%; transform:rotate(2deg);">
-            <img src="img/Boton_contactame.png" alt="Contacto">
+            <img src="img/Boton_contactame.png" alt="Contacto" onerror="this.style.display='none'">
         </div>
+        
         <!-- ARÁNDANO -->
         <div class="scrap-item rotate-animation" style="top:50%; left:12%; width:22%; transform:rotate(4deg); cursor:pointer;">
-            <img src="img/Arandanos.png" alt="Arándanos">
-    </div>
+            <img src="img/Arandanos.png" alt="Arándanos" onerror="this.style.display='none'">
+        </div>
+        
         <!-- Botón portafolio -->
         <div class="scrap-item" style="top:45%; left:41%; width:22%; transform:rotate(1deg); z-index:100;">
-            <img src="img/Boton_portafolio.png" alt="Portafolio">
+            <img src="img/Boton_portafolio.png" alt="Portafolio" onerror="this.style.display='none'">
         </div>
+        
         <!-- Botón curriculum -->
         <div class="scrap-item" style="top:75%; left:7%; width:18%; transform:rotate(-2deg);">
-            <img src="img/Boton_curriculum.png" alt="Currículum">
+            <img src="img/Boton_curriculum.png" alt="Currículum" onerror="this.style.display='none'">
         </div>
-    
     </div>
 </div>
+
 <script>
 // ===== FUNCIONES PRINCIPALES =====
 function descargarCV() {
@@ -210,9 +351,10 @@ let isRotating = false;
 let startX, startY, startLeft, startTop, startWidth;
 let startAngle = 0;
 let currentAngle = 0;
+let touchTimeout = null;
 
 // ===== GUARDAR POSICIONES =====
-function savePositions(){
+function savePositions() {
     const data = [];
     document.querySelectorAll('.scrap-item').forEach(el => {
         data.push({
@@ -227,15 +369,15 @@ function savePositions(){
 }
 
 // ===== CARGAR POSICIONES =====
-function loadPositions(){
+function loadPositions() {
     const data = JSON.parse(localStorage.getItem("layout"));
     if(!data) return;
 
     document.querySelectorAll('.scrap-item').forEach((el, i) => {
         if(data[i]){
-            el.style.top = data[i].top;
-            el.style.left = data[i].left;
-            el.style.width = data[i].width;
+            if(data[i].top) el.style.top = data[i].top;
+            if(data[i].left) el.style.left = data[i].left;
+            if(data[i].width) el.style.width = data[i].width;
             if(data[i].transform) el.style.transform = data[i].transform;
         }
     });
@@ -243,7 +385,7 @@ function loadPositions(){
 }
 
 // ===== CREAR MANIJAS =====
-function createHandles(el){
+function createHandles(el) {
     const oldResize = el.querySelector('.resize-handle');
     const oldRotate = el.querySelector('.rotate-handle');
     if(oldResize) oldResize.remove();
@@ -265,6 +407,16 @@ function createHandles(el){
         document.onmousemove = resize;
         document.onmouseup = stopResize;
     };
+    
+    // Soporte táctil para móviles
+    resizeHandle.ontouchstart = (e) => {
+        e.stopPropagation();
+        isResizing = true;
+        startX = e.touches[0].clientX;
+        startWidth = el.offsetWidth;
+        document.ontouchmove = resizeTouch;
+        document.ontouchend = stopResize;
+    };
 
     rotateHandle.onmousedown = (e) => {
         e.stopPropagation();
@@ -281,10 +433,27 @@ function createHandles(el){
         document.onmousemove = rotate;
         document.onmouseup = stopRotate;
     };
+    
+    // Soporte táctil para rotación
+    rotateHandle.ontouchstart = (e) => {
+        e.stopPropagation();
+        isRotating = true;
+        const rect = el.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        startAngle = Math.atan2(e.touches[0].clientY - centerY, e.touches[0].clientX - centerX) * 180 / Math.PI;
+
+        const transform = el.style.transform;
+        const match = transform.match(/rotate\(([-\d.]+)deg\)/);
+        currentAngle = match ? parseFloat(match[1]) : 0;
+
+        document.ontouchmove = rotateTouch;
+        document.ontouchend = stopRotate;
+    };
 }
 
 // ===== ROTAR =====
-function rotate(e){
+function rotate(e) {
     if(!isRotating || !selected) return;
     
     const rect = selected.getBoundingClientRect();
@@ -298,53 +467,100 @@ function rotate(e){
     selected.style.transform = `rotate(${finalAngle}deg)`;
 }
 
-function stopRotate(){
+function rotateTouch(e) {
+    if(!isRotating || !selected) return;
+    e.preventDefault();
+    
+    const rect = selected.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    let newAngle = Math.atan2(e.touches[0].clientY - centerY, e.touches[0].clientX - centerX) * 180 / Math.PI;
+    let angleDiff = newAngle - startAngle;
+    let finalAngle = currentAngle + angleDiff;
+    
+    selected.style.transform = `rotate(${finalAngle}deg)`;
+}
+
+function stopRotate() {
     isRotating = false;
     document.onmousemove = null;
     document.onmouseup = null;
+    document.ontouchmove = null;
+    document.ontouchend = null;
     savePositions();
 }
 
 // ===== REDIMENSIONAR =====
-function resize(e){
+function resize(e) {
     if(!isResizing || !selected) return;
     let newWidth = Math.max(50, startWidth + (e.clientX - startX));
     selected.style.width = newWidth + "px";
 }
 
-function stopResize(){
+function resizeTouch(e) {
+    if(!isResizing || !selected) return;
+    e.preventDefault();
+    let newWidth = Math.max(50, startWidth + (e.touches[0].clientX - startX));
+    selected.style.width = newWidth + "px";
+}
+
+function stopResize() {
     isResizing = false;
     document.onmousemove = null;
     document.onmouseup = null;
+    document.ontouchmove = null;
+    document.ontouchend = null;
     savePositions();
 }
 
 // ===== ARRASTRAR =====
-function startDrag(e, el){
-    if(e.target.classList.contains("resize-handle")) return;
-    if(e.target.classList.contains("rotate-handle")) return;
+function startDrag(e, el) {
+    if(e.target.classList.contains("resize-handle") || e.target.classList.contains("rotate-handle")) {
+        return;
+    }
     
     isDragging = true;
     selected = el;
-    startX = e.clientX;
-    startY = e.clientY;
+    const clientX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+    const clientY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
+    
+    startX = clientX;
+    startY = clientY;
     startLeft = parseFloat(el.style.left || 0);
     startTop = parseFloat(el.style.top || 0);
     
     document.onmousemove = drag;
     document.onmouseup = stopDrag;
+    document.ontouchmove = dragTouch;
+    document.ontouchend = stopDrag;
 }
 
-function drag(e){
+function drag(e) {
     if(!isDragging || !selected) return;
-    selected.style.left = (startLeft + (e.clientX - startX)) + "px";
-    selected.style.top = (startTop + (e.clientY - startY)) + "px";
+    const clientX = e.clientX;
+    const clientY = e.clientY;
+    
+    selected.style.left = (startLeft + (clientX - startX)) + "px";
+    selected.style.top = (startTop + (clientY - startY)) + "px";
 }
 
-function stopDrag(){
+function dragTouch(e) {
+    if(!isDragging || !selected) return;
+    e.preventDefault();
+    const clientX = e.touches[0].clientX;
+    const clientY = e.touches[0].clientY;
+    
+    selected.style.left = (startLeft + (clientX - startX)) + "px";
+    selected.style.top = (startTop + (clientY - startY)) + "px";
+}
+
+function stopDrag() {
     isDragging = false;
     document.onmousemove = null;
     document.onmouseup = null;
+    document.ontouchmove = null;
+    document.ontouchend = null;
     savePositions();
 }
 
@@ -370,8 +586,8 @@ function asignarFuncionesBotones() {
         const imgSrc = img.src.toLowerCase();
         let clickTimer = null;
         
-        // Click simple: seleccionar
-        el.addEventListener('click', (e) => {
+        // Click simple: seleccionar (con soporte táctil)
+        const handleClick = (e) => {
             e.stopPropagation();
             
             if(clickTimer) {
@@ -382,6 +598,14 @@ function asignarFuncionesBotones() {
             clickTimer = setTimeout(() => {
                 selectElement(el);
             }, 200);
+        };
+        
+        el.addEventListener('click', handleClick);
+        el.addEventListener('touchstart', (e) => {
+            // Prevenir scroll mientras se interactúa
+            if(e.target.classList.contains("resize-handle") || e.target.classList.contains("rotate-handle")) {
+                e.preventDefault();
+            }
         });
         
         // Doble click: acción
@@ -402,8 +626,15 @@ function asignarFuncionesBotones() {
             }
         });
         
-        // Arrastrar
+        // Arrastrar (mouse y touch)
         el.addEventListener('mousedown', (e) => {
+            startDrag(e, el);
+        });
+        
+        el.addEventListener('touchstart', (e) => {
+            if(e.target.classList.contains("resize-handle") || e.target.classList.contains("rotate-handle")) {
+                return;
+            }
             startDrag(e, el);
         });
     });
@@ -424,14 +655,14 @@ document.body.addEventListener('click', (e) => {
 // ===== ROTAR CON TECLADO =====
 document.addEventListener('keydown', (e) => {
     if(!selected) return;
-    if(e.key === "q") {
+    if(e.key === "q" || e.key === "Q") {
         let transform = selected.style.transform || "rotate(0deg)";
         let match = transform.match(/rotate\(([-\d.]+)deg\)/);
         let currentRot = match ? parseFloat(match[1]) : 0;
         selected.style.transform = `rotate(${currentRot - 5}deg)`;
         savePositions();
     }
-    if(e.key === "e") {
+    if(e.key === "e" || e.key === "E") {
         let transform = selected.style.transform || "rotate(0deg)";
         let match = transform.match(/rotate\(([-\d.]+)deg\)/);
         let currentRot = match ? parseFloat(match[1]) : 0;
@@ -440,14 +671,20 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
+// ===== DETECTAR SI ES MÓVIL =====
+function isMobile() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
 // ===== INICIALIZAR =====
 window.onload = () => {
     loadPositions();
     asignarFuncionesBotones();
     
     console.log("%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", "color: #ff6b9d");
-    console.log("%c🚀 KARLA SHERLYN - CV INTERACTIVO", "color: #ff6b9d; font-size: 14px; font-weight: bold");
+    console.log("%c🚀 KARLA SHERLYN - CV INTERACTIVO (RESPONSIVE)", "color: #ff6b9d; font-size: 14px; font-weight: bold");
     console.log("%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", "color: #ff6b9d");
+    console.log("📱 DISPOSITIVO:", isMobile() ? "MÓVIL/TABLET" : "ESCRITORIO");
     console.log("📌 CLIC SIMPLE: Selecciona el elemento");
     console.log("🔧 DOBLE CLIC: Ejecuta la acción (descarga/navegación)");
     console.log("🖱️ ARRASTRAR: Mueve el elemento seleccionado");
@@ -456,17 +693,20 @@ window.onload = () => {
     console.log("⌨️ TECLAS Q/E: Rotan el elemento seleccionado");
     console.log("🫐 ARÁNDANO: Gira 360° cada 40 segundos");
     console.log("%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", "color: #ff6b9d");
-    console.log("🖼️ FAVICON: Si no ves el ícono en la pestaña,");
-    console.log("   asegúrate de que el archivo 'favicon.png' esté en la misma carpeta que este HTML");
-    console.log("   o reemplaza la ruta con la ubicación correcta de tu imagen.");
     
-    // Verificar si el favicon se cargó
-    const favicon = document.querySelector('link[rel="icon"]');
-    if(favicon) {
-        console.log(`✅ Favicon configurado: ${favicon.href}`);
-    } else {
-        console.warn("⚠️ No se encontró configuración de favicon");
-    }
+    // Verificar imágenes
+    const imagenes = document.querySelectorAll('.scrap-item img');
+    imagenes.forEach(img => {
+        img.addEventListener('error', () => {
+            console.warn(`⚠️ Imagen no encontrada: ${img.src}`);
+            img.style.outline = "2px solid #ff6b9d";
+            img.style.backgroundColor = "#333";
+            img.style.minHeight = "50px";
+        });
+        img.addEventListener('load', () => {
+            console.log(`✅ Imagen cargada: ${img.src.split('/').pop()}`);
+        });
+    });
     
     // Verificar PDF
     fetch('docs/Karla_Cruz_CV.pdf', { method: 'HEAD' })
