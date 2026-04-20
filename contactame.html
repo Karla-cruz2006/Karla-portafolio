@@ -1,646 +1,204 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Contacto - Karla Sherlyn</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contacto - Karla Sherlyn</title>
 
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml, 
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'> 
-<text y='.9em' font-size='90'>🦖</text> </svg>">
-    
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
 
-        body {
-            background: #000;
-            overflow-x: hidden;
-            font-family: 'Arial', sans-serif;
-        }
+body{
+    background:#000;
+    font-family:Arial, sans-serif;
+}
 
-        .fullscreen-container {
-            position: relative;
-            min-height: 100vh;
-            width: 100%;
-        }
+.fullscreen-container{
+    position:relative;
+    min-height:100vh;
+}
 
-        .fullscreen-img {
-            width: 100%;
-            display: block;
-            pointer-events: none;
-        }
+.fullscreen-img{
+    width:100%;
+    display:block;
+}
 
-        /* CAPA DE ELEMENTOS MOVIBLES */
-        .scrapbook-layer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
+.scrapbook-layer{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+}
 
-        /* ELEMENTOS MOVIBLES INDIVIDUALES */
-        .scrap-item {
-            position: absolute;
-            cursor: grab;
-            transition: outline 0.1s ease;
-        }
+.scrap-item{
+    position:absolute;
+    cursor:grab;
+}
 
-        .scrap-item:active {
-            cursor: grabbing;
-        }
+.scrap-item:active{
+    cursor:grabbing;
+}
 
-        /* HANDLE DE REDIMENSIÓN */
-        .resize-handle {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: #ff0000;
-            border-radius: 50%;
-            bottom: -10px;
-            right: -10px;
-            cursor: nwse-resize;
-            z-index: 999;
-            border: 2px solid white;
-            box-shadow: 0 0 4px rgba(0,0,0,0.5);
-        }
+.form-cuadro{
+    background:rgba(0,0,0,0.85);
+    padding:20px;
+    border-radius:20px;
+    border:1px solid rgba(255,0,0,0.4);
+}
 
-        /* HANDLE PARA ROTACIÓN */
-        .rotate-handle {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: #cc0000;
-            border-radius: 50%;
-            top: -10px;
-            left: -10px;
-            cursor: grab;
-            z-index: 999;
-            border: 2px solid white;
-            box-shadow: 0 0 4px rgba(0,0,0,0.5);
-        }
+.form-label{
+    display:block;
+    color:#ff3333;
+    margin-bottom:6px;
+    font-size:0.8rem;
+    letter-spacing:2px;
+}
 
-        .rotate-handle:active {
-            cursor: grabbing;
-        }
+.form-input,
+.form-textarea{
+    width:100%;
+    padding:10px;
+    border:none;
+    border-radius:10px;
+}
 
-        /* ESTILOS DE LOS CUADROS DEL FORMULARIO */
-        .form-cuadro {
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,0,0,0.3);
-            transition: all 0.2s ease;
-        }
+.botones-container{
+    display:flex;
+    gap:10px;
+}
 
-        .form-cuadro:hover {
-            border: 1px solid rgba(255,0,0,0.8);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-        }
+.btn-enviar,
+.btn-limpiar{
+    flex:1;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    color:white;
+}
 
-        .form-cuadro-interno {
-            width: 100%;
-        }
-
-        .form-label {
-            display: block;
-            color: #ff3333;
-            font-weight: bold;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 12px;
-            background: rgba(255,255,255,0.95);
-            font-size: 1rem;
-            box-sizing: border-box;
-        }
-
-        .form-input:focus {
-            outline: none;
-            background: white;
-            box-shadow: 0 0 8px rgba(255,0,0,0.5);
-        }
-
-        .form-textarea {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 12px;
-            background: rgba(255,255,255,0.95);
-            font-size: 1rem;
-            min-height: 100px;
-            resize: vertical;
-            font-family: inherit;
-            box-sizing: border-box;
-        }
-
-        .form-textarea:focus {
-            outline: none;
-            background: white;
-            box-shadow: 0 0 8px rgba(255,0,0,0.5);
-        }
-
-        .btn-enviar {
-            background: linear-gradient(135deg, #ff0000, #990000);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .btn-enviar:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255,0,0,0.4);
-        }
-
-        .btn-enviar:active {
-            transform: translateY(0);
-        }
-
-        .btn-limpiar {
-            background: linear-gradient(135deg, #333333, #1a1a1a);
-            color: white;
-            border: 1px solid #ff0000;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .btn-limpiar:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255,0,0,0.3);
-            border: 1px solid #ff4444;
-        }
-
-        .btn-limpiar:active {
-            transform: translateY(0);
-        }
-
-        .botones-container {
-            display: flex;
-            gap: 15px;
-            width: 100%;
-        }
-
-        .botones-container .btn-enviar,
-        .botones-container .btn-limpiar {
-            flex: 1;
-        }
-
-        .watermark {
-            position: absolute;
-            bottom: 20px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 12px;
-            font-family: 'Courier New', 'Segoe UI', monospace;
-            letter-spacing: 1px;
-            background: rgba(0,0,0,0.5);
-            padding: 6px 16px;
-            width: fit-content;
-            margin: 0 auto;
-            pointer-events: none;
-            z-index: 20;
-            font-weight: 400;
-            text-transform: uppercase;
-            border-radius: 20px;
-            backdrop-filter: blur(4px);
-        }
-
-        .toast-message {
-            position: fixed;
-            bottom: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.9);
-            border: 1px solid #ff0000;
-            color: #ff3333;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-size: 14px;
-            font-weight: bold;
-            z-index: 1000;
-            animation: fadeInOut 2.5s ease forwards;
-            pointer-events: none;
-        }
-
-        @keyframes fadeInOut {
-            0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
-            15% { opacity: 1; transform: translateX(-50%) translateY(0); }
-            85% { opacity: 1; transform: translateX(-50%) translateY(0); }
-            100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-        }
-
-        /* Efecto de selección */
-        .selected-item {
-            outline: 3px solid #ff0000 !important;
-            outline-offset: 5px;
-        }
-
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .form-cuadro {
-                width: 70% !important;
-                left: 15% !important;
-            }
-            .resize-handle, .rotate-handle {
-                width: 24px;
-                height: 24px;
-            }
-        }
-        
-        @media (max-width: 500px) {
-            .botones-container {
-                flex-direction: column;
-                gap: 10px;
-            }
-            .form-cuadro {
-                width: 85% !important;
-                left: 7.5% !important;
-                padding: 15px;
-            }
-        }
-    </style>
+.btn-enviar{ background:#ff0000; }
+.btn-limpiar{ background:#333; }
+</style>
 </head>
+
 <body>
-    <div class="fullscreen-container">
-        <img src="img/Contactame.png" class="fullscreen-img" alt="Fondo página de contacto" onerror="this.style.display='none'; console.warn('⚠️ Imagen de fondo no encontrada')">
 
-        <div class="scrapbook-layer">
-            
-            <!-- ===== CUADRO 1: NOMBRE (MOVIBLE CON ROTACIÓN) ===== -->
-            <div class="scrap-item form-cuadro" id="cuadro-nombre" style="top:8%; left:8%; width:28%; transform:rotate(2deg);">
-                <div class="form-cuadro-interno">
-                    <label class="form-label">NOMBRE</label>
-                    <input type="text" id="nombre" class="form-input" placeholder="Tu nombre completo" required>
-                </div>
-            </div>
-            
-            <!-- ===== CUADRO 2: CORREO (MOVIBLE CON ROTACIÓN) ===== -->
-            <div class="scrap-item form-cuadro" id="cuadro-correo" style="top:28%; left:8%; width:28%; transform:rotate(-1deg);">
-                <div class="form-cuadro-interno">
-                    <label class="form-label">CORREO</label>
-                    <input type="email" id="correo" class="form-input" placeholder="tu@email.com" required>
-                </div>
-            </div>
-            
-            <!-- ===== CUADRO 3: MENSAJE (MOVIBLE CON ROTACIÓN) ===== -->
-            <div class="scrap-item form-cuadro" id="cuadro-mensaje" style="top:48%; left:8%; width:28%; transform:rotate(1.5deg);">
-                <div class="form-cuadro-interno">
-                    <label class="form-label">MENSAJE</label>
-                    <textarea id="mensaje" class="form-textarea" placeholder="Escribe tu mensaje..." required></textarea>
-                </div>
-            </div>
-            
-            <!-- ===== CUADRO 4: BOTONES (MOVIBLE CON ROTACIÓN) ===== -->
-            <div class="scrap-item form-cuadro" id="cuadro-botones" style="top:72%; left:8%; width:28%; transform:rotate(-2deg);">
-                <div class="form-cuadro-interno">
-                    <div class="botones-container">
-                        <button id="btnEnviar" class="btn-enviar">✉️ ENVIAR</button>
-                        <button id="btnLimpiar" class="btn-limpiar">🗑️ LIMPIAR</button>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
-        
-        <div class="watermark">
-            © 2026 Karla Cruz | YANG'S LAB
-        </div>
-    </div>
+<div class="fullscreen-container">
+<img src="img/Contactame.png" class="fullscreen-img">
 
-    <script>
-        // ===== CONFIGURACIÓN DE FORMSPREE =====
-        const FORMSPREE_ID = 'xeevagad';
-        
-        const FORMSPREE_URL = `https://formspree.io/f/${FORMSPREE_ID}`;
+<div class="scrapbook-layer">
 
-        // ===== MOSTRAR MENSAJE FLOTANTE =====
-        function showToast(message, isError = false) {
-            const toast = document.createElement('div');
-            toast.className = 'toast-message';
-            toast.textContent = message;
-            if (isError) {
-                toast.style.color = '#ff6666';
-                toast.style.borderColor = '#ff0000';
-            } else {
-                toast.style.color = '#4CAF50';
-                toast.style.borderColor = '#4CAF50';
-            }
-            document.body.appendChild(toast);
-            setTimeout(() => {
-                toast.remove();
-            }, 3000);
-        }
+<form id="formContacto">
 
-        // ===== ENVIAR FORMULARIO A FORMSPREE =====
-        async function enviarFormulario() {
-            const nombre = document.getElementById('nombre').value.trim();
-            const correo = document.getElementById('correo').value.trim();
-            const mensaje = document.getElementById('mensaje').value.trim();
+<!-- NOMBRE -->
+<div class="scrap-item form-cuadro" style="top:8%; left:8%; width:28%; transform:rotate(2deg);">
+<label for="nombre" class="form-label">NOMBRE</label>
+<input type="text" id="nombre" name="nombre" class="form-input" required>
+</div>
 
-            if (!nombre) {
-                showToast('❌ Por favor, ingresa tu nombre', true);
-                return;
-            }
-            if (!correo) {
-                showToast('❌ Por favor, ingresa tu correo electrónico', true);
-                return;
-            }
-            if (!mensaje) {
-                showToast('❌ Por favor, escribe un mensaje', true);
-                return;
-            }
+<!-- CORREO -->
+<div class="scrap-item form-cuadro" style="top:28%; left:8%; width:28%; transform:rotate(-1deg);">
+<label for="correo" class="form-label">CORREO</label>
+<input type="email" id="correo" name="correo" class="form-input" required>
+</div>
 
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(correo)) {
-                showToast('❌ Correo electrónico no válido', true);
-                return;
-            }
+<!-- MENSAJE -->
+<div class="scrap-item form-cuadro" style="top:48%; left:8%; width:28%; transform:rotate(1deg);">
+<label for="mensaje" class="form-label">MENSAJE</label>
+<textarea id="mensaje" name="mensaje" class="form-textarea" required></textarea>
+</div>
 
-            showToast('📤 Enviando mensaje...', false);
+<!-- BOTONES -->
+<div class="scrap-item form-cuadro" style="top:72%; left:8%; width:28%; transform:rotate(-2deg);">
+<div class="botones-container">
+<button type="submit" id="btnEnviar" class="btn-enviar">✉️ ENVIAR</button>
+<button type="button" id="btnLimpiar" class="btn-limpiar">🗑️ LIMPIAR</button>
+</div>
+</div>
 
-            try {
-                const response = await fetch(FORMSPREE_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        nombre: nombre,
-                        email: correo,
-                        mensaje: mensaje,
-                        _subject: `Nuevo mensaje de ${nombre}`
-                    })
-                });
+</form>
 
-                if (response.ok) {
-                    showToast('✅ ¡Mensaje enviado con éxito! Te responderé pronto.', false);
-                    document.getElementById('nombre').value = '';
-                    document.getElementById('correo').value = '';
-                    document.getElementById('mensaje').value = '';
-                    console.log('📨 Mensaje enviado a Formspree');
-                } else {
-                    showToast('❌ Error al enviar. Intenta de nuevo.', true);
-                }
-            } catch (error) {
-                console.error('Error de conexión:', error);
-                showToast('❌ Error de conexión. Verifica tu internet.', true);
-            }
-        }
+</div>
+</div>
 
-        // ===== LIMPIAR FORMULARIO =====
-        function limpiarFormulario() {
-            document.getElementById('nombre').value = '';
-            document.getElementById('correo').value = '';
-            document.getElementById('mensaje').value = '';
-            showToast('🧹 Todos los campos han sido limpiados', false);
-        }
+<script>
+const FORMSPREE_URL = "https://formspree.io/f/xeevagad";
 
-        // ===== FUNCIONES PARA MOVER, REDIMENSIONAR Y ROTAR CADA CUADRO INDIVIDUALMENTE =====
-        let selected = null;
-        let isDragging = false;
-        let isResizing = false;
-        let isRotating = false;
-        let startX, startY, startLeft, startTop, startWidth;
-        let startAngle = 0;
-        let currentAngle = 0;
+// ===== FORM =====
+function enviarFormulario(){
+    const nombre = nombreInput.value.trim();
+    const correo = correoInput.value.trim();
+    const mensaje = mensajeInput.value.trim();
 
-        function savePositions() {
-            const data = [];
-            document.querySelectorAll('.scrap-item').forEach(el => {
-                data.push({
-                    id: el.id,
-                    top: el.style.top,
-                    left: el.style.left,
-                    width: el.style.width,
-                    transform: el.style.transform
-                });
-            });
-            localStorage.setItem("layoutContacto", JSON.stringify(data));
-            console.log("💾 Posiciones guardadas");
-        }
+    fetch(FORMSPREE_URL,{
+        method:"POST",
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({nombre,correo,mensaje})
+    }).then(()=>alert("Mensaje enviado"));
+}
 
-        function loadPositions() {
-            const data = JSON.parse(localStorage.getItem("layoutContacto"));
-            if (!data) return;
+function limpiarFormulario(){
+    form.reset();
+}
 
-            document.querySelectorAll('.scrap-item').forEach((el) => {
-                const saved = data.find(item => item.id === el.id);
-                if (saved) {
-                    if (saved.top) el.style.top = saved.top;
-                    if (saved.left) el.style.left = saved.left;
-                    if (saved.width) el.style.width = saved.width;
-                    if (saved.transform) el.style.transform = saved.transform;
-                }
-            });
-            console.log("📂 Posiciones cargadas");
-        }
+const form = document.getElementById("formContacto");
+const nombreInput = document.getElementById("nombre");
+const correoInput = document.getElementById("correo");
+const mensajeInput = document.getElementById("mensaje");
 
-        function createHandles(el) {
-            const oldResize = el.querySelector('.resize-handle');
-            const oldRotate = el.querySelector('.rotate-handle');
-            if (oldResize) oldResize.remove();
-            if (oldRotate) oldRotate.remove();
+form.addEventListener("submit",(e)=>{
+    e.preventDefault();
+    enviarFormulario();
+});
 
-            const resizeHandle = document.createElement("div");
-            resizeHandle.className = "resize-handle";
-            el.appendChild(resizeHandle);
+document.getElementById("btnLimpiar").onclick = limpiarFormulario;
 
-            const rotateHandle = document.createElement("div");
-            rotateHandle.className = "rotate-handle";
-            el.appendChild(rotateHandle);
+// ===== DRAG SYSTEM =====
+let selected = null;
+let isDragging = false;
+let startX, startY, startLeft, startTop;
 
-            resizeHandle.onmousedown = (e) => {
-                e.stopPropagation();
-                isResizing = true;
-                startX = e.clientX;
-                startWidth = el.offsetWidth;
-                document.onmousemove = resize;
-                document.onmouseup = stop;
-            };
+document.querySelectorAll('.scrap-item').forEach(el => {
 
-            rotateHandle.onmousedown = (e) => {
-                e.stopPropagation();
-                isRotating = true;
-                const rect = el.getBoundingClientRect();
-                const centerX = rect.left + rect.width / 2;
-                const centerY = rect.top + rect.height / 2;
-                startAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX) * 180 / Math.PI;
-                const transform = el.style.transform;
-                const match = transform.match(/rotate\(([-\d.]+)deg\)/);
-                currentAngle = match ? parseFloat(match[1]) : 0;
-                document.onmousemove = rotate;
-                document.onmouseup = stop;
-            };
-        }
+    el.addEventListener('mousedown', (e) => {
 
-        function rotate(e) {
-            if (!isRotating || !selected) return;
-            const rect = selected.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            let newAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX) * 180 / Math.PI;
-            let angleDiff = newAngle - startAngle;
-            let finalAngle = currentAngle + angleDiff;
-            selected.style.transform = `rotate(${finalAngle}deg)`;
-        }
+        // ❌ NO mover si estás escribiendo o clickeando botones
+        if(
+            e.target.tagName === "INPUT" ||
+            e.target.tagName === "TEXTAREA" ||
+            e.target.tagName === "BUTTON"
+        ) return;
 
-        function resize(e) {
-            if (!isResizing || !selected) return;
-            let newWidth = Math.max(200, startWidth + (e.clientX - startX));
-            selected.style.width = newWidth + "px";
-        }
+        isDragging = true;
+        selected = el;
 
-        function startDrag(e, el) {
-            // No arrastrar si se hace clic en handles o inputs
-            if (e.target.classList.contains("resize-handle")) return;
-            if (e.target.classList.contains("rotate-handle")) return;
-            if (e.target.tagName === 'BUTTON') return;
-            if (e.target.type === 'text' || e.target.type === 'email' || e.target.tagName === 'TEXTAREA') return;
-            if (e.target === document.getElementById('btnEnviar') || e.target === document.getElementById('btnLimpiar')) return;
-            
-            e.preventDefault();
-            isDragging = true;
-            selected = el;
-            startX = e.clientX;
-            startY = e.clientY;
-            startLeft = parseFloat(el.style.left || 0);
-            startTop = parseFloat(el.style.top || 0);
-            document.onmousemove = drag;
-            document.onmouseup = stop;
-        }
+        startX = e.clientX;
+        startY = e.clientY;
 
-        function drag(e) {
-            if (!isDragging || !selected) return;
-            selected.style.left = (startLeft + (e.clientX - startX)) + "px";
-            selected.style.top = (startTop + (e.clientY - startY)) + "px";
-        }
+        startLeft = parseFloat(el.style.left);
+        startTop = parseFloat(el.style.top);
 
-        function stop() {
-            if (isDragging || isResizing || isRotating) {
-                isDragging = false;
-                isResizing = false;
-                isRotating = false;
-                document.onmousemove = null;
-                document.onmouseup = null;
-                savePositions();
-            }
-        }
+        document.onmousemove = drag;
+        document.onmouseup = stop;
+    });
+});
 
-        function selectElement(el) {
-            if (selected && selected !== el) {
-                selected.classList.remove('selected-item');
-                const oldHandles = selected.querySelectorAll('.resize-handle, .rotate-handle');
-                oldHandles.forEach(h => h.remove());
-            }
-            selected = el;
-            selected.classList.add('selected-item');
-            createHandles(selected);
-        }
+function drag(e){
+    if(!isDragging || !selected) return;
 
-        function asignarEventos() {
-            document.querySelectorAll('.scrap-item').forEach(el => {
-                // Click para seleccionar
-                el.addEventListener('click', (e) => {
-                    // No seleccionar si se hace clic en inputs o botones
-                    if (e.target.tagName === 'BUTTON') return;
-                    if (e.target.type === 'text' || e.target.type === 'email' || e.target.tagName === 'TEXTAREA') return;
-                    if (e.target === document.getElementById('btnEnviar') || e.target === document.getElementById('btnLimpiar')) return;
-                    
-                    e.stopPropagation();
-                    selectElement(el);
-                });
-                
-                // Mousedown para arrastrar
-                el.addEventListener('mousedown', (e) => {
-                    startDrag(e, el);
-                });
-            });
-        }
+    selected.style.left = (startLeft + (e.clientX - startX)) + "px";
+    selected.style.top = (startTop + (e.clientY - startY)) + "px";
+}
 
-        // Click fuera para deseleccionar
-        document.body.addEventListener('click', (e) => {
-            if (!e.target.closest('.scrap-item')) {
-                if (selected) {
-                    selected.classList.remove('selected-item');
-                    const handles = selected.querySelectorAll('.resize-handle, .rotate-handle');
-                    handles.forEach(h => h.remove());
-                    selected = null;
-                }
-            }
-        });
+function stop(){
+    isDragging = false;
+    selected = null;
+    document.onmousemove = null;
+    document.onmouseup = null;
+}
+</script>
 
-        // Teclas Q/E para rotar elemento seleccionado
-        document.addEventListener('keydown', (e) => {
-            if (!selected) return;
-            if (e.key === 'q' || e.key === 'Q') {
-                let transform = selected.style.transform || "rotate(0deg)";
-                let match = transform.match(/rotate\(([-\d.]+)deg\)/);
-                let currentRot = match ? parseFloat(match[1]) : 0;
-                selected.style.transform = `rotate(${currentRot - 5}deg)`;
-                savePositions();
-                e.preventDefault();
-            }
-            if (e.key === 'e' || e.key === 'E') {
-                let transform = selected.style.transform || "rotate(0deg)";
-                let match = transform.match(/rotate\(([-\d.]+)deg\)/);
-                let currentRot = match ? parseFloat(match[1]) : 0;
-                selected.style.transform = `rotate(${currentRot + 5}deg)`;
-                savePositions();
-                e.preventDefault();
-            }
-        });
-
-        // ===== ASIGNAR BOTONES =====
-        document.getElementById('btnEnviar').addEventListener('click', enviarFormulario);
-        document.getElementById('btnLimpiar').addEventListener('click', limpiarFormulario);
-
-        // ===== INICIALIZAR =====
-        window.onload = () => {
-            loadPositions();
-            asignarEventos();
-            console.log("%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", "color: #ff0000");
-            console.log("%c✅ CADA CUADRO ES INDEPENDIENTE Y MOVIBLE", "color: #ff0000; font-size: 14px; font-weight: bold");
-            console.log("%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", "color: #ff0000");
-            console.log("📌 CLIC en un cuadro → Seleccionar");
-            console.log("🖱️ ARRASTRAR → Mover el cuadro seleccionado");
-            console.log("🔴 Círculo ROJO → Redimensionar");
-            console.log("🔴 Círculo ROJO OSCURO → Rotar");
-            console.log("⌨️ TECLAS Q/E → Rotar cuadro seleccionado");
-            console.log("✅ Las posiciones se guardan automáticamente");
-            console.log("🎨 Rotaciones iniciales: 2deg, -1deg, 1.5deg, -2deg");
-            console.log("%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", "color: #ff0000");
-        };
-    </script>
 </body>
 </html>
