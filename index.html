@@ -163,6 +163,7 @@ body{
 <script>
 // ===== FUNCIONES PRINCIPALES =====
 function descargarCV() {
+    console.log("📄 Descargando CV...");
     const link = document.createElement('a');
     link.href = "docs/Karla_Cruz_CV.pdf";
     link.download = "Karla_Cruz_CV.pdf";
@@ -173,10 +174,12 @@ function descargarCV() {
 }
 
 function irContacto() {
-    window.location.href = "contacto.html";
+    console.log("📧 Navegando a contactame.html");
+    window.location.href = "contactame.html";
 }
 
 function irPortafolio() {
+    console.log("🎨 Navegando a portafolio.html");
     window.location.href = "portafolio/portafolio.html";
 }
 
@@ -201,6 +204,7 @@ function savePositions(){
         });
     });
     localStorage.setItem("layout", JSON.stringify(data));
+    console.log("💾 Posiciones guardadas");
 }
 
 // ===== CARGAR =====
@@ -216,6 +220,7 @@ function loadPositions(){
             if(data[i].transform) el.style.transform = data[i].transform;
         }
     });
+    console.log("📂 Posiciones cargadas");
 }
 
 // ===== INTERACCIONES =====
@@ -310,33 +315,58 @@ function selectElement(el){
     createHandles(el);
 }
 
-// ===== EVENTOS =====
+// ===== ASIGNAR EVENTOS A CADA BOTÓN =====
 document.querySelectorAll('.scrap-item').forEach(el => {
-    const imgSrc = el.querySelector('img').src.toLowerCase();
-
-    el.onclick = (e)=>{
+    const img = el.querySelector('img');
+    const imgSrc = img ? img.src.toLowerCase() : '';
+    
+    console.log("🖼️ Imagen detectada:", imgSrc); // 📌 ESTO TE AYUDARÁ A VER QUÉ NOMBRE TIENE
+    
+    // Click para seleccionar
+    el.addEventListener('click', (e) => {
         e.stopPropagation();
         selectElement(el);
-    };
-
-    el.ondblclick = (e)=>{
+    });
+    
+    // Doble click para la acción
+    el.addEventListener('dblclick', (e) => {
         e.stopPropagation();
-        if(imgSrc.includes('curriculum')) descargarCV();
-        else if(imgSrc.includes('contacto')) irContacto();
-        else if(imgSrc.includes('portafolio')) irPortafolio();
-    };
-
-    el.onmousedown = (e)=> startDrag(e, el);
+        console.log("🔍 Double click en:", imgSrc);
+        
+        // ✅ CORREGIDO: Buscar 'contactame' en lugar de 'contacto'
+        if(imgSrc.includes('curriculum')) {
+            descargarCV();
+        } else if(imgSrc.includes('contactame')) {
+            irContacto();
+        } else if(imgSrc.includes('portafolio')) {
+            irPortafolio();
+        } else {
+            console.log("⚠️ No se reconoció la imagen:", imgSrc);
+        }
+    });
+    
+    // Arrastrar
+    el.addEventListener('mousedown', (e) => startDrag(e, el));
 });
 
-document.body.onclick = () => {
+// Limpiar selección al hacer clic fuera
+document.body.addEventListener('click', () => {
     if(selected){
         selected.style.outline = "none";
         selected = null;
     }
-};
+});
 
-window.onload = loadPositions;
+// Cargar posiciones guardadas al iniciar
+window.onload = () => {
+    loadPositions();
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    console.log("✅ Página cargada correctamente");
+    console.log("📧 Botón Contacto → contactame.html");
+    console.log("📄 Botón Curriculum → Descarga PDF");
+    console.log("🎨 Botón Portafolio → portafolio/portafolio.html");
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+};
 </script>
 
 </body>

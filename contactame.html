@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - Karla Sherlyn</title>
+    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml, 
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>         
+    <text y='.9em' font-size='90'>🦖</text> </svg>">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            overflow-x: hidden;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .fullscreen-container {
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .fullscreen-img {
+            width: 100%;
+            display: block;
+            pointer-events: none;
+        }
+
+        /* CAPA DE ELEMENTOS */
+        .scrapbook-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ELEMENTOS - Solo se pueden mover si activas el modo edición */
+        .scrap-item {
+            position: absolute;
+            transition: outline 0.1s ease;
+        }
+
+        /* ESTILOS DE LOS CUADROS DEL FORMULARIO */
+        .form-cuadro {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,0,0,0.3);
+            transition: all 0.2s ease;
+        }
+
+        .form-cuadro:hover {
+            border: 1px solid rgba(255,0,0,0.8);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+        }
+
+        .form-cuadro-interno {
+            width: 100%;
+        }
+
+        .form-label {
+            display: block;
+            color: #ff3333;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.95);
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus {
+            outline: none;
+            background: white;
+            box-shadow: 0 0 8px rgba(255,0,0,0.5);
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.95);
+            font-size: 1rem;
+            min-height: 100px;
+            resize: vertical;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            background: white;
+            box-shadow: 0 0 8px rgba(255,0,0,0.5);
+        }
+
+        .btn-enviar {
+            background: linear-gradient(135deg, #ff0000, #990000);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-enviar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,0,0,0.4);
+        }
+
+        .btn-enviar:active {
+            transform: translateY(0);
+        }
+
+        .btn-limpiar {
+            background: linear-gradient(135deg, #333333, #1a1a1a);
+            color: white;
+            border: 1px solid #ff0000;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-limpiar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,0,0,0.3);
+            border: 1px solid #ff4444;
+        }
+
+        .btn-limpiar:active {
+            transform: translateY(0);
+        }
+
+        .botones-container {
+            display: flex;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .botones-container .btn-enviar,
+        .botones-container .btn-limpiar {
+            flex: 1;
+        }
+
+        .watermark {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 12px;
+            font-family: 'Courier New', 'Segoe UI', monospace;
+            letter-spacing: 1px;
+            background: rgba(0,0,0,0.5);
+            padding: 6px 16px;
+            width: fit-content;
+            margin: 0 auto;
+            pointer-events: none;
+            z-index: 20;
+            font-weight: 400;
+            text-transform: uppercase;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+        }
+
+        .toast-message {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.9);
+            border: 1px solid #ff0000;
+            color: #ff3333;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 1000;
+            animation: fadeInOut 2.5s ease forwards;
+            pointer-events: none;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            15% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            85% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+        }
+
+        /* Botón para activar/desactivar modo edición */
+        .edit-mode-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+            font-size: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .edit-mode-toggle.editing {
+            background: #4CAF50;
+        }
+
+        /* Handles de redimensión y rotación - solo visibles en modo edición */
+        .resize-handle {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff0000;
+            border-radius: 50%;
+            bottom: -10px;
+            right: -10px;
+            cursor: nwse-resize;
+            z-index: 999;
+            border: 2px solid white;
+            box-shadow: 0 0 4px rgba(0,0,0,0.5);
+            display: none;
+        }
+
+        .rotate-handle {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #cc0000;
+            border-radius: 50%;
+            top: -10px;
+            left: -10px;
+            cursor: grab;
+            z-index: 999;
+            border: 2px solid white;
+            box-shadow: 0 0 4px rgba(0,0,0,0.5);
+            display: none;
+        }
+
+        .rotate-handle:active {
+            cursor: grabbing;
+        }
+
+        /* En modo edición, los cuadros son movibles y se muestran las manijas */
+        body.edit-mode .scrap-item {
+            cursor: grab;
+        }
+
+        body.edit-mode .scrap-item:active {
+            cursor: grabbing;
+        }
+
+        body.edit-mode .resize-handle,
+        body.edit-mode .rotate-handle {
+            display: block;
+        }
+
+        body.edit-mode .form-cuadro.selected {
+            outline: 3px dashed #ff0000;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .form-cuadro { width: 35% !important; }
+        }
+        @media (max-width: 700px) {
+            .form-cuadro { width: 70% !important; left: 15% !important; }
+        }
+        @media (max-width: 500px) {
+            .botones-container { flex-direction: column; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="fullscreen-container">
+        <img src="img/Contactame.png" class="fullscreen-img" alt="Fondo página de contacto" onerror="this.style.display='none'; console.warn('⚠️ Imagen de fondo no encontrada')">
+
+        <div class="scrapbook-layer">
+            
+            <!-- ===== CUADRO 1: NOMBRE ===== -->
+            <div class="scrap-item form-cuadro" style="top:8%; left:8%; width:28%;">
+                <div class="form-cuadro-interno">
+                    <label class="form-label">NOMBRE</label>
+                    <input type="text" id="nombre" class="form-input" placeholder="Tu nombre completo" required>
+                </div>
+            </div>
+            
+            <!-- ===== CUADRO 2: CORREO ===== -->
+            <div class="scrap-item form-cuadro" style="top:28%; left:8%; width:28%;">
+                <div class="form-cuadro-interno">
+                    <label class="form-label">CORREO</label>
+                    <input type="email" id="correo" class="form-input" placeholder="tu@email.com" required>
+                </div>
+            </div>
+            
+            <!-- ===== CUADRO 3: MENSAJE ===== -->
+            <div class="scrap-item form-cuadro" style="top:48%; left:8%; width:28%;">
+                <div class="form-cuadro-interno">
+                    <label class="form-label">MENSAJE</label>
+                    <textarea id="mensaje" class="form-textarea" placeholder="Escribe tu mensaje..." required></textarea>
+                </div>
+            </div>
+
+            <!-- ===== CUADRO 4: BOTONES ===== -->
+            <div class="scrap-item form-cuadro" style="top:72%; left:8%; width:28%;">
+                <div class="form-cuadro-interno">
+                    <div class="botones-container">
+                        <button id="btnEnviar" class="btn-enviar">✉️ ENVIAR</button>
+                        <button id="btnLimpiar" class="btn-limpiar">🗑️ LIMPIAR</button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class="watermark">
+            © 2026 Karla Cruz | YANG'S LAB
+        </div>
+    </div>
+
+    <!-- Botón para activar/desactivar modo edición (SOLO TÚ LO VES) -->
+    <button id="editModeBtn" class="edit-mode-toggle">🔧 Modo Edición OFF</button>
+
+    <script>
+        // ===== CONFIGURACIÓN DE FORMSPREE =====
+        const FORMSPREE_ID = 'xeevagad';
+        const FORMSPREE_URL = `https://formspree.io/f/${FORMSPREE_ID}`;
+
+        // ===== MOSTRAR MENSAJE FLOTANTE =====
+        function showToast(message, isError = false) {
+            const toast = document.createElement('div');
+            toast.className = 'toast-message';
+            toast.textContent = message;
+            if (isError) {
+                toast.style.color = '#ff6666';
+                toast.style.borderColor = '#ff0000';
+            } else {
+                toast.style.color = '#4CAF50';
+                toast.style.borderColor = '#4CAF50';
+            }
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // ===== ENVIAR FORMULARIO A FORMSPREE =====
+        async function enviarFormulario() {
+            const nombre = document.getElementById('nombre').value.trim();
+            const correo = document.getElementById('correo').value.trim();
+            const mensaje = document.getElementById('mensaje').value.trim();
+
+            if (!nombre) {
+                showToast('❌ Por favor, ingresa tu nombre', true);
+                return;
+            }
+            if (!correo) {
+                showToast('❌ Por favor, ingresa tu correo electrónico', true);
+                return;
+            }
+            if (!mensaje) {
+                showToast('❌ Por favor, escribe un mensaje', true);
+                return;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(correo)) {
+                showToast('❌ Correo electrónico no válido', true);
+                return;
+            }
+
+            showToast('📤 Enviando mensaje...', false);
+
+            try {
+                const response = await fetch(FORMSPREE_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        nombre: nombre,
+                        email: correo,
+                        mensaje: mensaje,
+                        _subject: `Nuevo mensaje de ${nombre}`
+                    })
+                });
+
+                if (response.ok) {
+                    showToast('✅ ¡Mensaje enviado con éxito! Te responderé pronto.', false);
+                    document.getElementById('nombre').value = '';
+                    document.getElementById('correo').value = '';
+                    document.getElementById('mensaje').value = '';
+                    console.log('📨 Mensaje enviado a Formspree');
+                } else {
+                    showToast('❌ Error al enviar. Intenta de nuevo.', true);
+                }
+            } catch (error) {
+                console.error('Error de conexión:', error);
+                showToast('❌ Error de conexión. Verifica tu internet.', true);
+            }
+        }
+
+        // ===== LIMPIAR FORMULARIO =====
+        function limpiarFormulario() {
+            document.getElementById('nombre').value = '';
+            document.getElementById('correo').value = '';
+            document.getElementById('mensaje').value = '';
+            showToast('🧹 Todos los campos han sido limpiados', false);
+        }
+
+        // ===== FUNCIONES PARA MOVER, REDIMENSIONAR Y ROTAR (SOLO MODO EDICIÓN) =====
+        let selected = null;
+        let isDragging = false;
+        let isResizing = false;
+        let isRotating = false;
+        let startX, startY, startLeft, startTop, startWidth;
+        let startAngle = 0;
+        let currentAngle = 0;
+        let editMode = false;
+
+        function savePositions() {
+            const data = [];
+            document.querySelectorAll('.scrap-item').forEach(el => {
+                data.push({
+                    top: el.style.top,
+                    left: el.style.left,
+                    width: el.style.width,
+                    transform: el.style.transform
+                });
+            });
+            localStorage.setItem("layoutContacto", JSON.stringify(data));
+            console.log("💾 Posiciones guardadas");
+        }
+
+        function loadPositions() {
+            const data = JSON.parse(localStorage.getItem("layoutContacto"));
+            if (!data) return;
+
+            document.querySelectorAll('.scrap-item').forEach((el, i) => {
+                if (data[i]) {
+                    el.style.top = data[i].top;
+                    el.style.left = data[i].left;
+                    el.style.width = data[i].width;
+                    if (data[i].transform) el.style.transform = data[i].transform;
+                }
+            });
+            console.log("📂 Posiciones cargadas");
+        }
+
+        function createHandles(el) {
+            const oldResize = el.querySelector('.resize-handle');
+            const oldRotate = el.querySelector('.rotate-handle');
+            if (oldResize) oldResize.remove();
+            if (oldRotate) oldRotate.remove();
+
+            const resizeHandle = document.createElement("div");
+            resizeHandle.className = "resize-handle";
+            el.appendChild(resizeHandle);
+
+            const rotateHandle = document.createElement("div");
+            rotateHandle.className = "rotate-handle";
+            el.appendChild(rotateHandle);
+
+            resizeHandle.onmousedown = (e) => {
+                if (!editMode) return;
+                e.stopPropagation();
+                isResizing = true;
+                startX = e.clientX;
+                startWidth = el.offsetWidth;
+                document.onmousemove = resize;
+                document.onmouseup = stop;
+            };
+
+            rotateHandle.onmousedown = (e) => {
+                if (!editMode) return;
+                e.stopPropagation();
+                isRotating = true;
+                const rect = el.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                startAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX) * 180 / Math.PI;
+                const transform = el.style.transform;
+                const match = transform.match(/rotate\(([-\d.]+)deg\)/);
+                currentAngle = match ? parseFloat(match[1]) : 0;
+                document.onmousemove = rotate;
+                document.onmouseup = stop;
+            };
+        }
+
+        function rotate(e) {
+            if (!isRotating || !selected || !editMode) return;
+            const rect = selected.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            let newAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX) * 180 / Math.PI;
+            let angleDiff = newAngle - startAngle;
+            let finalAngle = currentAngle + angleDiff;
+            selected.style.transform = `rotate(${finalAngle}deg)`;
+        }
+
+        function resize(e) {
+            if (!isResizing || !selected || !editMode) return;
+            let newWidth = Math.max(80, startWidth + (e.clientX - startX));
+            selected.style.width = newWidth + "px";
+        }
+
+        function startDrag(e, el) {
+            if (!editMode) return;
+            if (e.target.classList.contains("resize-handle")) return;
+            if (e.target.classList.contains("rotate-handle")) return;
+            if (e.target.tagName === 'BUTTON') return;
+            if (e.target.type === 'text' || e.target.type === 'email' || e.target.tagName === 'TEXTAREA') return;
+            
+            isDragging = true;
+            selected = el;
+            startX = e.clientX;
+            startY = e.clientY;
+            startLeft = parseFloat(el.style.left || 0);
+            startTop = parseFloat(el.style.top || 0);
+            document.onmousemove = drag;
+            document.onmouseup = stop;
+        }
+
+        function drag(e) {
+            if (!isDragging || !selected || !editMode) return;
+            selected.style.left = (startLeft + (e.clientX - startX)) + "px";
+            selected.style.top = (startTop + (e.clientY - startY)) + "px";
+        }
+
+        function stop() {
+            isDragging = false;
+            isResizing = false;
+            isRotating = false;
+            document.onmousemove = null;
+            document.onmouseup = null;
+            if (editMode) savePositions();
+        }
+
+        function selectElement(el) {
+            if (!editMode) return;
+            if (selected && selected !== el) {
+                selected.classList.remove('selected');
+            }
+            selected = el;
+            selected.classList.add('selected');
+            createHandles(selected);
+        }
+
+        function asignarEventos() {
+            document.querySelectorAll('.scrap-item').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    if (!editMode) return;
+                    if (e.target.tagName === 'BUTTON') return;
+                    if (e.target.type === 'text' || e.target.type === 'email' || e.target.tagName === 'TEXTAREA') return;
+                    e.stopPropagation();
+                    selectElement(el);
+                });
+                
+                el.addEventListener('mousedown', (e) => {
+                    startDrag(e, el);
+                });
+            });
+        }
+
+        document.body.addEventListener('click', (e) => {
+            if (!editMode) return;
+            if (!e.target.closest('.scrap-item')) {
+                if (selected) {
+                    selected.classList.remove('selected');
+                    selected = null;
+                }
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (!editMode || !selected) return;
+            if (e.key === "q") {
+                let transform = selected.style.transform || "rotate(0deg)";
+                let match = transform.match(/rotate\(([-\d.]+)deg\)/);
+                let currentRot = match ? parseFloat(match[1]) : 0;
+                selected.style.transform = `rotate(${currentRot - 5}deg)`;
+                savePositions();
+            }
+            if (e.key === "e") {
+                let transform = selected.style.transform || "rotate(0deg)";
+                let match = transform.match(/rotate\(([-\d.]+)deg\)/);
+                let currentRot = match ? parseFloat(match[1]) : 0;
+                selected.style.transform = `rotate(${currentRot + 5}deg)`;
+                savePositions();
+            }
+        });
+
+        // ===== MODO EDICIÓN =====
+        const editModeBtn = document.getElementById('editModeBtn');
+        
+        function toggleEditMode() {
+            editMode = !editMode;
+            if (editMode) {
+                document.body.classList.add('edit-mode');
+                editModeBtn.textContent = '🔧 Modo Edición ON';
+                editModeBtn.classList.add('editing');
+                // Recargar posiciones guardadas
+                loadPositions();
+                console.log("✏️ MODO EDICIÓN ACTIVADO - Puedes mover los cuadros");
+            } else {
+                document.body.classList.remove('edit-mode');
+                editModeBtn.textContent = '🔧 Modo Edición OFF';
+                editModeBtn.classList.remove('editing');
+                if (selected) {
+                    selected.classList.remove('selected');
+                    selected = null;
+                }
+                savePositions();
+                console.log("🔒 MODO EDICIÓN DESACTIVADO - Cuadros fijos");
+            }
+        }
+
+        editModeBtn.addEventListener('click', toggleEditMode);
+
+        // ===== ASIGNAR BOTONES =====
+        document.getElementById('btnEnviar').addEventListener('click', enviarFormulario);
+        document.getElementById('btnLimpiar').addEventListener('click', limpiarFormulario);
+
+        // Enter en campos también envía
+        const inputs = document.querySelectorAll('.form-input, .form-textarea');
+        inputs.forEach(input => {
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+                    e.preventDefault();
+                    enviarFormulario();
+                }
+            });
+        });
+
+        // ===== INICIALIZAR =====
+        window.onload = () => {
+            loadPositions();
+            asignarEventos();
+            console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            console.log("✅ Haz clic en 'Modo Edición' para mover los cuadros");
+            console.log("✅ Los usuarios NUNCA ven el botón de edición");
+            console.log("✅ FORMULARIO CONECTADO A FORMSPREE");
+            console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        };
+    </script>
+</body>
+</html>
