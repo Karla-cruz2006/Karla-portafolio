@@ -173,7 +173,7 @@ function descargarCV() {
 }
 
 function irContacto() {
-    window.location.href = "contactame.html";
+    window.location.href = "contacto.html";
 }
 
 function irPortafolio() {
@@ -322,7 +322,7 @@ document.querySelectorAll('.scrap-item').forEach(el => {
     el.ondblclick = (e)=>{
         e.stopPropagation();
         if(imgSrc.includes('curriculum')) descargarCV();
-        else if(imgSrc.includes('contactame')) irContacto();
+        else if(imgSrc.includes('contacto')) irContacto();
         else if(imgSrc.includes('portafolio')) irPortafolio();
     };
 
